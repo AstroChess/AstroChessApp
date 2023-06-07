@@ -1,9 +1,12 @@
 <nb-layout>
 
   <nb-layout-header fixed>
+    <button nbButton outline status="primary" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Homepage</button>
+    <button nbButton outline status="primary" routerLink="/auth" routerLinkActive="active">Auth</button>
   </nb-layout-header>
 
-  <nb-layout-column>  
+  <nb-layout-column>
+    <router-outlet></router-outlet>
   </nb-layout-column>
 
   <nb-layout-footer fixed>
