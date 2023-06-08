@@ -8,6 +8,65 @@ button {
 .menu-target {
     margin-left: auto
 }
-.text-menu-target {
-    font-family: var(--button-text-font-family);
+
+
+.nav-wrap {
+    list-style: none;
 }
+.nav-item {
+    display: inline-block;
+}
+.nav-item-link {
+    position: relative;
+    display: block;
+    padding: 16px 0;
+    margin: 0 12px;
+    letter-spacing: 1px;
+    font-size: 1rem;
+    line-height: 16px;
+    font-weight: 900;
+    text-transform: uppercase;
+    transition: 0.2s ease-in;
+    color: #bbb;
+    font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+    text-decoration: none;
+
+    &:active{
+        color: #bbb;
+        text-decoration: none;
+    }
+
+    &:hover, &:focus {
+        color: #bbb;
+        text-decoration: none;
+
+        &::before, &::before {
+            transform-origin: left top;
+            transform: scale(1, 1);
+        }
+    }
+    &::before {
+        content: '';
+        display: block;
+        position: absolute;
+        bottom: 5px;
+        left: 0;
+        height: 3px;
+        width: 100%;
+        background-color: #bbb;
+        transform-origin: right top;
+        transform: scale(0, 1);
+        transition: color 0.1s, transform 0.2s ease-out;
+    }
+
+    &.active {
+        color: #ddd;
+    
+        &::before {
+            background-color: #ddd;
+            transform: scale(1, 1);
+        }
+    }
+}
+
+
