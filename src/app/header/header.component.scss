@@ -1,0 +1,13 @@
+:host {
+    width: 100%;
+    display: flex;
+}
+button {
+    margin: 10px
+}
+.menu-target {
+    margin-left: auto
+}
+.text-menu-target {
+    font-family: var(--button-text-font-family);
+}
