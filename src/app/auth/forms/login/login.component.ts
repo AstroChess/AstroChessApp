@@ -1,27 +1,19 @@
-import { ChangeDetectorRef, Component, Inject, OnInit, Optional } from '@angular/core';
-import { Router } from '@angular/router';
-import {
-  NB_AUTH_OPTIONS,
-  NbAuthService,
-  NbLoginComponent,
-} from '@nebular/auth';
-
+import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent extends NbLoginComponent implements OnInit {
-  constructor(
-    service: NbAuthService,
-    @Inject(NB_AUTH_OPTIONS) override options: {},
-    cd: ChangeDetectorRef,
-    router: Router
-  ) {
-    super(service, options, cd, router);
-  }
+export class LoginComponent implements OnInit {
+  submitted: any;
+  rememberMe: any;
+  user: any = {};
+  
+  constructor() {}
 
   ngOnInit(): void {}
 
-  
+  login() {
+    console.log(this.user);
+  }
 }

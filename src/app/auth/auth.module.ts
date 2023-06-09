@@ -28,14 +28,7 @@ import { RegisterComponent } from './forms/register/register.component';
     NbAlertModule,
     NbIconModule,
     HttpClientModule,
-    NbAuthModule.forRoot({
-      strategies: [
-        NbPasswordAuthStrategy.setup({
-          name: 'email',
-        }),
-      ],
-      forms: {},
-    }),
+    NbAuthModule.forRoot(),
   ],
 })
 export class AuthModule { }
