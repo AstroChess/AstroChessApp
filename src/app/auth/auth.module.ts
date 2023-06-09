@@ -4,16 +4,29 @@ import { AuthComponent } from './auth.component';
 import { AuthRoutingModule } from './auth-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 
-import { NbPasswordAuthStrategy, NbAuthModule } from '@nebular/auth';
+import { NbAuthModule, NbPasswordAuthStrategy } from '@nebular/auth';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NbAlertModule, NbButtonModule, NbCheckboxModule, NbIconModule, NbInputModule } from '@nebular/theme';
+import { LoginComponent } from './forms/login/login.component';
+import { RegisterComponent } from './forms/register/register.component';
 
 
 @NgModule({
   declarations: [
-    AuthComponent
+    AuthComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     AuthRoutingModule,
+    NbCheckboxModule,
+    NbButtonModule,
+    NbInputModule,
+    NbAlertModule,
+    NbIconModule,
     HttpClientModule,
     NbAuthModule.forRoot({
       strategies: [
@@ -22,7 +35,7 @@ import { NbPasswordAuthStrategy, NbAuthModule } from '@nebular/auth';
         }),
       ],
       forms: {},
-    })
-  ]
+    }),
+  ],
 })
 export class AuthModule { }
