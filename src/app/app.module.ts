@@ -26,8 +26,7 @@ import { HttpClientModule } from '@angular/common/http';
     NbEvaIconsModule,
     NbMenuModule.forRoot(),
     NbThemeModule.forRoot({ name: 'cosmic' }),
-    NbLayoutModule,
-    NbEvaIconsModule
+    NbLayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]
