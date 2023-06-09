@@ -4,7 +4,12 @@
 
 export const environment = {
   production: false,
-  serverUrl: '127.0.0.1'
+  server: {
+    url: 'https://localhost:5500',
+    loginEndpoint: {
+      endpoint: '/login'
+    }
+  }
 };
 
 /*

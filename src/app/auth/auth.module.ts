@@ -4,7 +4,7 @@ import { AuthComponent } from './auth.component';
 import { AuthRoutingModule } from './auth-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 
-import { NbAuthModule, NbPasswordAuthStrategy } from '@nebular/auth';
+import { NbAuthModule } from '@nebular/auth';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NbAlertModule, NbButtonModule, NbCheckboxModule, NbIconModule, NbInputModule } from '@nebular/theme';
 import { LoginComponent } from './forms/login/login.component';
@@ -18,17 +18,17 @@ import { RegisterComponent } from './forms/register/register.component';
     RegisterComponent
   ],
   imports: [
+    NbAuthModule.forRoot(),
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     AuthRoutingModule,
+    HttpClientModule,
     NbCheckboxModule,
     NbButtonModule,
     NbInputModule,
     NbAlertModule,
     NbIconModule,
-    HttpClientModule,
-    NbAuthModule.forRoot(),
   ],
 })
 export class AuthModule { }
