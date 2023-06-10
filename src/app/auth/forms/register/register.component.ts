@@ -1,21 +1,31 @@
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { NB_AUTH_OPTIONS, NbAuthService, NbRegisterComponent } from '@nebular/auth';
-
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../../auth.service';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent extends NbRegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit {
+  submitted = false;
+  user: any = {
+    firstname: undefined,
+    lastname: undefined,
+    username: undefined,
+    email: undefined,
+    password: undefined,
+    confirm_password: undefined,
+  }
 
-  constructor(
-    service: NbAuthService,
-    @Inject(NB_AUTH_OPTIONS) override options: {},
-    cd: ChangeDetectorRef,
-    router: Router) { super(service, options, cd,router) }
+  constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
+  }
+
+  handleSignupForm(){
+    const signupEndpoint = environment.server.url + environment.server.signupEndpoint.endpoint;
+
+    this.authService.signup(signupEndpoint, this.user).subscribe(x=>console.log(x))
   }
 
 }

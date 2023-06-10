@@ -1,4 +1,12 @@
 export const environment = {
   production: true,
-  serverUrl: '127.0.0.1'
+  server: {
+    url: 'https://localhost:3000',
+    loginEndpoint: {
+      endpoint: '/login'
+    },
+    signupEndpoint: {
+      endpoint: '/register'
+    }
+  }
 };

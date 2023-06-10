@@ -5,9 +5,12 @@
 export const environment = {
   production: false,
   server: {
-    url: 'https://localhost:5500',
+    url: 'http://localhost:3000',
     loginEndpoint: {
       endpoint: '/login'
+    },
+    signupEndpoint: {
+      endpoint: '/register'
     }
   }
 };
