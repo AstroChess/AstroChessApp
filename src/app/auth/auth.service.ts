@@ -20,7 +20,7 @@ export class AuthService {
 }
 
 interface AuthResponse {
-  status: string;
+  status: number;
   message: string;
 }
 

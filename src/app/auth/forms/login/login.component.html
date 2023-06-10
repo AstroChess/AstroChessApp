@@ -61,6 +61,12 @@
   </button>
 </form>
 
+<ng-container *ngIf="signinFailure">
+  <p class="caption status-danger">
+    This user doesn't exists.
+  </p>
+</ng-container>
+
 <section class="another-action" aria-label="Register">
   Don't have an account? <a class="text-link" routerLink="../register">Register</a>
 </section>

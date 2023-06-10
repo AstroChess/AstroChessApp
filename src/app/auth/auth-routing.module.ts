@@ -4,6 +4,7 @@ import { AuthComponent } from './auth.component';
 import { LoginComponent } from './forms/login/login.component';
 import { RegisterComponent } from './forms/register/register.component';
 import { PasswordResetComponent } from './forms/password-reset/password-reset.component';
+import { NbAuthComponent } from '@nebular/auth';
 
 const routes: Routes = [
   {
@@ -12,7 +13,8 @@ const routes: Routes = [
     children: [
         {
           path: '',
-          component: LoginComponent,
+          redirectTo: 'login',
+          pathMatch: 'full'
         },
         {
           path: 'login',
