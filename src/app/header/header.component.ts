@@ -14,19 +14,26 @@ export class HeaderComponent implements OnInit {
   constructor(private authService: AuthService, private nbMenuService: NbMenuService) {}
 
   ngOnInit(): void {
-    this.authService.user.subscribe((user) => (this.isLoggedIn = !!user));
+    this.authService.user.subscribe((user) => {
+      this.loggedinItems[0].title = user?.username ?? '';
+      this.isLoggedIn = !!user;
+    });
 
     this.nbMenuService.onItemClick().pipe(take(1)).subscribe((e)=>{ if(e.item?.data?.id == "logout"){ this.authService.logout() } })
   }
 
-  loggedoutItems: NbMenuItem[] = [
+  loggedinItems: NbMenuItem[] = [
+    {
+      title: '',
+      ariaRole: 'username',
+    },
     {
       title: 'Logout',
       data: {id: 'logout'}
     },
   ];
 
-  loggedinItems: NbMenuItem[] = [
+  loggedoutItems: NbMenuItem[] = [
     {
       title: 'Login',
       link: '/auth/login',
