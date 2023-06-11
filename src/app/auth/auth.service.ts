@@ -1,14 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  user: any = null;
+  user = new BehaviorSubject<UserLogin | null>(null);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   login(url: string, loginUserObject: UserLogin): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(url, loginUserObject);
@@ -16,6 +17,9 @@ export class AuthService {
 
   signup(url: string, signupUserObject: UserSignup): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(url, signupUserObject);
+  }
+  logout(){
+    this.user.next(null);
   }
 }
 

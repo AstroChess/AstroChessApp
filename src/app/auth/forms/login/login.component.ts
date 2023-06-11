@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
       next: (response) => {
         if (response.status === 200) {
           this.signinFailure = null;
-          this.authService.user = this.user;
+          this.authService.user.next(this.user);
           this.router.navigate(['/']);
         }
       },

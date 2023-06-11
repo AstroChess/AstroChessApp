@@ -2,12 +2,13 @@
     <li class="nav-item"><a class="nav-item-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">HOMEPAGE</a></li>
     <li class="nav-item"><a class="nav-item-link" routerLink="/about" routerLinkActive="active">ABOUT</a></li>
 </ul>
-<button
-  class="menu-target"
-  nbButton
-  outline
-  [nbContextMenu]="items"
-  nbContextMenuTrigger="click"
->
-  <nb-icon icon="menu"></nb-icon>
-</button>
+
+  <button
+    class="menu-target"
+    nbButton
+    outline
+    [nbContextMenu]="isLoggedIn ? loggedoutItems:loggedinItems"
+    nbContextMenuTrigger="click"
+  >
+    <nb-icon icon="menu"></nb-icon>
+  </button>
