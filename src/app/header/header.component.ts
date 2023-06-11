@@ -11,11 +11,10 @@ import { take } from 'rxjs';
 export class HeaderComponent implements OnInit {
   isLoggedIn = false;
 
-  constructor(private authService: AuthService, private nbMenuService: NbMenuService) {}
+  constructor(public authService: AuthService, private nbMenuService: NbMenuService) {}
 
   ngOnInit(): void {
     this.authService.user.subscribe((user) => {
-      this.loggedinItems[0].title = user?.username ?? '';
       this.isLoggedIn = !!user;
     });
 
@@ -23,10 +22,6 @@ export class HeaderComponent implements OnInit {
   }
 
   loggedinItems: NbMenuItem[] = [
-    {
-      title: '',
-      ariaRole: 'username',
-    },
     {
       title: 'Logout',
       data: {id: 'logout'}

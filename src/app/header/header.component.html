@@ -22,5 +22,6 @@
   [nbContextMenu]="isLoggedIn ? loggedinItems : loggedoutItems"
   nbContextMenuTrigger="click"
 >
-  <nb-icon icon="menu"></nb-icon>
+  <nb-icon icon="menu" *ngIf="!isLoggedIn"></nb-icon>
+  <span *ngIf="isLoggedIn">{{ authService.user.value?.username }}</span>
 </button>
