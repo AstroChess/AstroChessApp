@@ -57,6 +57,7 @@
            fullWidth
            required
            fieldSize="large"
+           minlength="4"
            [status]="username.dirty ? (username.invalid  ? 'danger' : 'success') : 'basic'"
            [attr.aria-invalid]="username.invalid && username.touched ? true : null">
     <ng-container *ngIf="username.invalid && username.touched">
@@ -73,7 +74,7 @@
            #email="ngModel"
            id="input-email"
            name="email"
-           pattern=".+@.+..+"
+           pattern=".+@.+\.+.+"
            placeholder="Email address"
            fullWidth
            required
