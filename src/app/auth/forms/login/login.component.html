@@ -60,7 +60,6 @@
     <nb-checkbox
       name="rememberMe"
       [(ngModel)]="user.rememberMe"
-      *ngIf="rememberMe"
       >Remember me</nb-checkbox
     >
   </div>
@@ -77,7 +76,7 @@
   </button>
 </form>
 
-<ng-container *ngIf="signinFailure">
+<ng-container *ngIf="loginErrorMsg">
   <p class="caption status-danger">This user doesn't exists.</p>
 </ng-container>
 

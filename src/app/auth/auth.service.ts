@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { UserLogin, UserSignup } from './user.model';
+import { AuthResponse } from './auth-response';
 
 @Injectable({
   providedIn: 'root',
@@ -34,23 +36,4 @@ export class AuthService {
     localStorage.removeItem('user');
     this.user.next(null);
   }
-}
-
-interface AuthResponse {
-  status: number;
-  message: string;
-}
-
-interface UserLogin {
-  username: string;
-  password: string;
-}
-
-interface UserSignup {
-  firstname: string;
-  lastname: string;
-  username: string;
-  email: string;
-  password: string;
-  confirm_password: string;
 }
