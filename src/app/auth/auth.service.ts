@@ -24,7 +24,6 @@ export class AuthService {
   }
 
   login(url: string, loginUserObject: UserLogin): Observable<AuthResponse> {
-    localStorage.setItem('user', JSON.stringify(loginUserObject));
     return this.http.post<AuthResponse>(url, loginUserObject);
   }
 
