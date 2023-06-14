@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../auth.service';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { UserSignup } from '../../user.model';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -10,13 +11,14 @@ import { Router } from '@angular/router';
 export class RegisterComponent implements OnInit {
   signupResponse!: {status: number, message: string} | null
   submitted = false;
-  user: any = {
-    firstname: undefined,
-    lastname: undefined,
-    username: undefined,
-    email: undefined,
-    password: undefined,
-    confirm_password: undefined,
+  user: UserSignup = {
+    firstname: '',
+    lastname: '',
+    username: '',
+    email: '',
+    password: '',
+    confirm_password: '',
+    terms: false
   }
 
   constructor(private authService: AuthService, private router: Router) { }
@@ -38,5 +40,4 @@ export class RegisterComponent implements OnInit {
       }
     })
   }
-
 }

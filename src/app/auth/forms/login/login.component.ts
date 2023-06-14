@@ -3,6 +3,7 @@ import { AuthService } from '../../auth.service';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 import { AuthResponse } from '../../auth-response';
+import { UserLogin } from '../../user.model';
 
 @Component({
   selector: 'app-login',
@@ -11,9 +12,12 @@ import { AuthResponse } from '../../auth-response';
 })
 export class LoginComponent implements OnInit {
   loginErrorMsg: string | null = null;
-  submitted: any;
-  rememberMe: any;
-  user: any = {};
+  submitted = false;
+  user: UserLogin = {
+    username: '',
+    password: '',
+    rememberMe: false
+  };
 
   constructor(private authService: AuthService, private router: Router) {}
 

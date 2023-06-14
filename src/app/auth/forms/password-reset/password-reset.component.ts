@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PasswordResetComponent implements OnInit {
   user: any = {}
-  submitted: boolean = false;
+  submitted = false;
 
   constructor() { }
 
