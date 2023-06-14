@@ -17,10 +17,10 @@ export class AuthService {
     );
   }
 
-  autologin(url: string) {
+  autologin(url: string): void{
     const user = localStorage.getItem('user');
     if (!user) return;
-    return this.http
+    this.http
       .post<AuthResponse>(url, JSON.parse(user))
       .subscribe(() => this.user.next(JSON.parse(user)));
   }
@@ -33,7 +33,7 @@ export class AuthService {
   signup(url: string, signupUserObject: UserSignup): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(url, signupUserObject);
   }
-  logout() {
+  logout(): void {
     localStorage.removeItem('user');
     this.user.next(null);
   }
