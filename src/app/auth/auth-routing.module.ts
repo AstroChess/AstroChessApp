@@ -5,6 +5,7 @@ import { LoginComponent } from './forms/login/login.component';
 import { RegisterComponent } from './forms/register/register.component';
 import { PasswordResetComponent } from './forms/password-reset/password-reset.component';
 import { NbAuthComponent } from '@nebular/auth';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   {
@@ -19,10 +20,12 @@ const routes: Routes = [
         {
           path: 'login',
           component: LoginComponent,
+          canActivate: [AuthGuard]
         },
         {
           path: 'register',
           component: RegisterComponent,
+          canActivate: [AuthGuard]
         },
         {
           path: 'reset-password',
