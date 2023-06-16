@@ -23,6 +23,10 @@ export class HeaderComponent implements OnInit {
 
   loggedinItems: NbMenuItem[] = [
     {
+      title: 'Profile',
+      link: '/profile',
+    },
+    {
       title: 'Logout',
       data: {id: 'logout'}
     },
