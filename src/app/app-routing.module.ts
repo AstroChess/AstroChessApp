@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   {
@@ -10,7 +11,7 @@ const routes: Routes = [
     path: 'auth', loadChildren: ()=>import('./auth/auth.module').then(m=>m.AuthModule)
   },
   {
-    path: 'abl', loadChildren: ()=>import('./auth/auth.module').then(m=>m.AuthModule)
+    path: 'profile', component: ProfileComponent
   }
 ];
 

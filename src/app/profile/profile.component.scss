@@ -1,0 +1,46 @@
+nb-card-header {
+    font-weight: bolder;
+    font-size: 1.5rem;
+}
+
+nb-card-body {
+    display: grid;
+    grid-template: 1fr / 20% 60% 20%;
+}
+
+nb-layout-column nb-card {
+    height: 80%;
+}
+
+.center {
+    display: grid;
+    grid-template-rows: 40% 10% 50%;
+    justify-content: center;
+
+    .picture img {
+        height: 100%;
+    }    
+}
+
+table {
+    border-collapse: collapse;
+    margin: 10px;
+
+    tr {
+        border: 1px solid #7b51db;
+    }
+
+    td {
+        font-family: helvetica;
+        padding: 10px;
+
+        &:nth-child(1){
+            background-color: #7b51db;
+        }
+    }
+}
+
+
+
+
+
