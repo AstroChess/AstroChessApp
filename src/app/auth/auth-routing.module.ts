@@ -12,33 +12,35 @@ const routes: Routes = [
     path: '',
     component: AuthComponent,
     children: [
-        {
-          path: '',
-          redirectTo: 'login',
-          pathMatch: 'full'
-        },
-        {
-          path: 'login',
-          component: LoginComponent,
-          canActivate: [AuthGuard]
-        },
-        {
-          path: 'register',
-          component: RegisterComponent,
-          canActivate: [AuthGuard]
-        },
-        {
-          path: 'reset-password',
-          component: PasswordResetComponent,
-        }]
-
-    
-}
+      {
+        path: 'login',
+        component: LoginComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'register',
+        component: RegisterComponent,
+        canActivate: [AuthGuard],
+      },
+      {
+        path: 'reset-password',
+        component: PasswordResetComponent,
+      },
+      {
+        path: '',
+        redirectTo: 'login',
+        pathMatch: 'full',
+      },
+      {
+        path: '**',
+        redirectTo: 'login',
+      },
+    ],
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AuthRoutingModule { }
-
+export class AuthRoutingModule {}
