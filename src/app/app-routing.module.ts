@@ -1,14 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AppComponent } from './app.component';
 import { ProfileComponent } from './profile/profile.component';
-import { AuthGuard } from './auth/auth.guard';
 import { ProfileGuard } from './profile/profile.guard';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
-    path: '', component: AppComponent, pathMatch: 'full'
+    path: '', component: ProfileComponent, pathMatch: 'full'
   },
   {
     path: 'auth', loadChildren: ()=>import('./auth/auth.module').then(m=>m.AuthModule)
