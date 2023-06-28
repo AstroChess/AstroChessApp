@@ -15,6 +15,9 @@ const routes: Routes = [
     path: 'profile', component: ProfileComponent, canActivate: [ProfileGuard]
   },
   {
+    path: 'game', loadChildren: ()=>import('./chess/chess.module').then(m=>m.ChessModule), canActivate: [ProfileGuard]
+  },
+  {
     path: '**', component: PageNotFoundComponent
   }
 ];

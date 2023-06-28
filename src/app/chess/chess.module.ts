@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChessComponent } from './chess.component';
+import { ChessRoutingModule } from './chess-routing.module';
 
 
 
@@ -9,7 +10,8 @@ import { ChessComponent } from './chess.component';
     ChessComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    ChessRoutingModule
   ]
 })
 export class ChessModule { }
