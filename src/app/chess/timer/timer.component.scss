@@ -1,0 +1,14 @@
+:host {
+    width: 100%;
+}
+
+:is(nb-card-header, nb-card-footer) div {
+    width: 100%;
+    display: inline-block;
+}
+
+:is(nb-card-header, nb-card-footer) > div {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bolder;
+}
