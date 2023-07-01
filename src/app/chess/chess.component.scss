@@ -6,7 +6,8 @@
 }
 
 .main {
-    display: flex;
+    display: grid;
+    place-items: center;
 }
 
 .timer {
