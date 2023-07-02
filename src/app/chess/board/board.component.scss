@@ -3,16 +3,29 @@
     aspect-ratio: 1/1;
 }
 
-table {
+.container {
+    user-select: none;
     height: 100%;
     aspect-ratio: 1/1;
     border-collapse: collapse;
+    display: grid;
+    grid-template: repeat(8, 1fr) 4% / 4% repeat(8, 1fr) ;
 }
 
-td {
+.field {
     background-color: #ffffdd;
+    user-select: none;
 }
 
-tr:nth-child(even) td:nth-child(odd),  tr:nth-child(odd) td:nth-child(even){
+.field:nth-child(even){
     background-color: #86a666;
+}
+
+.field-symbol {
+    font-size: 0.7rem;
+    user-select: none;
+    background: transparent !important;
+    text-align: center;
+    display: grid;
+    place-items: center;
 }

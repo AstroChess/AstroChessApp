@@ -1,5 +1,7 @@
-<table>
-    <tr *ngFor="let row of board">
-        <td *ngFor="let field of row"></td>
-    </tr>
-</table>
+<div class="container">
+    <ng-container *ngFor="let row of board; let i=index">
+        <div class="field-symbol">{{ 8-i }}</div>
+        <div class="field" *ngFor="let field of row"></div>
+    </ng-container>
+    <div *ngFor="let fieldSymbol of ['', 'A','B','C','D','E','F','G','H']" class="field-symbol">{{ fieldSymbol }}</div>
+</div>
