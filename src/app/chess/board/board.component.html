@@ -1,7 +1,9 @@
 <div class="container">
     <ng-container *ngFor="let row of board; let i=index">
         <div class="field-symbol">{{ 8-i }}</div>
-        <div class="field" *ngFor="let field of row"></div>
+        <div class="field" *ngFor="let field of row">
+            <img *ngIf="field" [src]="'/assets/images/pieces/'+field+'.svg'" [alt]="field">
+        </div>
     </ng-container>
     <div *ngFor="let fieldSymbol of ['', 'A','B','C','D','E','F','G','H']" class="field-symbol">{{ fieldSymbol }}</div>
 </div>
