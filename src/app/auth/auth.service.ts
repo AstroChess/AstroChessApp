@@ -9,7 +9,7 @@ import { AuthResponse } from './auth-response';
   providedIn: 'root',
 })
 export class AuthService {
-  user = new BehaviorSubject<UserLogin | null>(null);
+  user = new BehaviorSubject<UserLogin | null | undefined>(undefined);
 
   constructor(private http: HttpClient) {
     this.autologin(
@@ -33,6 +33,7 @@ export class AuthService {
   signup(url: string, signupUserObject: UserSignup): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(url, signupUserObject);
   }
+
   logout(): void {
     localStorage.removeItem('user');
     this.user.next(null);
