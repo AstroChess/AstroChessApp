@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 import { Observable, filter, map } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProfileGuard implements CanActivate {
+export class ProfileGuard {
   constructor(private authService: AuthService, private router: Router){}
   canActivate(
     route: ActivatedRouteSnapshot,
