@@ -1,3 +1,18 @@
+:host {
+    height: 100%;
+    display: grid;
+    place-items: center;
+}
+
+.container {
+    height: 90%;
+    width: 80%;
+}
+
+.container > nb-card {
+    height: 100%;
+}
+
 nb-card-header {
     font-weight: bolder;
     font-size: 1.5rem;
@@ -5,21 +20,51 @@ nb-card-header {
 
 nb-card-body {
     display: grid;
-    grid-template: 1fr / 20% 60% 20%;
+    grid-template: 1fr / 30% 40% 30%;
+
+    .center {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .picture {
+            img {
+                width: 100%;
+            }    
+        }
+
+        table {
+            min-width: 300px;
+        }
+    }
+
+    .right {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        nb-card {
+            width: 80%;
+        }
+    }
 }
 
-nb-layout-column nb-card {
-    height: 80%;
-}
-
-.center {
-    display: grid;
-    grid-template-rows: 40% 10% 50%;
-    justify-content: center;
-
-    .picture img {
+nb-list-item {
+    a {
+        display: inline-block;
         height: 100%;
-    }    
+        width: 100%;
+        text-align: center;
+        text-decoration: none;
+        color: white;
+        font-size: 1.05rem;
+
+        .winner {
+            font-size: 1.1em;
+            font-weight: bolder;
+        }
+    }
 }
 
 table {

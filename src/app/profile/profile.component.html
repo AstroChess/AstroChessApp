@@ -1,22 +1,30 @@
-<nb-layout>
-    <nb-layout-column>
-        <nb-card accent="info">
-            <nb-card-header>{{ user?.username }}</nb-card-header>
-            <nb-card-body>
-                <div class="left"></div>
-                <div class="center">
-                    <div class="picture">
-                        <img src="https://images.freeimages.com/fic/images/icons/703/artists_valley_sample/256/business_man_blue.png" alt="profile-picture">
-                    </div>
-                    <table>
-                        <tr><td>B-Year:</td><td>{{ 'Unknown' }}</td></tr>
-                        <tr><td>Federation:</td><td>{{ 'Unknown' }}</td></tr>
-                        <tr><td>Sex:</td><td>{{ 'Unknown' }}</td></tr>
-                    </table>
+<div class="container">
+    <nb-card accent="info">
+        <nb-card-header>{{ user?.username }}</nb-card-header>
+        <nb-card-body>
+            <div class="left"></div>
+            <div class="center">
+                <div class="picture">
+                    <img src="https://images.freeimages.com/fic/images/icons/703/artists_valley_sample/256/business_man_blue.png" alt="profile-picture">
                 </div>
-                <div class="right">
-                </div>
-            </nb-card-body>
-          </nb-card>
-    </nb-layout-column>
-</nb-layout>
+                <table>
+                    <tr><td>B-Year:</td><td>{{ 'Unknown' }}</td></tr>
+                    <tr><td>Federation:</td><td>{{ 'Unknown' }}</td></tr>
+                    <tr><td>Sex:</td><td>{{ 'Unknown' }}</td></tr>
+                </table>
+            </div>
+            <div class="right">
+                <nb-card size="medium">
+                    <nb-card-header>
+                      Last Games
+                    </nb-card-header>
+                    <nb-list>
+                      <nb-list-item *ngFor="let game of games">
+                        <a href=""><span [ngClass]="{winner: game.winner==='p1'}">{{ game.p1 }}</span> - <span [ngClass]="{winner: game.winner==='p2'}">{{ game.p2 }}</span></a>
+                      </nb-list-item>
+                    </nb-list>
+                  </nb-card>
+            </div>
+        </nb-card-body>
+    </nb-card>
+</div>

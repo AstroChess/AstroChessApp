@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NbThemeModule, NbLayoutModule, NbButtonModule, NbContextMenuModule, NbMenuModule, NbIconModule, NbCardModule, NbAlertModule } from '@nebular/theme';
+import { NbThemeModule, NbLayoutModule, NbButtonModule, NbContextMenuModule, NbMenuModule, NbIconModule, NbCardModule, NbAlertModule, NbListModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { HeaderComponent } from './header/header.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -34,6 +34,7 @@ import { HomepageComponent } from './homepage/homepage.component';
     NbCardModule,
     NbIconModule,
     NbEvaIconsModule,
+    NbListModule,
     NbMenuModule.forRoot(),
     NbThemeModule.forRoot({ name: 'cosmic' }),
     NbLayoutModule
