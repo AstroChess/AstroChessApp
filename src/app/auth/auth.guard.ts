@@ -11,7 +11,6 @@ export class AuthGuard {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      return this.authService.user.pipe(filter(user=>typeof user !== 'undefined'), map(user=>!user));
+      return this.authService.user.pipe(filter(user=>user !== undefined), map(user=>!user));
   }
-  
 }
