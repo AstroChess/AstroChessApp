@@ -4,10 +4,11 @@ import { ProfileComponent } from './profile/profile.component';
 import { ProfileGuard } from './profile/profile.guard';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { HomepageComponent } from './homepage/homepage.component';
+import { AppComponent } from './app.component';
 
 const routes: Routes = [
   {
-    path: '', component: HomepageComponent, pathMatch: 'full'
+    path: '', component: AppComponent, pathMatch: 'full'
   },
   {
     path: 'auth', loadChildren: ()=>import('./auth/auth.module').then(m=>m.AuthModule)
