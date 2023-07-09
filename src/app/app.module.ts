@@ -5,14 +5,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NbThemeModule, NbLayoutModule, NbButtonModule, NbContextMenuModule, NbMenuModule, NbIconModule, NbCardModule, NbAlertModule, NbListModule } from '@nebular/theme';
-import { NbEvaIconsModule } from '@nebular/eva-icons';
+import { NbThemeModule, NbMenuModule } from '@nebular/theme';
 import { HeaderComponent } from './header/header.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { ProfileComponent } from './profile/profile.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { HomepageComponent } from './homepage/homepage.component';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -28,16 +28,10 @@ import { HomepageComponent } from './homepage/homepage.component';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    NbButtonModule,
-    NbAlertModule,
-    NbContextMenuModule,
-    NbCardModule,
-    NbIconModule,
-    NbEvaIconsModule,
-    NbListModule,
+
+    SharedModule,
     NbMenuModule.forRoot(),
     NbThemeModule.forRoot({ name: 'cosmic' }),
-    NbLayoutModule
   ],
   providers: [],
   bootstrap: [AppComponent]
