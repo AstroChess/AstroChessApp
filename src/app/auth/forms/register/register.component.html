@@ -1,9 +1,9 @@
 <h1 id="title" class="title">Register</h1>
 <ng-container *ngIf="signupResponse?.status === 200">
-  <nb-alert status="success" >{{ signupResponse?.message }}</nb-alert>
+  <nb-alert status="success">{{ signupResponse?.message }}</nb-alert>
 </ng-container>
-<ng-container *ngIf="[400,500].indexOf(signupResponse?.status ?? -1)!==-1">
-  <nb-alert status="danger" >{{ signupResponse?.message }}</nb-alert>
+<ng-container *ngIf="[400, 500].indexOf(signupResponse?.status ?? -1) !== -1">
+  <nb-alert status="danger">{{ signupResponse?.message }}</nb-alert>
 </ng-container>
 
 <form (ngSubmit)="handleSignupForm()" #form="ngForm" aria-labelledby="title">
