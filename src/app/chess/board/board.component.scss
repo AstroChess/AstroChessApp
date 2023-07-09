@@ -1,44 +1,44 @@
 :host {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .container {
-    user-select: none;
-    height: 90%;
-    aspect-ratio: 1/1;
-    display: grid;
-    grid-template: repeat(8, 12%) 4% / 4% repeat(8, 12%);
+  user-select: none;
+  height: 90%;
+  aspect-ratio: 1/1;
+  display: grid;
+  grid-template: repeat(8, 12%) 4% / 4% repeat(8, 12%);
 }
 
 .field {
-    background-color: #ffffdd;
-    user-select: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background-color: #ffffdd;
+  user-select: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.field:nth-child(even){
-    background-color: #86a666;
+.field:nth-child(even) {
+  background-color: #86a666;
 }
 
 .field-symbol {
-    font-size: 0.7rem;
-    user-select: none;
-    background: transparent !important;
-    text-align: center;
-    display: grid;
-    place-items: center;
+  font-size: 0.7rem;
+  user-select: none;
+  background: transparent !important;
+  text-align: center;
+  display: grid;
+  place-items: center;
 }
 
 .field img {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    max-height: 100px;
-    height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  max-height: 100px;
+  height: 100%;
 }

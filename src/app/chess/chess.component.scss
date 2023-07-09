@@ -1,17 +1,17 @@
 :host {
-    display: grid;
-    grid-template: 1fr/80% 20%;
-    padding: 10px;
-    height: 100%;
+  display: grid;
+  grid-template: 1fr/80% 20%;
+  padding: 10px;
+  height: 100%;
 }
 
 .main {
-    display: grid;
-    place-items: center;
+  display: grid;
+  place-items: center;
 }
 
 .timer {
-    display: grid;
-    place-items: center;
-    width: 100%;
+  display: grid;
+  place-items: center;
+  width: 100%;
 }
