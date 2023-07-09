@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
-
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NbThemeModule, NbMenuModule } from '@nebular/theme';
-import { HeaderComponent } from './header/header.component';
-import { HttpClientModule } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
-import { ProfileComponent } from './profile/profile.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { HomepageComponent } from './homepage/homepage.component';
+
+import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
+import { AppRoutingModule } from './app-routing.module';
+import { HeaderComponent } from './header/header.component';
+import { ProfileComponent } from './profile/profile.component';
+import { HomepageComponent } from './homepage/homepage.component';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +34,6 @@ import { SharedModule } from './shared/shared.module';
     NbThemeModule.forRoot({ name: 'cosmic' }),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

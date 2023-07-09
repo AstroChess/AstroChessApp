@@ -8,19 +8,17 @@ import { TimerComponent } from './timer/timer.component';
 import { BoardComponent } from './board/board.component';
 import { ChessRoutingModule } from './chess-routing.module';
 
-
-
 @NgModule({
   declarations: [
     ChessComponent,
     TimerComponent,
     BoardComponent,
-    TimerPipe
+    TimerPipe,
   ],
   imports: [
     CommonModule,
     ChessRoutingModule,
-    SharedModule
+    SharedModule,
   ]
 })
-export class ChessModule { }
+export class ChessModule {}

@@ -12,13 +12,12 @@ import { LoginComponent } from './forms/login/login.component';
 import { RegisterComponent } from './forms/register/register.component';
 import { PasswordResetComponent } from './forms/password-reset/password-reset.component';
 
-
 @NgModule({
   declarations: [
     AuthComponent,
     LoginComponent,
     RegisterComponent,
-    PasswordResetComponent
+    PasswordResetComponent,
   ],
   imports: [
     NbAuthModule.forRoot(),
@@ -30,4 +29,4 @@ import { PasswordResetComponent } from './forms/password-reset/password-reset.co
     SharedModule,
   ],
 })
-export class AuthModule { }
+export class AuthModule {}

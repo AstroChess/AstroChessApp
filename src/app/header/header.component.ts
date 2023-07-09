@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NbMenuItem, NbMenuService } from '@nebular/theme';
-import { AuthService } from '../auth/auth.service';
+
 import { take } from 'rxjs';
+import { NbMenuItem, NbMenuService } from '@nebular/theme';
+
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -11,14 +13,24 @@ import { take } from 'rxjs';
 export class HeaderComponent implements OnInit {
   isLoggedIn = false;
 
-  constructor(public authService: AuthService, private nbMenuService: NbMenuService) {}
+  constructor(
+    public authService: AuthService,
+    private nbMenuService: NbMenuService
+  ) {}
 
   ngOnInit(): void {
     this.authService.user.subscribe((user) => {
       this.isLoggedIn = !!user;
     });
 
-    this.nbMenuService.onItemClick().pipe(take(1)).subscribe((e)=>{ if(e.item?.data?.id == "logout"){ this.authService.logout() } })
+    this.nbMenuService
+      .onItemClick()
+      .pipe(take(1))
+      .subscribe((e) => {
+        if (e.item?.data?.id == 'logout') {
+          this.authService.logout();
+        }
+      });
   }
 
   loggedinItems: NbMenuItem[] = [
@@ -28,7 +40,7 @@ export class HeaderComponent implements OnInit {
     },
     {
       title: 'Logout',
-      data: {id: 'logout'}
+      data: { id: 'logout' },
     },
   ];
 

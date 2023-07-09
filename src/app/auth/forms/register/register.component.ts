@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../auth.service';
-import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+
+import { environment } from 'src/environments/environment';
+
 import { UserSignup } from '../../user.model';
+import { AuthService } from '../../auth.service';
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
-  signupResponse!: {status: number, message: string} | null
+  signupResponse!: { status: number; message: string } | null;
   submitted = false;
   user: UserSignup = {
     firstname: '',
@@ -18,26 +21,26 @@ export class RegisterComponent implements OnInit {
     email: '',
     password: '',
     confirm_password: '',
-    terms: false
-  }
+    terms: false,
+  };
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
-  handleSignupForm(){
-    const signupEndpoint = environment.server.url + environment.server.signupEndpoint.endpoint;
+  handleSignupForm() {
+    const signupEndpoint =
+      environment.server.url + environment.server.signupEndpoint.endpoint;
 
     this.authService.signup(signupEndpoint, this.user).subscribe({
-      next: response =>{
-        if(response.status === 200) {
-          this.signupResponse = response
+      next: (response) => {
+        if (response.status === 200) {
+          this.signupResponse = response;
         }
       },
-      error: err=>{
+      error: (err) => {
         this.signupResponse = err.error;
-      }
-    })
+      },
+    });
   }
 }

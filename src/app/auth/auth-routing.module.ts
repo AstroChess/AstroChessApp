@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+import { AuthGuard } from './auth.guard';
 import { AuthComponent } from './auth.component';
 import { LoginComponent } from './forms/login/login.component';
 import { RegisterComponent } from './forms/register/register.component';
 import { PasswordResetComponent } from './forms/password-reset/password-reset.component';
-import { NbAuthComponent } from '@nebular/auth';
-import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   {

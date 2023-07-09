@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+
 import { UserLogin } from '../auth/user.model';
 import { AuthService } from '../auth/auth.service';
 
@@ -10,114 +11,6 @@ import { AuthService } from '../auth/auth.service';
 export class ProfileComponent implements OnInit {
   user!: UserLogin | null | undefined;
   games = [
-    {
-      id: 1,
-      p1: 'ketris',
-      p2: 'astro',
-      winner: 'p1',
-    },
-    {
-      id: 1,
-      p1: 'ketris',
-      p2: 'astro',
-      winner: 'p1',
-    },
-    {
-      id: 1,
-      p1: 'ketris',
-      p2: 'astro',
-      winner: 'p1',
-    },
-    {
-      id: 1,
-      p1: 'ketris',
-      p2: 'astro',
-      winner: 'p1',
-    },
-    {
-      id: 1,
-      p1: 'ketris',
-      p2: 'astro',
-      winner: 'p1',
-    },
-    {
-      id: 1,
-      p1: 'ketris',
-      p2: 'astro',
-      winner: 'p1',
-    },
-    {
-      id: 1,
-      p1: 'ketris',
-      p2: 'astro',
-      winner: 'p1',
-    },
-    {
-      id: 1,
-      p1: 'ketris',
-      p2: 'astro',
-      winner: 'p1',
-    },
-    {
-      id: 1,
-      p1: 'ketris',
-      p2: 'astro',
-      winner: 'p1',
-    },
-    {
-      id: 1,
-      p1: 'ketris',
-      p2: 'astro',
-      winner: 'p1',
-    },
-    {
-      id: 1,
-      p1: 'ketris',
-      p2: 'astro',
-      winner: 'p1',
-    },
-    {
-      id: 1,
-      p1: 'ketris',
-      p2: 'astro',
-      winner: 'p1',
-    },
-    {
-      id: 1,
-      p1: 'ketris',
-      p2: 'astro',
-      winner: 'p1',
-    },
-    {
-      id: 1,
-      p1: 'ketris',
-      p2: 'astro',
-      winner: 'p1',
-    },
-    {
-      id: 1,
-      p1: 'ketris',
-      p2: 'astro',
-      winner: 'p1',
-    },
-    {
-      id: 1,
-      p1: 'ketris',
-      p2: 'astro',
-      winner: 'p1',
-    },
-    {
-      id: 1,
-      p1: 'ketris',
-      p2: 'astro',
-      winner: 'p1',
-    },
-    {
-      id: 1,
-      p1: 'ketris',
-      p2: 'astro',
-      winner: 'p1',
-    },
     {
       id: 1,
       p1: 'ketris',

@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../auth.service';
-import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
-import { AuthResponse } from '../../auth-response';
+import { Component, OnInit } from '@angular/core';
+
+import { environment } from 'src/environments/environment';
+
 import { UserLogin } from '../../user.model';
+import { AuthService } from '../../auth.service';
+import { AuthResponse } from '../../auth-response';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +18,7 @@ export class LoginComponent implements OnInit {
   user: UserLogin = {
     username: '',
     password: '',
-    rememberMe: false
+    rememberMe: false,
   };
 
   constructor(private authService: AuthService, private router: Router) {}
