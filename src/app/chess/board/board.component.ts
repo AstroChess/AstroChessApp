@@ -26,7 +26,7 @@ export class BoardComponent implements OnInit {
   handlePositionChange(row: number, column:number) {
     if(!this.selectedColumn && !this.selectedRow && this.board[row][column]) {
       this.setPositions(row, column);
-    } else if(this.selectedColumn && this.selectedRow) {
+    } else if(this.selectedColumn!==null && this.selectedRow!==null) {
       this.changePositions(row, column);
     } else {
       this.clearSelectedFields();
