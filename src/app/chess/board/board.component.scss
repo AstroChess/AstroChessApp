@@ -25,7 +25,10 @@
 .field:nth-child(even) {
   background-color: #86a666;
 }
-
+.field div {
+  height: 100%;
+  width: 100%;
+}
 .field-symbol {
   font-size: 0.7rem;
   user-select: none;

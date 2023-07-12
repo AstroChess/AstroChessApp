@@ -1,12 +1,14 @@
 <div class="container">
-  <ng-container *ngFor="let row of board; let i = index">
-    <div class="field-symbol">{{ 8 - i }}</div>
-    <div class="field" *ngFor="let field of row">
-      <img
-        *ngIf="field"
-        [src]="'/assets/images/pieces/' + field + '.svg'"
-        [alt]="field"
-      />
+  <ng-container *ngFor="let row of board; let rowIndex = index">
+    <div class="field-symbol">{{ 8 - rowIndex }}</div>
+    <div class="field" *ngFor="let field of row; let columnIndex = index">
+      <div (click)="handlePositionChange(rowIndex, columnIndex)">
+        <img
+          *ngIf="field"
+          [src]="'/assets/images/pieces/' + field + '.svg'"
+          [alt]="field"
+        />
+      </div>
     </div>
   </ng-container>
   <div
