@@ -24,10 +24,12 @@ export class BoardComponent implements OnInit {
   ngOnInit(): void {}
 
   handlePositionChange(row: number, column:number) {
-    if(!this.selectedColumn && !this.selectedRow) {
+    if(!this.selectedColumn && !this.selectedRow && this.board[row][column]) {
       this.setPositions(row, column);
-    } else {
+    } else if(this.selectedColumn && this.selectedRow) {
       this.changePositions(row, column);
+    } else {
+      this.clearSelectedFields();
     }
   }
 
@@ -38,6 +40,10 @@ export class BoardComponent implements OnInit {
 
   private changePositions(row: number, column:number) {
     this.board[row][column] = this.board[this.selectedRow!].splice(this.selectedColumn!, 1, this.board[row][column])[0];
+    this.clearSelectedFields();
+  }
+
+  private clearSelectedFields() {
     this.selectedColumn = null;
     this.selectedRow = null;
   }
