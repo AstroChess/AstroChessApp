@@ -24,13 +24,31 @@
   </li>
 </ul>
 
-<button
-  class="menu-target"
-  nbButton
-  outline
-  [nbContextMenu]="isLoggedIn ? loggedinItems : loggedoutItems"
-  nbContextMenuTrigger="click"
->
-  <nb-icon icon="menu" *ngIf="!isLoggedIn"></nb-icon>
-  <span *ngIf="isLoggedIn">{{ authService.user.value?.username }}</span>
-</button>
+<nb-card class="context-menu-wrap">
+  <nb-card-header (click)="hideNav()">
+    <nb-icon icon="menu" *ngIf="!isLoggedIn"></nb-icon>
+    <span *ngIf="isLoggedIn">{{ authService.user.value?.username }}</span>
+  </nb-card-header>
+  <nb-card-body [ngClass]="{ hidden: contextMenuHidden }">
+      <ng-container *ngIf="isLoggedIn">
+        <nb-list>
+          <nb-list-item>
+            <a routerLink="/profile" (click)="hideNav()">Profile</a>
+          </nb-list-item>
+          <nb-list-item>
+            <a (click)="logout(); hideNav()">Logout</a>
+          </nb-list-item>
+        </nb-list>
+      </ng-container>
+      <ng-container *ngIf="!isLoggedIn">
+        <nb-list>
+          <nb-list-item>
+            <a routerLink="/auth/login" (click)="hideNav()">Login</a>
+          </nb-list-item>
+          <nb-list-item>
+            <a routerLink="/auth/register" (click)="hideNav()">Register</a>
+          </nb-list-item>
+        </nb-list>
+      </ng-container>
+  </nb-card-body>
+</nb-card>
