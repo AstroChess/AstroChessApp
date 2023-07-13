@@ -34,12 +34,20 @@ export class BoardComponent implements OnInit {
   }
 
   private changePositions(row: number, column: number) {
-    this.board[row][column] = this.board[this.selectedRow!].splice(
-      this.selectedColumn!,
-      1,
-      this.board[row][column]
-    )[0];
+    const move = this.chessInstance.move({
+      from: `${String.fromCharCode(97+this.selectedColumn!)}${8-this.selectedRow!}`,
+      to: `${String.fromCharCode(97+column)}${8-row}`,
+    });
+
+    this.chessInstance.load(move.after);
+    this.reloadBoard()
+
+    console.log(move);
     this.clearSelectedFields();
+  }
+
+  private reloadBoard() {
+    this.board = this.chessInstance.board();
   }
 
   private clearSelectedFields() {
