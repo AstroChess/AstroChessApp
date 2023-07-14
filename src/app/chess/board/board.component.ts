@@ -11,6 +11,7 @@ export class BoardComponent implements OnInit {
   selectedColumn: number | null = null;
   chessInstance: Chess = new Chess();
   board!: ({ square: Square; type: PieceSymbol; color: Color } | null)[][];
+  whoseMove: 'w' | 'b' = 'w';
 
   constructor() {}
 
@@ -18,9 +19,11 @@ export class BoardComponent implements OnInit {
     this.board = this.chessInstance.board();
   }
 
-  handlePositionChange(row: number, column: number) {
+  handlePositionChange(row: number, column: number, field: { square: Square; type: PieceSymbol; color: Color } | null) {
     if (!this.selectedColumn && !this.selectedRow && this.board[row][column]) {
-      this.setPositions(row, column);
+      if(field?.color===this.whoseMove) {
+        this.setPositions(row, column);
+      }
     } else if (this.selectedColumn !== null && this.selectedRow !== null) {
       this.changePositions(row, column);
     } else {
@@ -43,6 +46,7 @@ export class BoardComponent implements OnInit {
     this.reloadBoard()
 
     console.log(move);
+    this.onWhoseMoveChange();
     this.clearSelectedFields();
   }
 
@@ -53,5 +57,9 @@ export class BoardComponent implements OnInit {
   private clearSelectedFields() {
     this.selectedColumn = null;
     this.selectedRow = null;
+  }
+
+  private onWhoseMoveChange() {
+    this.whoseMove = this.whoseMove==='w' ? 'b' : 'w';
   }
 }

@@ -2,7 +2,7 @@
   <ng-container *ngFor="let row of board; let rowIndex = index">
     <div class="field-symbol">{{ 8 - rowIndex }}</div>
     <div class="field" *ngFor="let field of row; let columnIndex = index">
-      <div (click)="handlePositionChange(rowIndex, columnIndex)" [ngClass]="{selected: rowIndex===selectedRow && columnIndex===selectedColumn}">
+      <div (click)="handlePositionChange(rowIndex, columnIndex, field)" [ngClass]="{selected: rowIndex===selectedRow && columnIndex===selectedColumn}">
         <img
           *ngIf="field"
           [src]="'/assets/images/pieces/' + field.color + field.type.toUpperCase() + '.svg'"
