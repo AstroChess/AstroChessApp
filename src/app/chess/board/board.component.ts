@@ -12,7 +12,7 @@ export class BoardComponent implements OnInit {
   chessInstance: Chess = new Chess();
   board!: ({ square: Square; type: PieceSymbol; color: Color } | null)[][];
   whoseMove: 'w' | 'b' = 'w';
-  possibleMoves: string[] = [];
+  possibleMoves: (string | undefined)[] = [];
 
   constructor() {}
 
@@ -72,7 +72,7 @@ export class BoardComponent implements OnInit {
   }
 
   private highlightPossibleMoves(square: Square) {
-    this.possibleMoves = this.chessInstance.moves({square: square}).map(val=>val.slice(-2));
+    this.possibleMoves = this.chessInstance.moves({square: square}).map(val=>val.match(/[a-z]{1}[1-8]{1}/)?.join(''));
     console.log(this.possibleMoves)
   }
   private clearPossibleMoves() {
