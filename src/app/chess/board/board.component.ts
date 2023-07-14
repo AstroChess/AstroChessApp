@@ -24,7 +24,7 @@ export class BoardComponent implements OnInit {
       if(field?.color===this.whoseMove) {
         this.setPositions(row, column);
       }
-    } else if (this.selectedColumn !== null && this.selectedRow !== null) {
+    } else if (this.selectedColumn !== null && this.selectedRow !== null && !(row===this.selectedRow && column===this.selectedColumn)) {
       this.changePositions(row, column);
     } else {
       this.clearSelectedFields();
