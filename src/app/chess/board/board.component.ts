@@ -12,6 +12,7 @@ export class BoardComponent implements OnInit {
   chessInstance: Chess = new Chess();
   board!: ({ square: Square; type: PieceSymbol; color: Color } | null)[][];
   whoseMove: 'w' | 'b' = 'w';
+  possibleMoves: string[] = [];
 
   constructor() {}
 
@@ -22,13 +23,19 @@ export class BoardComponent implements OnInit {
   handlePositionChange(row: number, column: number, field: { square: Square; type: PieceSymbol; color: Color } | null) {
     if (!this.selectedColumn && !this.selectedRow && this.board[row][column]) {
       if(field?.color===this.whoseMove) {
+        this.highlightPossibleMoves(field.square)
         this.setPositions(row, column);
       }
     } else if (this.selectedColumn !== null && this.selectedRow !== null && !(row===this.selectedRow && column===this.selectedColumn)) {
       this.changePositions(row, column);
     } else {
       this.clearSelectedFields();
+      this.clearPossibleMoves();
     }
+  }
+
+  getSquare(row: number, column: number) {
+    return `${String.fromCharCode(97+column)}${8-row}`;
   }
 
   private setPositions(row: number, column: number) {
@@ -38,8 +45,8 @@ export class BoardComponent implements OnInit {
 
   private changePositions(row: number, column: number) {
     const move = this.chessInstance.move({
-      from: `${String.fromCharCode(97+this.selectedColumn!)}${8-this.selectedRow!}`,
-      to: `${String.fromCharCode(97+column)}${8-row}`,
+      from: this.getSquare(this.selectedRow!, this.selectedColumn!),
+      to: this.getSquare(row, column),
     });
 
     this.chessInstance.load(move.after);
@@ -48,6 +55,7 @@ export class BoardComponent implements OnInit {
     console.log(move);
     this.onWhoseMoveChange();
     this.clearSelectedFields();
+    this.clearPossibleMoves();
   }
 
   private reloadBoard() {
@@ -61,5 +69,13 @@ export class BoardComponent implements OnInit {
 
   private onWhoseMoveChange() {
     this.whoseMove = this.whoseMove==='w' ? 'b' : 'w';
+  }
+
+  private highlightPossibleMoves(square: Square) {
+    this.possibleMoves = this.chessInstance.moves({square: square}).map(val=>val.slice(-2));
+    console.log(this.possibleMoves)
+  }
+  private clearPossibleMoves() {
+    this.possibleMoves = [];
   }
 }
