@@ -8,10 +8,6 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
 const routes: Routes = [
-  {
-    path: '',
-    component: AppComponent,
-    children: [
       {
         path: 'home',
         component: HomepageComponent,
@@ -41,8 +37,6 @@ const routes: Routes = [
         path: '**',
         component: PageNotFoundComponent,
       },
-    ],
-  },
 ];
 
 @NgModule({
