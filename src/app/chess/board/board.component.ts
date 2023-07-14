@@ -23,11 +23,16 @@ export class BoardComponent implements OnInit {
   handlePositionChange(row: number, column: number, field: { square: Square; type: PieceSymbol; color: Color } | null) {
     if (!this.selectedColumn && !this.selectedRow && this.board[row][column]) {
       if(field?.color===this.whoseMove) {
-        this.highlightPossibleMoves(field.square)
+        this.highlightPossibleMoves(field.square);
         this.setPositions(row, column);
       }
     } else if (this.selectedColumn !== null && this.selectedRow !== null && !(row===this.selectedRow && column===this.selectedColumn)) {
-      this.changePositions(row, column);
+      if(field?.color===this.board[this.selectedRow][this.selectedColumn]?.color) {
+        this.highlightPossibleMoves(field?.square!);
+        this.setPositions(row, column);
+      } else {
+        this.changePositions(row, column);
+      }
     } else {
       this.clearSelectedFields();
       this.clearPossibleMoves();
