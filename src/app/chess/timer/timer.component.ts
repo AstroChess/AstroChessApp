@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-timer',
   templateUrl: './timer.component.html',
   styleUrls: ['./timer.component.scss'],
 })
-export class TimerComponent implements OnInit {
+export class TimerComponent implements OnInit, OnDestroy {
   p1Time = 60 * 5 * 1000;
-  p2Time = 5 * 1000;
+  p2Time = 60 * 5 * 1000;
   p1Interval: any;
   p2Interval: any;
 
@@ -20,5 +20,9 @@ export class TimerComponent implements OnInit {
         clearInterval(this.p2Interval);
       }
     }, 100);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.p2Interval);
   }
 }
