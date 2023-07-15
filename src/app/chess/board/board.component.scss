@@ -57,7 +57,7 @@
 }
 
 .possible-move::before {
-  content: '';
+  content: "";
   top: 50%;
   left: 50%;
   height: 20%;
@@ -70,5 +70,5 @@
 }
 
 .last-move {
-  background-color: rgba(218, 226, 0, 0.4);
+  background-color: rgba(246, 255, 0, 0.4);
 }

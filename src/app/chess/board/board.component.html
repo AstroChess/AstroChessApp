@@ -7,7 +7,7 @@
         [ngClass]="{
           'selected': rowIndex === selectedRow && columnIndex === selectedColumn,
           'possible-move': possibleMoves.indexOf(getSquare(rowIndex, columnIndex))!==-1,
-          'last-move': lastMove['from']===getSquare(rowIndex, columnIndex) || lastMove['to']===getSquare(rowIndex, columnIndex)
+          'last-move': lastMove?.from===getSquare(rowIndex, columnIndex) || lastMove?.to===getSquare(rowIndex, columnIndex)
         }"
       >
         <img

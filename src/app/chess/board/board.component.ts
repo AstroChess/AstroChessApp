@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Chess, Square, PieceSymbol, Color } from 'chess.js';
 
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoardComponent implements OnInit {
   selectedRow: number | null = null;
@@ -13,7 +14,11 @@ export class BoardComponent implements OnInit {
   board!: ({ square: Square; type: PieceSymbol; color: Color } | null)[][];
   whoseMove: 'w' | 'b' = 'w';
   possibleMoves: (string | undefined)[] = [];
-  lastMove: {from: string, to: string} = {from: '', to: ''}
+  lastMoves: {from: string, to: string}[]= [];
+  
+  get lastMove(): {from: string, to: string} | undefined {
+    return this.lastMoves[this.lastMoves.length-1];
+  }
 
   constructor() {}
 
@@ -52,13 +57,13 @@ export class BoardComponent implements OnInit {
   private changePositions(row: number, column: number) {
     const fromField = this.getSquare(this.selectedRow!, this.selectedColumn!);
     const toField = this.getSquare(row, column);
-    
+
     const move = this.chessInstance.move({
       from: fromField,
       to: toField,
     });
 
-    this.lastMove = {from: fromField, to: toField};
+    this.lastMoves.push({from: fromField, to: toField}); 
 
     this.chessInstance.load(move.after);
     this.reloadBoard()
