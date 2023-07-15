@@ -13,6 +13,7 @@ export class BoardComponent implements OnInit {
   board!: ({ square: Square; type: PieceSymbol; color: Color } | null)[][];
   whoseMove: 'w' | 'b' = 'w';
   possibleMoves: (string | undefined)[] = [];
+  lastMove: {from: string, to: string} = {from: '', to: ''}
 
   constructor() {}
 
@@ -49,10 +50,15 @@ export class BoardComponent implements OnInit {
   }
 
   private changePositions(row: number, column: number) {
+    const fromField = this.getSquare(this.selectedRow!, this.selectedColumn!);
+    const toField = this.getSquare(row, column);
+    
     const move = this.chessInstance.move({
-      from: this.getSquare(this.selectedRow!, this.selectedColumn!),
-      to: this.getSquare(row, column),
+      from: fromField,
+      to: toField,
     });
+
+    this.lastMove = {from: fromField, to: toField};
 
     this.chessInstance.load(move.after);
     this.reloadBoard()
@@ -80,6 +86,7 @@ export class BoardComponent implements OnInit {
     this.possibleMoves = this.chessInstance.moves({square: square}).map(val=>val.match(/[a-z]{1}[1-8]{1}/)?.join(''));
     console.log(this.possibleMoves)
   }
+
   private clearPossibleMoves() {
     this.possibleMoves = [];
   }
