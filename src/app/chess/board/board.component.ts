@@ -1,5 +1,7 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, AfterContentInit, ChangeDetectionStrategy } from '@angular/core';
+
 import { Chess, Square, PieceSymbol, Color } from 'chess.js';
+
 import { ChessService } from '../chess.service';
 
 @Component({
@@ -8,7 +10,7 @@ import { ChessService } from '../chess.service';
   styleUrls: ['./board.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent implements OnInit, AfterContentInit {
   selectedRow: number | null = null;
   selectedColumn: number | null = null;
   chessInstance: Chess = new Chess();
@@ -26,7 +28,18 @@ export class BoardComponent implements OnInit {
     this.board = this.chessInstance.board();
   }
 
+  ngAfterContentInit(): void {
+    this.chessService.playAudio('notify');
+  }
+
   handlePositionChange(row: number, column: number, field: { square: Square; type: PieceSymbol; color: Color } | null) {
+    if (this.chessInstance.isGameOver()) {
+      if (this.chessService.whoseMove.value!=='finished') {
+        this.chessService.whoseMove.next('finished');
+      }
+      return
+    }
+
     if (!this.selectedColumn && !this.selectedRow && this.board[row][column]) {
       if(field?.color===this.chessService.whoseMove.value) {
         this.highlightPossibleMoves(field.square);
@@ -68,7 +81,7 @@ export class BoardComponent implements OnInit {
     this.chessInstance.load(move.after);
     this.reloadBoard();
 
-    this.playAudio('move')
+    this.chessService.playAudio('move')
 
     console.log(move);
     this.onWhoseMoveChange();
@@ -96,12 +109,5 @@ export class BoardComponent implements OnInit {
 
   private clearPossibleMoves() {
     this.possibleMoves = [];
-  }
-
-  private playAudio(type: 'check' | 'move') {
-    const audio = new Audio();
-    audio.src = `/assets/sound/${type}.mp3`
-    audio.load();
-    audio.play();
   }
 }
