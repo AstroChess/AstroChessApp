@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Chess, Square, PieceSymbol, Color } from 'chess.js';
+import { ChessService } from '../chess.service';
 
 @Component({
   selector: 'app-board',
@@ -12,7 +13,6 @@ export class BoardComponent implements OnInit {
   selectedColumn: number | null = null;
   chessInstance: Chess = new Chess();
   board!: ({ square: Square; type: PieceSymbol; color: Color } | null)[][];
-  whoseMove: 'w' | 'b' = 'w';
   possibleMoves: (string | undefined)[] = [];
   lastMoves: {from: string, to: string}[]= [];
   
@@ -20,7 +20,7 @@ export class BoardComponent implements OnInit {
     return this.lastMoves[this.lastMoves.length-1];
   }
 
-  constructor() {}
+  constructor(private chessService: ChessService) {}
 
   ngOnInit(): void {
     this.board = this.chessInstance.board();
@@ -28,7 +28,7 @@ export class BoardComponent implements OnInit {
 
   handlePositionChange(row: number, column: number, field: { square: Square; type: PieceSymbol; color: Color } | null) {
     if (!this.selectedColumn && !this.selectedRow && this.board[row][column]) {
-      if(field?.color===this.whoseMove) {
+      if(field?.color===this.chessService.whoseMove.value) {
         this.highlightPossibleMoves(field.square);
         this.setPositions(row, column);
       }
@@ -86,7 +86,7 @@ export class BoardComponent implements OnInit {
   }
 
   private onWhoseMoveChange() {
-    this.whoseMove = this.whoseMove==='w' ? 'b' : 'w';
+    this.chessService.whoseMove.next(this.chessService.whoseMove.value==='w' ? 'b' : 'w');
   }
 
   private highlightPossibleMoves(square: Square) {
