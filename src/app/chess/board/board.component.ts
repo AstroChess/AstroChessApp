@@ -3,6 +3,7 @@ import { Component, OnInit, AfterContentInit, ChangeDetectionStrategy } from '@a
 import { Chess, Square, PieceSymbol, Color } from 'chess.js';
 
 import { ChessService } from '../chess.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-board',
@@ -17,10 +18,7 @@ export class BoardComponent implements OnInit, AfterContentInit {
   board!: ({ square: Square; type: PieceSymbol; color: Color } | null)[][];
   possibleMoves: (string | undefined)[] = [];
   lastMoves: {from: string, to: string}[]= [];
-  
-  get lastMove(): {from: string, to: string} | undefined {
-    return this.lastMoves[this.lastMoves.length-1];
-  }
+  lastMove: {from: string, to: string} | undefined;
 
   constructor(private chessService: ChessService) {}
 
@@ -30,14 +28,15 @@ export class BoardComponent implements OnInit, AfterContentInit {
 
   ngAfterContentInit(): void {
     this.chessService.playAudio('notify');
+
+    this.chessService.whoseMove.pipe(filter(val=>val==='finished')).subscribe(
+      ()=>this.chessService.playAudio('notify')
+    )
   }
 
   handlePositionChange(row: number, column: number, field: { square: Square; type: PieceSymbol; color: Color } | null) {
-    if (this.chessInstance.isGameOver()) {
-      if (this.chessService.whoseMove.value!=='finished') {
-        this.chessService.whoseMove.next('finished');
-      }
-      return
+    if (this.chessService.whoseMove.value==='finished') {
+      return;
     }
 
     if (!this.selectedColumn && !this.selectedRow && this.board[row][column]) {
@@ -55,6 +54,10 @@ export class BoardComponent implements OnInit, AfterContentInit {
     } else {
       this.clearSelectedFields();
       this.clearPossibleMoves();
+    }
+    
+    if (this.chessInstance.isGameOver()) {
+      this.chessService.whoseMove.next('finished');
     }
   }
 
@@ -77,11 +80,12 @@ export class BoardComponent implements OnInit, AfterContentInit {
     });
 
     this.lastMoves.push({from: fromField, to: toField}); 
+    this.highlightLastMove(fromField, toField);
 
     this.chessInstance.load(move.after);
     this.reloadBoard();
 
-    this.chessService.playAudio('move')
+    this.chessService.playAudio('move');
 
     console.log(move);
     this.onWhoseMoveChange();
@@ -104,7 +108,11 @@ export class BoardComponent implements OnInit, AfterContentInit {
 
   private highlightPossibleMoves(square: Square) {
     this.possibleMoves = this.chessInstance.moves({square: square}).map(val=>val.match(/[a-z]{1}[1-8]{1}/)?.join(''));
-    console.log(this.possibleMoves)
+    console.log(this.possibleMoves);
+  }
+
+  private highlightLastMove(from: string, to: string) {
+    this.lastMove = {from, to};
   }
 
   private clearPossibleMoves() {
