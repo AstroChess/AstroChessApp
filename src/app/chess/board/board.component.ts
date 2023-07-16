@@ -66,7 +66,9 @@ export class BoardComponent implements OnInit {
     this.lastMoves.push({from: fromField, to: toField}); 
 
     this.chessInstance.load(move.after);
-    this.reloadBoard()
+    this.reloadBoard();
+
+    this.playAudio('move')
 
     console.log(move);
     this.onWhoseMoveChange();
@@ -94,5 +96,12 @@ export class BoardComponent implements OnInit {
 
   private clearPossibleMoves() {
     this.possibleMoves = [];
+  }
+
+  private playAudio(type: 'check' | 'move') {
+    const audio = new Audio();
+    audio.src = `/assets/sound/${type}.mp3`
+    audio.load();
+    audio.play();
   }
 }
