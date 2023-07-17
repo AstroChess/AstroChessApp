@@ -1,7 +1,6 @@
-import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
-import { environment } from 'src/environments/environment';
+
 
 import { UserSignup } from '../../user.model';
 import { AuthService } from '../../auth.service';
@@ -12,6 +11,7 @@ import { AuthService } from '../../auth.service';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
+  
   signupResponse!: { status: number; message: string } | null;
   submitted = false;
   user: UserSignup = {
@@ -24,23 +24,28 @@ export class RegisterComponent implements OnInit {
     terms: false,
   };
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) {
+    
+  }
 
   ngOnInit(): void {}
 
-  handleSignupForm() {
-    const signupEndpoint =
-      environment.server.url + environment.server.signupEndpoint.endpoint;
-
-    this.authService.signup(signupEndpoint, this.user).subscribe({
-      next: (response) => {
-        if (response.status === 200) {
-          this.signupResponse = response;
+  async handleSignupForm() {
+    const {data, error} = await this.authService.supabase.auth.signUp({
+      email: this.user.email,
+      password: this.user.password,
+      options: {
+        data: {
+          username: this.user.username,
         }
-      },
-      error: (err) => {
-        this.signupResponse = err.error;
-      },
-    });
+      }
+    })
+    console.log(data);
+    if(error) {
+      console.log(error);
+      return;
+    }
+    await this.authService.supabase.from('usernames').insert([{username: this.user.username, userid: data.user?.id }])
+
   }
 }

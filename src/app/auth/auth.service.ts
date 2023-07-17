@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { BehaviorSubject, Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
+import { environment as env } from 'src/environments/environment';
+import { SupabaseClient, createClient } from '@supabase/supabase-js';
 
 import { AuthResponse } from './auth-response';
 import { UserLogin, UserSignup } from './user.model';
@@ -11,12 +12,11 @@ import { UserLogin, UserSignup } from './user.model';
   providedIn: 'root',
 })
 export class AuthService {
+  supabase: SupabaseClient;
   user = new BehaviorSubject<UserLogin | null | undefined>(undefined);
 
   constructor(private http: HttpClient) {
-    this.autologin(
-      environment.server.url + environment.server.loginEndpoint.endpoint
-    );
+    this.supabase = createClient(env.supabaseUrl, env.supabaseApi);
   }
 
   autologin(url: string): void {
