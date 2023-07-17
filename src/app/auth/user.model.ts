@@ -1,7 +1,8 @@
 export interface UserLogin {
+  email: string;
   username: string;
   password: string;
-  rememberMe?: boolean
+  rememberMe?: boolean;
 }
 
 export interface UserSignup {
@@ -11,5 +12,5 @@ export interface UserSignup {
   email: string;
   password: string;
   confirm_password: string;
-  terms?: boolean
+  terms?: boolean;
 }

@@ -13,24 +13,23 @@ import { UserLogin, UserSignup } from './user.model';
 })
 export class AuthService {
   supabase: SupabaseClient;
-  user = new BehaviorSubject<UserLogin | null | undefined>(undefined);
+  user = new BehaviorSubject<any | null | undefined>(undefined);
 
   constructor(private http: HttpClient) {
     this.supabase = createClient(env.supabaseUrl, env.supabaseApi);
+    this.autologin();
   }
 
-  autologin(url: string): void {
-    const user = localStorage.getItem('user');
-    if (!user) {
+  async autologin() {
+    const {data, error} = await this.supabase.auth.getSession();
+    if (error) {
       this.user.next(null);
       return;
     }
-    this.http.post<AuthResponse>(url, JSON.parse(user)).subscribe({
-      next: () => this.user.next(JSON.parse(user)),
-      error: (error) => {
-        this.logout();
-      },
-    });
+
+    this.user.next(data.session?.user);
+    
+    console.log(data)
   }
 
   login(url: string, loginUserObject: UserLogin): Observable<AuthResponse> {

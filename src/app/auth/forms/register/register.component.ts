@@ -24,9 +24,7 @@ export class RegisterComponent implements OnInit {
     terms: false,
   };
 
-  constructor(private authService: AuthService) {
-    
-  }
+  constructor(private authService: AuthService) {}
 
   ngOnInit(): void {}
 
@@ -46,6 +44,5 @@ export class RegisterComponent implements OnInit {
       return;
     }
     await this.authService.supabase.from('usernames').insert([{username: this.user.username, userid: data.user?.id }])
-
   }
 }

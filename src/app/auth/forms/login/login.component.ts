@@ -1,11 +1,8 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
-import { environment } from 'src/environments/environment';
-
 import { UserLogin } from '../../user.model';
 import { AuthService } from '../../auth.service';
-import { AuthResponse } from '../../auth-response';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +13,7 @@ export class LoginComponent implements OnInit {
   loginErrorMsg: string | null = null;
   submitted = false;
   user: UserLogin = {
+    email: '',
     username: '',
     password: '',
     rememberMe: false,
@@ -25,22 +23,23 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  login() {
-    const loginEndpoint =
-      environment.server.url + environment.server.loginEndpoint.endpoint;
-    this.authService.login(loginEndpoint, this.user).subscribe({
-      next: (response: AuthResponse) => {
-        if (response.status === 200) {
-          this.loginErrorMsg = null;
-          this.authService.user.next(this.user);
-          this.router.navigate(['/']);
-        }
-      },
-      error: (error) => {
-        if (error.status === 404) {
-          this.loginErrorMsg = "This user doesn't exists";
-        }
-      },
+  async login() {
+    const {data, error} = await this.authService.supabase.auth.signInWithPassword({
+      email: this.user.email,
+      password: this.user.password
     });
+
+    if(error) {
+      console.log(error);
+      this.loginErrorMsg = error.message;
+      return;
+    }
+    
+    this.user.username = data.user.user_metadata['username'];
+    this.loginErrorMsg = null;
+    this.authService.user.next(this.user);
+    console.log(this.authService.user);
+    console.log(localStorage);
+    this.router.navigate(['/']);
   }
 }
