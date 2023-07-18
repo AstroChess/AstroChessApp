@@ -26,6 +26,7 @@ export class LoginComponent implements OnInit {
     const result = await this.authService.login(this.user);
     if (result.error) {
       this.loginErrorMsg = result.error.message;
+      return;
     }
     this.loginErrorMsg = null;
     this.router.navigate(['/']);

@@ -26,10 +26,7 @@ export class AuthService {
       this.user.next(null);
       return;
     }
-
-    this.user.next(data.session?.user);
-    
-    console.log(data)
+    this.user.next(data.session?.user ?? null);
   }
 
   async login(user: UserLogin) {
@@ -39,10 +36,9 @@ export class AuthService {
     });
 
     if(error) {
-      console.log(error);
+      this.user.next(null);
       return {error};
     }
-
     this.user.next(data.user);
     return {data};
   }
@@ -52,7 +48,7 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('user');
+    this.supabase.auth.signOut();
     this.user.next(null);
   }
 }
