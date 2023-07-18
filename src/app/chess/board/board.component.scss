@@ -41,7 +41,6 @@
   background: transparent !important;
   text-align: center;
   display: grid;
-  place-items: center;
 }
 
 .field img {
@@ -50,6 +49,7 @@
   box-sizing: border-box;
   max-height: 100px;
   height: 100%;
+  pointer-events: none;
 }
 
 .possible-move {
