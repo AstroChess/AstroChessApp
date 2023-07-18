@@ -14,7 +14,6 @@ export class LoginComponent implements OnInit {
   submitted = false;
   user: UserLogin = {
     email: '',
-    username: '',
     password: '',
     rememberMe: false,
   };
@@ -24,22 +23,11 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   async login() {
-    const {data, error} = await this.authService.supabase.auth.signInWithPassword({
-      email: this.user.email,
-      password: this.user.password
-    });
-
-    if(error) {
-      console.log(error);
-      this.loginErrorMsg = error.message;
-      return;
+    const result = await this.authService.login(this.user);
+    if (result.error) {
+      this.loginErrorMsg = result.error.message;
     }
-    
-    this.user.username = data.user.user_metadata['username'];
     this.loginErrorMsg = null;
-    this.authService.user.next(this.user);
-    console.log(this.authService.user);
-    console.log(localStorage);
     this.router.navigate(['/']);
   }
 }

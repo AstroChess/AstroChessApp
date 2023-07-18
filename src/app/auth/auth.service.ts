@@ -32,9 +32,19 @@ export class AuthService {
     console.log(data)
   }
 
-  login(url: string, loginUserObject: UserLogin): Observable<AuthResponse> {
-    localStorage.setItem('user', JSON.stringify(loginUserObject));
-    return this.http.post<AuthResponse>(url, loginUserObject);
+  async login(user: UserLogin) {
+    const {data, error} = await this.supabase.auth.signInWithPassword({
+      email: user.email,
+      password: user.password
+    });
+
+    if(error) {
+      console.log(error);
+      return {error};
+    }
+
+    this.user.next(data.user);
+    return {data};
   }
 
   signup(url: string, signupUserObject: UserSignup): Observable<AuthResponse> {

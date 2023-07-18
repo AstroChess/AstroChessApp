@@ -9,7 +9,7 @@ import { AuthService } from '../auth/auth.service';
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent implements OnInit {
-  user!: UserLogin | null | undefined;
+  user!: any;
   games = [
     {
       id: 1,

@@ -27,7 +27,7 @@
 <nb-card class="context-menu-wrap">
   <nb-card-header (click)="hideNav()">
     <nb-icon icon="menu" *ngIf="!isLoggedIn"></nb-icon>
-    <span *ngIf="isLoggedIn">{{ authService.user.value?.username }}</span>
+    <span *ngIf="isLoggedIn">{{ authService.user.value?.user_metadata?.username }}</span>
   </nb-card-header>
   <nb-card-body [ngClass]="{ hidden: contextMenuHidden }">
       <ng-container *ngIf="isLoggedIn">
