@@ -1,0 +1,30 @@
+:host {
+    height: 55%;
+    aspect-ratio: 1/1;
+}
+
+.game-types {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+
+    .time {
+        user-select: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 3rem;
+        background-color: rgb(128, 128, 128, 0.8);
+        border: 1px solid rgb(211, 211, 211);
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.2s;
+
+        &:hover {
+            background-color: rgb(255, 69, 0, 0.8);
+        }
+    }
+}
+
