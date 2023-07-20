@@ -11,8 +11,8 @@ import { AuthService } from '../../auth.service';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit {
-  
-  signupResponse!: { status: number; message: string } | null;
+  signupError: string | undefined;
+  signupResponse: string | undefined;
   submitted = false;
   user: UserSignup = {
     firstname: '',
@@ -29,20 +29,17 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {}
 
   async handleSignupForm() {
-    const {data, error} = await this.authService.supabase.auth.signUp({
-      email: this.user.email,
-      password: this.user.password,
-      options: {
-        data: {
-          username: this.user.username,
-        }
-      }
-    })
-    console.log(data);
-    if(error) {
-      console.log(error);
+    this.signupError = undefined;
+    this.signupResponse = undefined;
+
+    const result = await this.authService.signup(this.user);
+    console.log(result)
+    if (result.error) {
+      this.signupError = result.error.message;
       return;
     }
-    await this.authService.supabase.from('usernames').insert([{username: this.user.username, userid: data.user?.id }])
+
+    this.signupResponse = 'Your account has been created!';
+    await this.authService.supabase.from('usernames').insert([{username: this.user.username, userid: result.data.user?.id }])
   }
 }

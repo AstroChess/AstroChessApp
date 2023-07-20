@@ -39,12 +39,27 @@ export class AuthService {
       this.user.next(null);
       return {error};
     }
+
     this.user.next(data.user);
     return {data};
   }
 
-  signup(url: string, signupUserObject: UserSignup): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(url, signupUserObject);
+  async signup(user: any) {
+    const {data, error} = await this.supabase.auth.signUp({
+      email: user.email,
+      password: user.password,
+      options: {
+        data: {
+          username: user.username,
+        }
+      }
+    })
+
+    if(error) {
+      return {error};
+    }
+
+    return {data};
   }
 
   logout(): void {
