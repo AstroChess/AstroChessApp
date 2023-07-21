@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ChessService } from '../chess.service';
 import { AuthService } from 'src/app/auth/auth.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-game',
@@ -10,7 +11,9 @@ import { AuthService } from 'src/app/auth/auth.service';
 export class NewGameComponent {
   constructor(
     private chessService: ChessService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   async findGame(minutesPerPlayer: number) {
@@ -30,6 +33,7 @@ export class NewGameComponent {
         : 'black_player';
       const gameId = chosenGame['game_id'];
       await this.chessService.supabase.from('games').update({[whichPlayer]: this.authService.user.value.id}).eq('game_id', gameId);
+      this.router.navigate([gameId], {relativeTo: this.route});
       return;
     }
     const game = await this.chessService.createGame(minutesPerPlayer);
@@ -38,6 +42,7 @@ export class NewGameComponent {
       return;
     }
     const gameId = game.data[0]['game_id'];
-    
+    this.router.navigate([gameId], {relativeTo: this.route});
+    return;
   }
 }
