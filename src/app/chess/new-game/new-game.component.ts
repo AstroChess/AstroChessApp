@@ -26,9 +26,18 @@ export class NewGameComponent {
       const randomIndex = Math.floor(Math.random() * games.length);
       const chosenGame = games[randomIndex];
       const whichPlayer = games[randomIndex]['white_player']
-        ? 'black_player'
-        : 'white_player';
-      await this.chessService.supabase.from('games').update({[whichPlayer + '_player']: this.authService.user.value.id}).eq('game_id', chosenGame['game_id']);
+        ? 'white_player'
+        : 'black_player';
+      const gameId = chosenGame['game_id'];
+      await this.chessService.supabase.from('games').update({[whichPlayer]: this.authService.user.value.id}).eq('game_id', gameId);
+      return;
     }
+    const game = await this.chessService.createGame(minutesPerPlayer);
+    if(game.error) {
+      console.log('Some error occurred');
+      return;
+    }
+    const gameId = game.data[0]['game_id'];
+    
   }
 }

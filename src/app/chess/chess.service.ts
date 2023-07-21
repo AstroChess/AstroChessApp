@@ -26,10 +26,10 @@ export class ChessService {
 
   async createGame(minutes: number) {
     const playersColor = ['white', 'black'][Math.floor(Math.random() * 2)];
-    const data = {
+    const insertData = {
       [playersColor+'_player']: this.authService.user.value.id,
       'minutes_per_player': minutes
     }
-    return await this.authService.supabase.from('games').insert(data);
+    return await this.authService.supabase.from('games').insert(insertData).select('*');
   }
 }
