@@ -28,8 +28,7 @@ export class NewGameComponent {
       const whichPlayer = games[randomIndex]['white_player']
         ? 'black_player'
         : 'white_player';
-      // await this.chessService.supabase.from('games').update({[whichPlayer + '_player']: this.authService.user.value.id}).eq('game_id', chosenGame['game_id']);
+      await this.chessService.supabase.from('games').update({[whichPlayer + '_player']: this.authService.user.value.id}).eq('game_id', chosenGame['game_id']);
     }
-    console.log(games);
   }
 }
