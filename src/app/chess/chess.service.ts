@@ -1,10 +1,10 @@
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 
-import { BehaviorSubject } from 'rxjs';
 import { environment as env } from 'src/environments/environment';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
 
+import { GameService } from './game/game.service';
 import { AuthService } from '../auth/auth.service';
 
 @Injectable({
@@ -12,12 +12,8 @@ import { AuthService } from '../auth/auth.service';
 })
 export class ChessService {
   supabase: SupabaseClient;
-  whoseMove = new BehaviorSubject<'w' | 'b' | 'finished'>('w');
-  playerColor!: 'w' | 'b';
-  opponent!: any
 
-
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(private authService: AuthService, private gameService: GameService, private router: Router) {
     this.supabase = createClient(env.supabaseUrl, env.supabaseApi);
   }
 
@@ -54,8 +50,9 @@ export class ChessService {
         : 'white_player';
       const gameId = chosenGame['game_id'];
 
-      this.playerColor = whichPlayer==='white_player' ? 'w' : 'b';
-      this.opponent = chosenGame['white_player'] || chosenGame['black_player'];
+      this.gameService.player = this.authService.user.value;
+      this.gameService.playerColor = whichPlayer==='white_player' ? 'w' : 'b';
+      this.gameService.opponent = chosenGame['white_player'] || chosenGame['black_player'];
       
       await this.supabase
         .from('games')
@@ -87,8 +84,9 @@ export class ChessService {
           filter: `game_id=eq.${gameId}`,
         },
         (payload: any) => {
-          this.playerColor = color;
-          this.opponent = payload.new[color==='w' ? 'black_player' : 'white_player'];
+          this.gameService.playerColor = color;
+          this.gameService.player = this.authService.user.value;
+          this.gameService.opponent = payload.new[color==='w' ? 'black_player' : 'white_player'];
           this.playAudio('notify');
           this.router.navigate(['game', gameId]);
         }

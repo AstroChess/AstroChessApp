@@ -2,8 +2,9 @@ import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { Chess, Square, PieceSymbol, Color } from 'chess.js';
 
-import { ChessService } from '../chess.service';
 import { filter } from 'rxjs';
+import { GameService } from '../game/game.service';
+import { ChessService } from '../chess.service';
 
 @Component({
   selector: 'app-board',
@@ -20,22 +21,22 @@ export class BoardComponent implements OnInit {
   lastMoves: {from: string, to: string}[]= [];
   lastMove: {from: string, to: string} | undefined;
 
-  constructor(private chessService: ChessService) {}
+  constructor(private gameService: GameService, private chessService: ChessService) {}
 
   ngOnInit(): void {
     this.board = this.chessInstance.board();
-    this.chessService.whoseMove.pipe(filter(val=>val==='finished')).subscribe(
+    this.gameService.whoseMove.pipe(filter(val=>val==='finished')).subscribe(
       ()=>this.chessService.playAudio('notify')
     )
   }
 
   handlePositionChange(row: number, column: number, field: { square: Square; type: PieceSymbol; color: Color } | null) {
-    if (this.chessService.whoseMove.value==='finished') {
+    if (this.gameService.whoseMove.value==='finished') {
       return;
     }
 
     if (!this.selectedColumn && !this.selectedRow && this.board[row][column]) {
-      if(field?.color===this.chessService.whoseMove.value) {
+      if(field?.color===this.gameService.whoseMove.value) {
         this.highlightPossibleMoves(field.square);
         this.setPositions(row, column);
       }
@@ -52,7 +53,7 @@ export class BoardComponent implements OnInit {
     }
     
     if (this.chessInstance.isGameOver()) {
-      this.chessService.whoseMove.next('finished');
+      this.gameService.whoseMove.next('finished');
     }
   }
 
@@ -98,7 +99,7 @@ export class BoardComponent implements OnInit {
   }
 
   private onWhoseMoveChange() {
-    this.chessService.whoseMove.next(this.chessService.whoseMove.value==='w' ? 'b' : 'w');
+    this.gameService.whoseMove.next(this.gameService.whoseMove.value==='w' ? 'b' : 'w');
   }
 
   private highlightPossibleMoves(square: Square) {

@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ChessService } from '../chess.service';
+
+import { GameService } from '../game/game.service';
 
 @Component({
   selector: 'app-timer',
@@ -12,14 +13,14 @@ export class TimerComponent implements OnInit, OnDestroy {
   p1Interval: any;
   p2Interval: any;
 
-  constructor(private chessService: ChessService) {}
+  constructor(private gameService: GameService) {}
 
   ngOnInit(): void {
-    this.chessService.whoseMove.subscribe(
-      color => {
+    this.gameService.whoseMove.subscribe(
+      (color: 'w' | 'b' | 'finished') => {
         if (color==='w') {
           this.p2Interval = setInterval(() => {
-            if (this.chessService.whoseMove.value === 'b') {
+            if (this.gameService.whoseMove.value === 'b') {
               clearInterval(this.p2Interval);
               return;
             }
@@ -30,7 +31,7 @@ export class TimerComponent implements OnInit, OnDestroy {
           }, 100);
         } else {
           this.p1Interval = setInterval(() => {
-            if (this.chessService.whoseMove.value === 'w') {
+            if (this.gameService.whoseMove.value === 'w') {
               clearInterval(this.p1Interval);
               return;
             }
