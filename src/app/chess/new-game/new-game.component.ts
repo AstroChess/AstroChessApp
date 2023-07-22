@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+
 import { ChessService } from '../chess.service';
 import { AuthService } from 'src/app/auth/auth.service';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-game',
@@ -29,20 +30,44 @@ export class NewGameComponent {
       const randomIndex = Math.floor(Math.random() * games.length);
       const chosenGame = games[randomIndex];
       const whichPlayer = games[randomIndex]['white_player']
-        ? 'white_player'
-        : 'black_player';
+        ? 'black_player'
+        : 'white_player';
       const gameId = chosenGame['game_id'];
-      await this.chessService.supabase.from('games').update({[whichPlayer]: this.authService.user.value.id}).eq('game_id', gameId);
-      this.router.navigate([gameId], {relativeTo: this.route});
+      console.log(whichPlayer);
+      await this.chessService.supabase
+        .from('games')
+        .update({ [whichPlayer]: this.authService.user.value.id })
+        .eq('game_id', gameId);
+
+      this.router.navigate([gameId], { relativeTo: this.route });
       return;
     }
+
     const game = await this.chessService.createGame(minutesPerPlayer);
-    if(game.error) {
+
+    if (game.error) {
       console.log('Some error occurred');
       return;
     }
+
     const gameId = game.data[0]['game_id'];
-    this.router.navigate([gameId], {relativeTo: this.route});
-    return;
+
+    this.chessService.supabase
+      .channel('schema-db-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'games',
+          filter: `game_id=eq.${gameId}`,
+        },
+        (payload: any) => {
+          console.log('payload!!', payload);
+          this.chessService.playAudio('notify');
+          this.router.navigate([gameId], { relativeTo: this.route });
+        }
+      )
+      .subscribe();
   }
 }

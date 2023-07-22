@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterContentInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 
 import { Chess, Square, PieceSymbol, Color } from 'chess.js';
 
@@ -11,7 +11,7 @@ import { filter } from 'rxjs';
   styleUrls: ['./board.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BoardComponent implements OnInit, AfterContentInit {
+export class BoardComponent implements OnInit {
   selectedRow: number | null = null;
   selectedColumn: number | null = null;
   chessInstance: Chess = new Chess();
@@ -24,11 +24,6 @@ export class BoardComponent implements OnInit, AfterContentInit {
 
   ngOnInit(): void {
     this.board = this.chessInstance.board();
-  }
-
-  ngAfterContentInit(): void {
-    this.chessService.playAudio('notify');
-
     this.chessService.whoseMove.pipe(filter(val=>val==='finished')).subscribe(
       ()=>this.chessService.playAudio('notify')
     )
