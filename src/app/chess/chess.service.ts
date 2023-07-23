@@ -50,7 +50,6 @@ export class ChessService {
         : 'white_player';
       const gameId = chosenGame['game_id'];
 
-      this.gameService.player = this.authService.user.value;
       this.gameService.playerColor = whichPlayer==='white_player' ? 'w' : 'b';
       this.gameService.opponent = chosenGame['white_player'] || chosenGame['black_player'];
       
@@ -85,7 +84,6 @@ export class ChessService {
         },
         (payload: any) => {
           this.gameService.playerColor = color;
-          this.gameService.player = this.authService.user.value;
           this.gameService.opponent = payload.new[color==='w' ? 'black_player' : 'white_player'];
           this.playAudio('notify');
           this.router.navigate(['game', gameId]);
