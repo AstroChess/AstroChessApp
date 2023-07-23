@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 
 import { GameService } from '../game/game.service';
 
@@ -8,6 +8,8 @@ import { GameService } from '../game/game.service';
   styleUrls: ['./timer.component.scss'],
 })
 export class TimerComponent implements OnInit, OnDestroy {
+  @Input() playerName!: string;
+  @Input() opponentName!: string;
   p1Time = 60 * 5 * 1000;
   p2Time = 60 * 5 * 1000;
   p1Interval: any;

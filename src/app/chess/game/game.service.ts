@@ -9,5 +9,4 @@ export class GameService {
     playerColor!: 'w' | 'b';
     player!: any;
     opponent!: any;
-    
 }

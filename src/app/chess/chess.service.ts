@@ -91,4 +91,15 @@ export class ChessService {
       )
       .subscribe();
   }
+
+  async fetchGameData(gameId: string) {
+    const { data } = await this.supabase.from('games').select('*').eq('game_id', gameId).single();
+    return data;
+  }
+  
+  async fetchUsername(userId: string) {
+    const { data } = await this.supabase.from('usernames').select('username').eq('userid', userId).single();
+    console.log(data)
+    return data;
+  }
 }
