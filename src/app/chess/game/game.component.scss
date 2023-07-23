@@ -2,12 +2,14 @@
   display: grid;
   grid-template: 1fr/80% 20%;
   padding: 10px;
+  gap: 15px;
   height: 100%;
 }
 
 .main {
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .timer {

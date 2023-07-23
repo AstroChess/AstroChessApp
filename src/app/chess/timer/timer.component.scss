@@ -3,14 +3,15 @@
 }
 
 :is(nb-card-header, nb-card-footer) {
-    div {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+
+    .time {
         width: 100%;
         display: inline-block;
-    }
-
-    > div {
         text-align: center;
-        font-size: 2rem;
         font-weight: bolder;
+        font-size: 2rem;
     }
 }

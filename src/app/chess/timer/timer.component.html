@@ -1,13 +1,17 @@
 <nb-card size="small">
   <nb-card-header>
-    {{ opponentName }}
-    <div>{{ p1Time | timer }}</div>
+    <div class="name">{{ opponentName }}</div>
   </nb-card-header>
-
+  <nb-card-header>
+    <div class="time">{{ p1Time | timer }}</div>
+  </nb-card-header>
+  
   <nb-card-body></nb-card-body>
-
+  
   <nb-card-footer>
-    {{ playerName }}
-    <div>{{ p2Time | timer }}</div>
+    <div class="time">{{ p2Time | timer }}</div>
+  </nb-card-footer>
+  <nb-card-footer>
+    <div class="name">{{ playerName }}</div>
   </nb-card-footer>
 </nb-card>
