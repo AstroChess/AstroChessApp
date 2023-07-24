@@ -18,7 +18,7 @@
       class="nav-item-link"
       routerLink="/game"
       routerLinkActive="active"
-      *ngIf="isLoggedIn"
+      *ngIf="user"
       >PLAY</a
     >
   </li>
@@ -26,11 +26,11 @@
 
 <nb-card class="context-menu-wrap">
   <nb-card-header (click)="hideNav()">
-    <nb-icon icon="menu" *ngIf="!isLoggedIn"></nb-icon>
-    <span *ngIf="isLoggedIn">{{ authService.user.value?.user_metadata?.username }}</span>
+    <nb-icon icon="menu" *ngIf="!user"></nb-icon>
+    <span *ngIf="user">{{ user.user_metadata?.['username'] }}</span>
   </nb-card-header>
   <nb-card-body [ngClass]="{ hidden: contextMenuHidden }">
-      <ng-container *ngIf="isLoggedIn">
+      <ng-container *ngIf="user">
         <nb-list>
           <nb-list-item>
             <a routerLink="/profile" (click)="hideNav()">Profile</a>
@@ -40,7 +40,7 @@
           </nb-list-item>
         </nb-list>
       </ng-container>
-      <ng-container *ngIf="!isLoggedIn">
+      <ng-container *ngIf="!user">
         <nb-list>
           <nb-list-item>
             <a routerLink="/auth/login" (click)="hideNav()">Login</a>

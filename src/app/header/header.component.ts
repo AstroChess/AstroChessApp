@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
 import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
+import { User } from '@supabase/supabase-js';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -8,17 +11,18 @@ import { AuthService } from '../auth/auth.service';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  isLoggedIn = false;
+  user: User | null | undefined = null;
   contextMenuHidden = true;
 
-  constructor(
-    public authService: AuthService
-  ) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
-    this.authService.user.subscribe((user) => {
-      this.isLoggedIn = !!user;
-    });
+    this.authService.user
+      .pipe(filter((user) => user !== undefined))
+      .subscribe((user) => {
+        console.log(user);
+        this.user = user;
+      });
   }
 
   hideNav() {
@@ -27,5 +31,6 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.authService.logout();
+    this.router.navigateByUrl('');
   }
 }
