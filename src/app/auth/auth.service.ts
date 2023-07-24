@@ -1,21 +1,19 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { environment as env } from 'src/environments/environment';
-import { SupabaseClient, createClient } from '@supabase/supabase-js';
+import { SupabaseClient, User, createClient } from '@supabase/supabase-js';
 
-import { AuthResponse } from './auth-response';
-import { UserLogin, UserSignup } from './user.model';
+import { UserLogin } from './user.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   supabase: SupabaseClient;
-  user = new BehaviorSubject<any | null | undefined>(undefined);
+  user = new BehaviorSubject<User | null | undefined>(undefined);
 
-  constructor(private http: HttpClient) {
+  constructor() {
     this.supabase = createClient(env.supabaseUrl, env.supabaseApi);
     this.autologin();
   }

@@ -1,10 +1,10 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 
+import { filter, take } from 'rxjs';
 import { Chess, Square, PieceSymbol, Color } from 'chess.js';
 
-import { filter } from 'rxjs';
-import { GameService } from '../game/game.service';
 import { ChessService } from '../chess.service';
+import { GameService } from '../game/game.service';
 
 @Component({
   selector: 'app-board',
@@ -13,6 +13,7 @@ import { ChessService } from '../chess.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoardComponent implements OnInit {
+  @Input() color!: 'w' | 'b';
   selectedRow: number | null = null;
   selectedColumn: number | null = null;
   chessInstance: Chess = new Chess();
@@ -24,14 +25,14 @@ export class BoardComponent implements OnInit {
   constructor(private gameService: GameService, private chessService: ChessService) {}
 
   ngOnInit(): void {
-    this.board = this.chessInstance.board();
-    this.gameService.whoseMove.pipe(filter(val=>val==='finished')).subscribe(
+    this.reloadBoard();
+    this.gameService.whoseMove.pipe(filter(val=>val==='finished'), take(1)).subscribe(
       ()=>this.chessService.playAudio('notify')
     )
   }
 
   handlePositionChange(row: number, column: number, field: { square: Square; type: PieceSymbol; color: Color } | null) {
-    if (this.gameService.whoseMove.value==='finished') {
+    if (this.gameService.whoseMove.value==='finished' || (field && this.color!==field.color)) {
       return;
     }
 
@@ -90,7 +91,7 @@ export class BoardComponent implements OnInit {
   }
 
   private reloadBoard() {
-    this.board = this.chessInstance.board();
+    this.board = this.color==='w' ? this.chessInstance.board() : this.chessInstance.board().reverse();
   }
 
   private clearSelectedFields() {

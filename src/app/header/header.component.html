@@ -27,7 +27,7 @@
 <nb-card class="context-menu-wrap">
   <nb-card-header (click)="hideNav()">
     <nb-icon icon="menu" *ngIf="!user"></nb-icon>
-    <span *ngIf="user">{{ user.user_metadata?.['username'] }}</span>
+    <span *ngIf="user">{{ user.user_metadata['username'] }}</span>
   </nb-card-header>
   <nb-card-body [ngClass]="{ hidden: contextMenuHidden }">
       <ng-container *ngIf="user">

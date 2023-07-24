@@ -1,5 +1,5 @@
 <div class="main">
-  <app-board></app-board>
+  <app-board *ngIf="color" [color]="color"></app-board>
 </div>
 <div class="timer">
   <app-timer [playerName]="playerName" [opponentName]="opponentName"></app-timer>

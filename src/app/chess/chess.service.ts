@@ -27,10 +27,10 @@ export class ChessService {
   async createGame(minutes: number) {
     const playersColor = ['white', 'black'][Math.floor(Math.random() * 2)];
     const insertData = {
-      [`${playersColor}_player`]: this.authService.user.value.id,
+      [`${playersColor}_player`]: this.authService.user.value?.id,
       'minutes_per_player': minutes
     }
-    return await this.authService.supabase.from('games').insert(insertData).select('*');
+    return await this.authService.supabase.from('games').insert(insertData).select('*').single();
   }
 
   async findGame(minutesPerPlayer: number) {
@@ -39,7 +39,7 @@ export class ChessService {
       .select('*')
       .eq('minutes_per_player', minutesPerPlayer)
       .or(
-        `and(black_player.neq.${this.authService.user.value.id}, white_player.is.null), and(black_player.is.null, and(white_player.neq.${this.authService.user.value.id}))`
+        `and(black_player.neq.${this.authService.user.value?.id}, white_player.is.null), and(black_player.is.null, and(white_player.neq.${this.authService.user.value?.id}))`
       );
 
     if (games && games.length > 0) {
@@ -50,56 +50,46 @@ export class ChessService {
         : 'white_player';
       const gameId = chosenGame['game_id'];
 
-      this.gameService.playerColor = whichPlayer==='white_player' ? 'w' : 'b';
       this.gameService.opponent = chosenGame['white_player'] || chosenGame['black_player'];
+      console.log(this.gameService.opponent, 'opponent')
       
       await this.supabase
-        .from('games')
-        .update({ [whichPlayer]: this.authService.user.value.id })
-        .eq('game_id', gameId);
-
+      .from('games')
+      .update({ [whichPlayer]: this.authService.user.value?.id })
+      .eq('game_id', gameId);
+      
       this.router.navigate(['game', gameId]);
       return;
     }
-
+    
     const game = await this.createGame(minutesPerPlayer);
-
+    
     if (game.error) {
       console.log('Some error occurred');
       return;
     }
-
-    const gameId = game.data[0]['game_id'];
-    const color = game.data[0]['white_player'] ? 'w' : 'b';
-
+    
+    const gameId = game.data['game_id'];
+    const color = game.data['white_player'] ? 'w' : 'b';
+    
     this.supabase
-      .channel('schema-db-changes')
-      .on(
-        'postgres_changes',
-        {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'games',
-          filter: `game_id=eq.${gameId}`,
-        },
-        (payload: any) => {
-          this.gameService.playerColor = color;
-          this.gameService.opponent = payload.new[color==='w' ? 'black_player' : 'white_player'];
+    .channel('schema-db-changes')
+    .on(
+      'postgres_changes',
+      {
+        event: 'UPDATE',
+        schema: 'public',
+        table: 'games',
+        filter: `game_id=eq.${gameId}`,
+      },
+      (payload: any) => {
+        console.log(payload, 'payload')
+        this.gameService.opponent = payload.new[color==='w' ? 'black_player' : 'white_player'];
+        console.log(this.gameService.opponent, 'realtimeopponent')
           this.playAudio('notify');
           this.router.navigate(['game', gameId]);
         }
       )
       .subscribe();
-  }
-
-  async fetchGameData(gameId: string) {
-    const { data } = await this.supabase.from('games').select('*').eq('game_id', gameId).single();
-    return data;
-  }
-  
-  async fetchUsername(userId: string) {
-    const { data } = await this.supabase.from('usernames').select('username').eq('userid', userId).single();
-    console.log(data)
-    return data;
   }
 }
