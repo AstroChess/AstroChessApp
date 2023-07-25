@@ -2,6 +2,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
 import { GameService } from './game.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-game',
@@ -9,28 +10,27 @@ import { GameService } from './game.service';
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit {
-  playerName!: string;
-  opponentName!: string;
+  player!: {userid: string, username: string};
+  opponent!: {userid: string, username: string};
   color!: 'w' | 'b';
-  constructor(private gameService: GameService, private route: ActivatedRoute) {}
+  constructor(private authService: AuthService, private route: ActivatedRoute) {}
 
-  async ngOnInit() {
-    const urlGameId = this.route.snapshot.params['id'];
-    if(localStorage.getItem('gameData')) {
-      const storageGameData =  JSON.parse(localStorage.getItem('gameData')!);
-      if (storageGameData!==urlGameId) {
-        localStorage.removeItem('gameData');
+  ngOnInit() {
+    this.route.data.subscribe(({gameData})=>{
+      if(gameData.error) {
+        console.log('error');
+        return;
       }
-    }
-    this.setInitialProperties(urlGameId)
+      this.setInitialProperties(gameData.data);
+    })
   }
 
-  private async setInitialProperties(gameId: string) {
-    const result = await this.gameService.storeInfo(gameId);
-    if(result) {
-      this.playerName = result.username;
-      this.color = (result.playerColor as 'w' | 'b');
-      this.opponentName = (await this.gameService.fetchUsername(result.opponentId))!.username;
+  private async setInitialProperties(gameData: any) {
+    if(gameData) {
+      const playerColor = gameData.black_player.userid===this.authService.user.value!.id ? 'b' : 'w';
+      this.player = playerColor==='w' ? gameData['white_player'] : gameData['black_player'];
+      this.opponent = playerColor==='w' ? gameData['black_player'] : gameData['white_player'];
+      this.color = (playerColor as 'w' | 'b');
     }
   }
 }

@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ChessComponent } from './chess.component';
 import { GameComponent } from './game/game.component';
 import { NewGameComponent } from './new-game/new-game.component';
+import { GameResolver } from './game/game.resolver';
 
 const routes: Routes = [
   {
@@ -11,12 +12,18 @@ const routes: Routes = [
     component: ChessComponent,
     children: [
       {
-        path: '', component: NewGameComponent, pathMatch: 'full' 
+        path: '',
+        component: NewGameComponent,
+        pathMatch: 'full',
       },
       {
-        path: ':id', component: GameComponent 
-      }
-    ]
+        path: ':id',
+        component: GameComponent,
+        resolve: {
+          gameData: GameResolver
+        },
+      },
+    ],
   },
 ];
 
