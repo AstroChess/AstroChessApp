@@ -1,5 +1,5 @@
-import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
+import { Injectable } from "@angular/core";
 
 import { BehaviorSubject } from "rxjs";
 
@@ -19,25 +19,23 @@ export class GameService {
     async storeInfo(gameId: string) {
         const userId = this.authService.user.value?.id;
         const username = this.authService.user.value?.user_metadata['username'];
+        let gameData;
 
         if(localStorage.getItem('gameData')) {
-            const gameData = JSON.parse(localStorage.getItem('gameData')!);
-            const opponentId = gameData['white_player']===userId ? gameData['black_player'] : gameData['white_player'];
-            const playerColor = gameData['white_player']===userId ? 'w' : 'b';
-            this.gameData = gameData;
-
-            return { username, opponentId, playerColor: playerColor };
+            gameData = JSON.parse(localStorage.getItem('gameData')!);
+        } else {
+            gameData = await this.fetchGameData(gameId);
+            localStorage.setItem('gameData', JSON.stringify(gameData));
         }
-
-        const gameData = await this.fetchGameData(gameId);
+        
         if(gameData.error) {
+            this.router.navigateByUrl('');
             return;
         }
-
-        const opponentId = gameData['white_player']===userId ? gameData['black_player'] : gameData['white_player'];
-        const playerColor = gameData['white_player']===userId ? 'w' : 'b';
-
-        localStorage.setItem('gameData', JSON.stringify(gameData));
+        gameData = gameData.data;
+        const isPlayerWhite = gameData['white_player']===userId;
+        const opponentId = isPlayerWhite ? gameData['black_player'] : gameData['white_player'];
+        const playerColor = isPlayerWhite ? 'w' : 'b';
         this.gameData = gameData;
         
         return { username, opponentId, playerColor };
@@ -47,15 +45,12 @@ export class GameService {
         const result = await this.authService.supabase.from('games').select('*').eq('game_id', gameId).single();
         if(result.error) {
             console.log(result.error);
-            this.router.navigateByUrl('');
-            return result;
         }
-        return result.data;
+        return result;
     }
 
     async fetchUsername(userId: string) {
         const { data } = await this.authService.supabase.from('usernames').select('username').eq('userid', userId).single();
-        console.log(data)
         return data;
     }
 }

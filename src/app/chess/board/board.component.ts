@@ -105,7 +105,6 @@ export class BoardComponent implements OnInit {
 
   private highlightPossibleMoves(square: Square) {
     this.possibleMoves = this.chessInstance.moves({square: square}).map(val=>val.match(/[a-z]{1}[1-8]{1}/)?.join(''));
-    console.log(this.possibleMoves);
   }
 
   private highlightLastMove(from: string, to: string) {

@@ -1,4 +1,4 @@
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
 import { GameService } from './game.service';
@@ -12,7 +12,7 @@ export class GameComponent implements OnInit {
   playerName!: string;
   opponentName!: string;
   color!: 'w' | 'b';
-  constructor(private gameService: GameService, private router: Router, private route: ActivatedRoute) {}
+  constructor(private gameService: GameService, private route: ActivatedRoute) {}
 
   async ngOnInit() {
     const urlGameId = this.route.snapshot.params['id'];

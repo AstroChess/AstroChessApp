@@ -33,7 +33,6 @@ export class RegisterComponent implements OnInit {
     this.signupResponse = undefined;
 
     const result = await this.authService.signup(this.user);
-    console.log(result)
     if (result.error) {
       this.signupError = result.error.message;
       return;

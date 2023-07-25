@@ -20,7 +20,6 @@ export class HeaderComponent implements OnInit {
     this.authService.user
       .pipe(filter((user) => user !== undefined))
       .subscribe((user) => {
-        console.log(user);
         this.user = user;
       });
   }

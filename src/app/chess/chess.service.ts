@@ -51,13 +51,13 @@ export class ChessService {
       const gameId = chosenGame['game_id'];
 
       this.gameService.opponent = chosenGame['white_player'] || chosenGame['black_player'];
-      console.log(this.gameService.opponent, 'opponent')
       
       await this.supabase
       .from('games')
       .update({ [whichPlayer]: this.authService.user.value?.id })
       .eq('game_id', gameId);
       
+      this.playAudio('notify');
       this.router.navigate(['game', gameId]);
       return;
     }
@@ -65,7 +65,7 @@ export class ChessService {
     const game = await this.createGame(minutesPerPlayer);
     
     if (game.error) {
-      console.log('Some error occurred');
+      console.log('Some error occurred: ', game.error.message);
       return;
     }
     
@@ -83,9 +83,7 @@ export class ChessService {
         filter: `game_id=eq.${gameId}`,
       },
       (payload: any) => {
-        console.log(payload, 'payload')
         this.gameService.opponent = payload.new[color==='w' ? 'black_player' : 'white_player'];
-        console.log(this.gameService.opponent, 'realtimeopponent')
           this.playAudio('notify');
           this.router.navigate(['game', gameId]);
         }
