@@ -11,7 +11,7 @@ import { filter } from 'rxjs';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent implements OnInit {
-  user: User | null | undefined = null;
+  user: User | null = null;
   contextMenuHidden = true;
 
   constructor(private authService: AuthService, private router: Router) {}
@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit {
     this.authService.user
       .pipe(filter((user) => user !== undefined))
       .subscribe((user) => {
-        this.user = user;
+        this.user = user as User | null;
       });
   }
 
