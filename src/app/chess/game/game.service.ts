@@ -42,15 +42,10 @@ export class GameService {
     }
 
     async fetchGameData(gameId: string) {
-        const result = await this.authService.supabase.from('games').select('*').eq('game_id', gameId).single();
+        const result = await this.authService.supabase.from('games').select('*, white_player(userid, username), black_player(userid, username)').eq('game_id', gameId).single();
         if(result.error) {
             console.log(result.error);
         }
         return result;
-    }
-
-    async fetchUsername(userId: string) {
-        const { data } = await this.authService.supabase.from('usernames').select('username').eq('userid', userId).single();
-        return data;
     }
 }
