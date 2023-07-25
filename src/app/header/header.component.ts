@@ -1,9 +1,10 @@
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
-import { AuthService } from '../auth/auth.service';
-import { Router } from '@angular/router';
-import { User } from '@supabase/supabase-js';
 import { filter } from 'rxjs';
+import { User } from '@supabase/supabase-js';
+
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-header',
