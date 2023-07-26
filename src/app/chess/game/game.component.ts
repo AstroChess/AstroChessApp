@@ -20,6 +20,10 @@ export class GameComponent implements OnInit {
         this.router.navigateByUrl('game');
         return;
       }
+      if(gameData.data['white_player']!==this.authService.user.value?.id || gameData.data['black_player']!==this.authService.user.value?.id) {
+        this.router.navigateByUrl('game');
+        return;
+      }
       this.setInitialProperties(gameData.data);
     })
   }
