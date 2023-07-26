@@ -1,6 +1,8 @@
-<div class="main">
-  <app-board *ngIf="color" [color]="color"></app-board>
-</div>
-<div class="timer">
-  <app-timer [playerName]="player.username" [opponentName]="opponent.username"></app-timer>
+<div class="container">
+  <div class="main">
+    <app-board *ngIf="color" [color]="color"></app-board>
+  </div>
+  <div class="timer">
+    <app-timer *ngIf="player && opponent" [playerName]="player.username" [opponentName]="opponent.username"></app-timer>
+  </div>
 </div>

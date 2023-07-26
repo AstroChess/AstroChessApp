@@ -1,7 +1,6 @@
-import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import { GameService } from './game.service';
 import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
@@ -10,15 +9,15 @@ import { AuthService } from 'src/app/auth/auth.service';
   styleUrls: ['./game.component.scss']
 })
 export class GameComponent implements OnInit {
-  player!: {userid: string, username: string};
-  opponent!: {userid: string, username: string};
+  player!: {userid: string, username: string} | null;
+  opponent!: {userid: string, username: string} | null;
   color!: 'w' | 'b';
-  constructor(private authService: AuthService, private route: ActivatedRoute) {}
+  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.data.subscribe(({gameData})=>{
       if(gameData.error) {
-        console.log('error');
+        this.router.navigateByUrl('game');
         return;
       }
       this.setInitialProperties(gameData.data);
