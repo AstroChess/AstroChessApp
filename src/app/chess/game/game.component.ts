@@ -20,7 +20,7 @@ export class GameComponent implements OnInit {
         this.router.navigateByUrl('game');
         return;
       }
-      if(gameData.data['white_player']!==this.authService.user.value?.id || gameData.data['black_player']!==this.authService.user.value?.id) {
+      if(gameData.data['white_player'].userid!==this.authService.user.value?.id && gameData.data['black_player'].userid!==this.authService.user.value?.id) {
         this.router.navigateByUrl('game');
         return;
       }
