@@ -37,6 +37,15 @@ export class RegisterComponent implements OnInit {
     }
 
     this.signupResponse = 'Your account has been created!';
-    await this.authService.supabase.from('usernames').insert([{username: this.user.username, userid: result.data.user?.id }])
+    await this.authService.supabase
+      .from('users')
+      .insert([
+        {
+          userid: result.data.user?.id,
+          username: this.user.username.toLowerCase(),
+          first_name: this.user.firstname.toLowerCase(),
+          last_name: this.user.lastname.toLowerCase(),
+        },
+      ]);
   }
 }
