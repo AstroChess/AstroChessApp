@@ -14,6 +14,7 @@ import { GameService } from '../game/game.service';
 })
 export class BoardComponent implements OnInit {
   @Input() color!: 'w' | 'b';
+  @Input() timeToEnd!: number;
   selectedRow: number | null = null;
   selectedColumn: number | null = null;
   chessInstance: Chess = new Chess();
@@ -31,8 +32,8 @@ export class BoardComponent implements OnInit {
     )
   }
 
-  handlePositionChange(row: number, column: number, field: { square: Square; type: PieceSymbol; color: Color } | null) {
-    if (this.gameService.whoseMove.value==='finished' || (field && this.color!==field.color)) {
+  async handlePositionChange(row: number, column: number, field: { square: Square; type: PieceSymbol; color: Color } | null) {
+    if (this.gameService.whoseMove.value==='finished' || (field && this.color!==field.color) || this.gameService.whoseMove.value!==this.color) {
       return;
     }
 
@@ -47,6 +48,18 @@ export class BoardComponent implements OnInit {
         this.setPositions(row, column);
       } else {
         this.changePositions(row, column);
+        const data = {
+          game_id: this.gameService.gameData.game_id,
+          user_id: this.gameService.player.userid,
+          color: this.color==='w' ? 'white' : 'black',
+          from: this.getSquare(this.selectedRow, this.selectedColumn),
+          to: this.getSquare(row, column),
+          FEN_after: this.chessInstance.fen(),
+          remaining_time_ms: this.gameService.timeToEnd
+        };
+        console.log(data)
+        const selected = await this.chessService.supabase.from('moves').insert(data).select('*');
+        console.log(selected);
       }
     } else {
       this.clearSelectedFields();

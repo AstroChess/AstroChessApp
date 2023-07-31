@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
+import { GameService } from './game.service';
 import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
@@ -12,7 +13,7 @@ export class GameComponent implements OnInit {
   player!: {userid: string, username: string} | null;
   opponent!: {userid: string, username: string} | null;
   color!: 'w' | 'b';
-  constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) {}
+  constructor(private authService: AuthService, private gameService: GameService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit() {
     this.route.data.subscribe(({gameData})=>{
@@ -32,8 +33,11 @@ export class GameComponent implements OnInit {
     if(gameData) {
       const playerColor = gameData.black_player.userid===this.authService.user.value!.id ? 'b' : 'w';
       this.player = playerColor==='w' ? gameData['white_player'] : gameData['black_player'];
+      this.gameService.player = playerColor==='w' ? gameData['white_player'] : gameData['black_player'];
       this.opponent = playerColor==='w' ? gameData['black_player'] : gameData['white_player'];
+      this.gameService.opponent = playerColor==='w' ? gameData['black_player'] : gameData['white_player'];
       this.color = (playerColor as 'w' | 'b');
+      this.gameService.gameData = gameData;
     }
   }
 }

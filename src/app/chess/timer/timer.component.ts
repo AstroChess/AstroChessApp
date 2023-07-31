@@ -27,6 +27,7 @@ export class TimerComponent implements OnInit, OnDestroy {
               return;
             }
             this.p2Time -= 100;
+            this.gameService.timeToEnd = this.p2Time;
             if (this.p2Time === 0) {
               clearInterval(this.p2Interval);
             }

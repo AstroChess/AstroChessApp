@@ -8,10 +8,11 @@ import { AuthService } from "src/app/auth/auth.service";
     providedIn: 'root'
 })
 export class GameService {
-    gameData = null;
+    gameData: any = null;
     whoseMove = new BehaviorSubject<'w' | 'b' | 'finished'>('w');
     player!: any;
     opponent!: any;
+    timeToEnd!: number;
 
     constructor(private authService: AuthService) {}
 
