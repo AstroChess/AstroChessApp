@@ -3,7 +3,7 @@
     <div class="field-symbol">{{ 8 - rowIndex }}</div>
     <div class="field" *ngFor="let field of row; let columnIndex = index">
       <div
-        (click)="handlePositionChange(rowIndex, columnIndex, field)"
+        (click)="handlePositionChange(rowIndex, columnIndex, field, 'player')"
         [ngClass]="{
           'selected': rowIndex === selectedRow && columnIndex === selectedColumn,
           'possible-move': possibleMoves.indexOf(getSquare(rowIndex, columnIndex))!==-1,
