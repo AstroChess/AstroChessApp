@@ -39,8 +39,8 @@
   font-size: 0.7rem;
   user-select: none;
   background: transparent !important;
-  text-align: center;
   display: grid;
+  place-items: center;
 }
 
 .field img {
