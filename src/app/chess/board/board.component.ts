@@ -2,7 +2,6 @@ import {
   Component,
   OnInit,
   Input,
-  ChangeDetectionStrategy,
 } from '@angular/core';
 
 import { filter, take } from 'rxjs';
@@ -15,7 +14,6 @@ import { GameService } from '../game/game.service';
   selector: 'app-board',
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardComponent implements OnInit {
   @Input() color!: 'w' | 'b';
@@ -52,8 +50,10 @@ export class BoardComponent implements OnInit {
           filter: `game_id=eq.${this.gameService.gameData.game_id}`,
         },
         (payload) => {
-          if (payload.new['color'] !== this.color)
+          if(payload.new['color']!==(this.color==='w' ? 'white' : 'black')){
+            this.changePositions(0, 0, payload.new['from'], payload.new['to'])
             console.log('response', payload);
+          }
         }
       )
       .subscribe();
@@ -107,14 +107,28 @@ export class BoardComponent implements OnInit {
     return `${String.fromCharCode(97 + column)}${8 - row}`;
   }
 
+  getRowAndColumn(square: string) {
+    const row = +square[1]+8;
+    const column = square.charCodeAt(0)-97;
+    return {column, row};
+  }
+
   private setPositions(row: number, column: number) {
     this.selectedColumn = column;
     this.selectedRow = row;
   }
 
-  private async changePositions(row: number, column: number) {
-    const fromField = this.getSquare(this.selectedRow!, this.selectedColumn!);
-    const toField = this.getSquare(row, column);
+  private async changePositions(row: number, column: number, fromSquare?: string, toSquare?: string) {
+    let fromField, toField;
+    if(fromSquare && toSquare) {
+      fromField = fromSquare;
+      toField = toSquare;
+    } else {
+      fromField = this.getSquare(this.selectedRow!, this.selectedColumn!);
+      toField = this.getSquare(row, column);
+    }
+
+    console.log(fromField, toField, 'tofield');
 
     const move = this.chessInstance.move({
       from: fromField,
@@ -148,10 +162,14 @@ export class BoardComponent implements OnInit {
   }
 
   private reloadBoard() {
-    this.board =
-      this.color === 'w'
-        ? this.chessInstance.board()
-        : this.chessInstance.board().reverse();
+    if(this.color==='w') {
+      this.board = this.chessInstance.board()
+    } else {
+      this.board = this.chessInstance.board().reverse();
+      this.board.map(subarray=>subarray.reverse());
+    }
+    
+    console.log('abaa')
   }
 
   private clearSelectedFields() {

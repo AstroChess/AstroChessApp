@@ -1,32 +1,66 @@
 <div class="container">
-  <ng-container *ngFor="let row of board; let rowIndex = index">
-    <div class="field-symbol">{{ 8 - rowIndex }}</div>
-    <div class="field" *ngFor="let field of row; let columnIndex = index">
-      <div
-        (click)="handlePositionChange(rowIndex, columnIndex, field, 'player')"
-        [ngClass]="{
-          'selected': rowIndex === selectedRow && columnIndex === selectedColumn,
-          'possible-move': possibleMoves.indexOf(getSquare(rowIndex, columnIndex))!==-1,
-          'last-move': lastMove?.from===getSquare(rowIndex, columnIndex) || lastMove?.to===getSquare(rowIndex, columnIndex)
-        }"
-      >
-        <img
-          *ngIf="field"
-          [src]="
-            '/assets/images/pieces/' +
-            field.color +
-            field.type.toUpperCase() +
-            '.svg'
-          "
-          [alt]="field"
-        />
-      </div>
-    </div>
-  </ng-container>
-  <div
+  <ng-container *ngIf="color==='w'; else blackboard">
+    <ng-container *ngFor="let row of board; let rowIndex = index">
+      <div class="field-symbol">{{ 8 - rowIndex }}</div>
+        <div class="field" *ngFor="let field of row; let columnIndex = index">
+          <div
+            (click)="handlePositionChange(rowIndex, columnIndex, field, 'player')"
+            [ngClass]="{
+              'selected': rowIndex === selectedRow && columnIndex === selectedColumn,
+              'possible-move': possibleMoves.indexOf(getSquare(rowIndex, columnIndex))!==-1,
+              'last-move': lastMove?.from===getSquare(rowIndex, columnIndex) || lastMove?.to===getSquare(rowIndex, columnIndex)
+            }"
+          >
+            <img
+              *ngIf="field"
+              [src]="
+                '/assets/images/pieces/' +
+                field.color +
+                field.type.toUpperCase() +
+                '.svg'
+              "
+              [alt]="field"
+            />
+          </div>
+        </div>
+    </ng-container>
+    <div
     *ngFor="let fieldSymbol of ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']"
     class="field-symbol"
-  >
-    {{ fieldSymbol }}
-  </div>
+    >
+      {{ fieldSymbol }}
+    </div>
+  </ng-container>
+  <ng-template #blackboard>
+    <ng-container *ngFor="let row of board; let rowIndex = index">
+      <div class="field-symbol">{{ rowIndex+1 }}</div>
+        <div class="field" *ngFor="let field of row; let columnIndex = index">
+          <div
+            (click)="handlePositionChange(7-rowIndex, 7-columnIndex, field, 'player')"
+            [ngClass]="{
+              'selected': rowIndex === selectedRow && columnIndex === selectedColumn,
+              'possible-move': possibleMoves.indexOf(getSquare(7-rowIndex, 7-columnIndex))!==-1,
+              'last-move': lastMove?.from===getSquare(7-rowIndex, 7-columnIndex) || lastMove?.to===getSquare(7-rowIndex, 7-columnIndex)
+            }"
+          >
+            <img
+              *ngIf="field"
+              [src]="
+                '/assets/images/pieces/' +
+                field.color +
+                field.type.toUpperCase() +
+                '.svg'
+              "
+              [alt]="field"
+            />
+          </div>
+        </div>
+    </ng-container>
+    <div
+    *ngFor="let fieldSymbol of ['', 'H', 'G', 'F', 'E', 'D', 'C', 'B', 'A']"
+    class="field-symbol"
+    >
+      {{ fieldSymbol }}
+    </div>
+  </ng-template>
 </div>
