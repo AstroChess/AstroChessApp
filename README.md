@@ -22,7 +22,7 @@ To run this project, you will need to add the following environment variables to
 `supabaseUrl`
 `supabaseApi`
 
-The entire environment.ts file should be located in /src/environments/ and contains exported 'environment' constant with following syntax:
+The entire environment.ts file should be located in `/src/environments/` and contains exported 'environment' constant with following syntax:
 
 ```typescript
 export const environment = {
