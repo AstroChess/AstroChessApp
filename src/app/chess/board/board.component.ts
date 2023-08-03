@@ -67,7 +67,7 @@ export class BoardComponent implements OnInit {
     const whoseMove = this.gameService.whoseMove.value;
     if (
       whoseMove === 'finished' ||
-      (field && this.color !== field.color) ||
+      (field && !this.selectedColumn && !this.selectedRow && this.color !== field.color) ||
       (whoseMove !== this.color && mode === 'player')
     ) {
       return;
@@ -95,7 +95,6 @@ export class BoardComponent implements OnInit {
         this.changePositions(row, column);
       }
     } else {
-      console.log('high')
       this.clearSelectedFields();
       this.clearPossibleMoves();
     }
