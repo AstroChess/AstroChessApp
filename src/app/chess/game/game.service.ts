@@ -17,7 +17,7 @@ export class GameService {
     constructor(private authService: AuthService) {}
 
     async fetchGameData(gameId: string) {
-        const result = await this.authService.supabase.from('games').select('*, white_player(userid, username), black_player(userid, username), moves(FEN_after, color)').eq('game_id', gameId).single();
+        const result = await this.authService.supabase.from('games').select('*, white_player(userid, username), black_player(userid, username), moves(FEN_after, color, from, to)').eq('game_id', gameId).single();
         if(result.error) {
             console.log(result.error);
         }

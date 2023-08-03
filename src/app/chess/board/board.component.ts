@@ -67,13 +67,14 @@ export class BoardComponent implements OnInit {
     const whoseMove = this.gameService.whoseMove.value;
     if (
       whoseMove === 'finished' ||
-      (field && !this.selectedColumn && !this.selectedRow && this.color !== field.color) ||
+      (field &&
+        !this.selectedColumn &&
+        !this.selectedRow &&
+        this.color !== field.color) ||
       (whoseMove !== this.color && mode === 'player')
     ) {
       return;
     }
-
-    console.log(row, column, field, 'handle', this.board[row][column]);
 
     if (!this.selectedColumn && !this.selectedRow && this.board[row][column]) {
       if (field?.color === this.gameService.whoseMove.value) {
@@ -105,16 +106,15 @@ export class BoardComponent implements OnInit {
   }
 
   getSquare(row: number, column: number) {
-    if(this.color==='w') {
+    if (this.color === 'w') {
       return `${String.fromCharCode(97 + column)}${8 - row}`;
     }
-    return `${String.fromCharCode(97 + 7 - column)}${row+1}`;
+    return `${String.fromCharCode(97 + 7 - column)}${row + 1}`;
   }
 
   private setPositions(row: number, column: number) {
     this.selectedColumn = column;
     this.selectedRow = row;
-    console.log(this.selectedColumn, this.selectedRow, 'column-row_sele')
   }
 
   private async changePositions(
@@ -130,9 +130,7 @@ export class BoardComponent implements OnInit {
     } else {
       fromField = this.getSquare(this.selectedRow!, this.selectedColumn!);
       toField = this.getSquare(row, column);
-      console.log(fromField, toField, 'tofield');
     }
-
 
     const move = this.chessInstance.move({
       from: fromField,
@@ -156,7 +154,6 @@ export class BoardComponent implements OnInit {
       FEN_after: move.after,
       remaining_time_ms: this.gameService.timeToEnd,
     };
-    console.log(data);
     this.clearSelectedFields();
     this.clearPossibleMoves();
     if (this.gameService.whoseMove.value === this.color) {
@@ -205,6 +202,8 @@ export class BoardComponent implements OnInit {
     console.log(lastMove);
     if (lastMove) {
       this.loadGameFromFEN(lastMove['FEN_after']);
+      this.lastMove = {from: lastMove['from'], to: lastMove['to']};
+
       if (lastMove['color'] === 'white') {
         this.onWhoseMoveChange();
       }
