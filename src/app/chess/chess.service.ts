@@ -12,6 +12,7 @@ import { AuthService } from '../auth/auth.service';
 })
 export class ChessService {
   supabase: SupabaseClient;
+  searching = false;
 
   constructor(
     private authService: AuthService,
@@ -97,5 +98,16 @@ export class ChessService {
         }
       )
       .subscribe();
+  }
+
+  async searchCreatedGames() {
+    const result = await this.supabase
+      .from('games')
+      .select('*')
+      .or(
+        `and(black_player.eq.${this.authService.user.value?.id}, white_player.is.null), and(black_player.is.null, and(white_player.eq.${this.authService.user.value?.id}))`
+      );
+
+    return result;
   }
 }
