@@ -1,18 +1,18 @@
-<p align="center" style="margin-bottom: 0px !important;">
-  <img src="/src/assets/images/favicon.png" alt="favicon" align="center">
+<p align="center" style="margin-bottom: 0px">
+  <img src="/src/assets/images/favicon.png" alt="favicon">
 </p>
 <h1 align="center" style="margin-top: 0px !important;">AstroChess</h1>
-AstroChess is web application for playing chess with friends.
+AstroChess is a web application for playing chess with friends.
 <br>
 
 ## Database Schema
 
-<img src="/src/assets/images/supabase-schema.png" alt="database-schema" align="center">
-This database schema is crucial for proper working of the astrochess app. It provides a few tables:
+<img src="/src/assets/images/supabase-schema.png" alt="database-schema">
+This database schema is crucial for the proper functioning of the AstroChess app. It provides a few tables:
 <ul>
   <li>users - contains all information about users</li>
-  <li>games - stores data about games such as: players, time for each player, result</li>
-  <li>moves - keeps information about moves in a particular game. FEN notation after move holds an game structure for simpler implementation</li>
+  <li>games - stores data about games such as: players, time for each player and result</li>
+  <li>moves - keeps information about moves in a particular game. FEN notation after each move holds a game structure for simpler implementation</li>
 </ul>
 
 ## Environment Variables
@@ -32,7 +32,14 @@ export const environment = {
 };
 ```
 
+## Development server
 
-## Authors
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+
+## Build
+
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+
+## Author
 
 - [szymon-skalmierski](https://github.com/szymon-skalmierski)
