@@ -199,9 +199,12 @@ export class BoardComponent implements OnInit {
   private loadOnReload() {
     const moves = this.gameService.gameData.moves;
     const lastMove = moves.at(-1);
-    this.loadGameFromFEN(lastMove['FEN_after']);
-    if(lastMove['color']==='white') {
-      this.onWhoseMoveChange();
+    console.log(lastMove);
+    if(lastMove) {
+      this.loadGameFromFEN(lastMove['FEN_after']);
+      if(lastMove['color']==='white') {
+        this.onWhoseMoveChange();
+      }
     }
   }
 
