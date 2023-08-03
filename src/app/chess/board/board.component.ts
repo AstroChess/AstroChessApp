@@ -1,8 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Input,
-} from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { filter, take } from 'rxjs';
 import { Chess, Square, PieceSymbol, Color } from 'chess.js';
@@ -51,8 +47,10 @@ export class BoardComponent implements OnInit {
           filter: `game_id=eq.${this.gameService.gameData.game_id}`,
         },
         (payload) => {
-          if(payload.new['color']!==(this.color==='w' ? 'white' : 'black')){
-            this.changePositions(0, 0, payload.new['from'], payload.new['to'])
+          if (
+            payload.new['color'] !== (this.color === 'w' ? 'white' : 'black')
+          ) {
+            this.changePositions(0, 0, payload.new['from'], payload.new['to']);
             console.log('response', payload);
           }
         }
@@ -75,6 +73,8 @@ export class BoardComponent implements OnInit {
       return;
     }
 
+    console.log(row, column, field, 'handle', this.board[row][column]);
+
     if (!this.selectedColumn && !this.selectedRow && this.board[row][column]) {
       if (field?.color === this.gameService.whoseMove.value) {
         this.highlightPossibleMoves(field.square);
@@ -95,6 +95,7 @@ export class BoardComponent implements OnInit {
         this.changePositions(row, column);
       }
     } else {
+      console.log('high')
       this.clearSelectedFields();
       this.clearPossibleMoves();
     }
@@ -105,31 +106,34 @@ export class BoardComponent implements OnInit {
   }
 
   getSquare(row: number, column: number) {
-    return `${String.fromCharCode(97 + column)}${8 - row}`;
-  }
-
-  getRowAndColumn(square: string) {
-    const row = +square[1]+8;
-    const column = square.charCodeAt(0)-97;
-    return {column, row};
+    if(this.color==='w') {
+      return `${String.fromCharCode(97 + column)}${8 - row}`;
+    }
+    return `${String.fromCharCode(97 + 7 - column)}${row+1}`;
   }
 
   private setPositions(row: number, column: number) {
     this.selectedColumn = column;
     this.selectedRow = row;
+    console.log(this.selectedColumn, this.selectedRow, 'column-row_sele')
   }
 
-  private async changePositions(row: number, column: number, fromSquare?: string, toSquare?: string) {
+  private async changePositions(
+    row: number,
+    column: number,
+    fromSquare?: string,
+    toSquare?: string
+  ) {
     let fromField, toField;
-    if(fromSquare && toSquare) {
+    if (fromSquare && toSquare) {
       fromField = fromSquare;
       toField = toSquare;
     } else {
       fromField = this.getSquare(this.selectedRow!, this.selectedColumn!);
       toField = this.getSquare(row, column);
+      console.log(fromField, toField, 'tofield');
     }
 
-    console.log(fromField, toField, 'tofield');
 
     const move = this.chessInstance.move({
       from: fromField,
@@ -156,18 +160,18 @@ export class BoardComponent implements OnInit {
     console.log(data);
     this.clearSelectedFields();
     this.clearPossibleMoves();
-    if(this.gameService.whoseMove.value===this.color) {
+    if (this.gameService.whoseMove.value === this.color) {
       await this.chessService.supabase.from('moves').insert(data);
     }
     this.onWhoseMoveChange();
   }
 
   private reloadBoard() {
-    if(this.color==='w') {
-      this.board = this.chessInstance.board()
+    if (this.color === 'w') {
+      this.board = this.chessInstance.board();
     } else {
       this.board = this.chessInstance.board().reverse();
-      this.board.map(subarray=>subarray.reverse());
+      this.board.map((subarray) => subarray.reverse());
     }
   }
 
@@ -200,9 +204,9 @@ export class BoardComponent implements OnInit {
     const moves = this.gameService.gameData.moves;
     const lastMove = moves.at(-1);
     console.log(lastMove);
-    if(lastMove) {
+    if (lastMove) {
       this.loadGameFromFEN(lastMove['FEN_after']);
-      if(lastMove['color']==='white') {
+      if (lastMove['color'] === 'white') {
         this.onWhoseMoveChange();
       }
     }

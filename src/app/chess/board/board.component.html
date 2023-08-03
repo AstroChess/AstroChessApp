@@ -36,11 +36,11 @@
       <div class="field-symbol">{{ rowIndex+1 }}</div>
         <div class="field" *ngFor="let field of row; let columnIndex = index">
           <div
-            (click)="handlePositionChange(7-rowIndex, 7-columnIndex, field, 'player')"
+            (click)="handlePositionChange(rowIndex, columnIndex, field, 'player')"
             [ngClass]="{
               'selected': rowIndex === selectedRow && columnIndex === selectedColumn,
-              'possible-move': possibleMoves.indexOf(getSquare(7-rowIndex, 7-columnIndex))!==-1,
-              'last-move': lastMove?.from===getSquare(7-rowIndex, 7-columnIndex) || lastMove?.to===getSquare(7-rowIndex, 7-columnIndex)
+              'possible-move': possibleMoves.indexOf(getSquare(rowIndex, columnIndex))!==-1,
+              'last-move': lastMove?.from===getSquare(rowIndex, columnIndex) || lastMove?.to===getSquare(rowIndex, columnIndex)
             }"
           >
             <img
