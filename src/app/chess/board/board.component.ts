@@ -33,6 +33,7 @@ export class BoardComponent implements OnInit {
 
   ngOnInit(): void {
     this.reloadBoard();
+    this.loadOnReload();
     this.gameService.whoseMove
       .pipe(
         filter((val) => val === 'finished'),
@@ -168,8 +169,6 @@ export class BoardComponent implements OnInit {
       this.board = this.chessInstance.board().reverse();
       this.board.map(subarray=>subarray.reverse());
     }
-    
-    console.log('abaa')
   }
 
   private clearSelectedFields() {
@@ -195,5 +194,19 @@ export class BoardComponent implements OnInit {
 
   private clearPossibleMoves() {
     this.possibleMoves = [];
+  }
+
+  private loadOnReload() {
+    const moves = this.gameService.gameData.moves;
+    const lastMove = moves.at(-1);
+    this.loadGameFromFEN(lastMove['FEN_after']);
+    if(lastMove['color']==='white') {
+      this.onWhoseMoveChange();
+    }
+  }
+
+  private loadGameFromFEN(fen: string) {
+    this.chessInstance.load(fen);
+    this.reloadBoard();
   }
 }
