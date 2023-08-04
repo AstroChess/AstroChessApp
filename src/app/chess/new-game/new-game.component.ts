@@ -42,8 +42,23 @@ export class NewGameComponent implements OnInit {
   }
 
   async findGame(minutesPerPlayer: number) {
-    if(this.found1mGame || this.found3mGame || this.found5mGame || this.found10mGame) {
-      return;
+    switch (minutesPerPlayer) {
+      case 1:
+        if(this.found1mGame) return;
+        this.found1mGame=true;
+        break;
+      case 3:
+        if(this.found3mGame) return;
+        this.found3mGame=true;
+        break;
+      case 5:
+        if(this.found5mGame) return;
+        this.found5mGame=true;
+        break;
+      case 10:
+        if(this.found10mGame) return;
+        this.found10mGame=true;
+        break;
     }
     await this.chessService.findGame(minutesPerPlayer);
   }
