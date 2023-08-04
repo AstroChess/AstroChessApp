@@ -1,6 +1,7 @@
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 
+import { Subject } from 'rxjs';
 import { environment as env } from 'src/environments/environment';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
 
@@ -12,7 +13,7 @@ import { AuthService } from '../auth/auth.service';
 })
 export class ChessService {
   supabase: SupabaseClient;
-  searching = false;
+  createdGame = new Subject<{time: number, gameId: string}>();
 
   constructor(
     private authService: AuthService,
@@ -43,6 +44,7 @@ export class ChessService {
   }
 
   async findGame(minutesPerPlayer: number) {
+    console.log('aa1')
     const { data: games } = await this.supabase
       .from('games')
       .select('*')
@@ -78,6 +80,8 @@ export class ChessService {
       return;
     }
 
+    this.createdGame.next({time: minutesPerPlayer, gameId: game.data['game_id']});
+
     const gameId = game.data['game_id'];
     const color = game.data['white_player'] ? 'w' : 'b';
 
@@ -109,5 +113,10 @@ export class ChessService {
       );
 
     return result;
+  }
+
+  async deleteGame(gameId: string, time: number) {
+    const error = await this.supabase.from('games').delete().eq('game_id', gameId);
+    this.createdGame.next({time: time, gameId: ''});
   }
 }
