@@ -1,14 +1,26 @@
 <div class="game-types">
     <div class="time" (click)="findGame(1)">
-        <span>1+0</span>
+        <span *ngIf="!found1mGame; else spinner">1+0</span>
+        <ng-template #spinner>
+            <app-spinner></app-spinner>
+        </ng-template>
     </div>
     <div class="time" (click)="findGame(3)">
-        <span>3+0</span>
+        <span *ngIf="!found3mGame; else spinner">3+0</span>
+        <ng-template #spinner>
+            <app-spinner></app-spinner>
+        </ng-template>
     </div>
     <div class="time" (click)="findGame(5)">
-        <span>5+0</span>
+        <span *ngIf="!found5mGame; else spinner">5+0</span>
+        <ng-template #spinner>
+            <app-spinner></app-spinner>
+        </ng-template>
     </div>
     <div class="time" (click)="findGame(10)">
-        <span>10+0</span>
+        <span *ngIf="!found10mGame; else spinner">10+0</span>
+        <ng-template #spinner>
+            <app-spinner></app-spinner>
+        </ng-template>
     </div>
 </div>

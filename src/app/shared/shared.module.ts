@@ -11,8 +11,12 @@ import {
   NbLayoutModule,
   NbListModule,
 } from '@nebular/theme';
+import { SpinnerComponent } from './spinner.component';
 
 @NgModule({
+  declarations: [
+    SpinnerComponent
+  ],
   exports: [
     NbButtonModule,
     NbAlertModule,
@@ -24,6 +28,7 @@ import {
     NbLayoutModule,
     NbCheckboxModule,
     NbInputModule,
+    SpinnerComponent
   ],
 })
 export class SharedModule {}
