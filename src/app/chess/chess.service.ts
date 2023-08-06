@@ -24,8 +24,7 @@ export class ChessService {
   }
 
   playAudio(type: 'check' | 'move' | 'notify') {
-    const audio = new Audio();
-    audio.src = `/assets/sound/${type}.mp3`;
+    const audio = new Audio(`/assets/sound/${type}.mp3`);
     audio.load();
     audio.play();
   }

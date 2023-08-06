@@ -163,12 +163,11 @@ export class BoardComponent implements OnInit {
   }
 
   private reloadBoard() {
-    if (this.color === 'w') {
-      this.board = this.chessInstance.board();
-    } else {
-      this.board = this.chessInstance.board().reverse();
+    this.board = this.chessInstance.board();
+    if (this.color === 'b') {
+      this.board.reverse();
       this.board.map((subarray) => subarray.reverse());
-    }
+    } 
   }
 
   private clearSelectedFields() {
