@@ -99,10 +99,6 @@ export class BoardComponent implements OnInit {
       this.clearSelectedFields();
       this.clearPossibleMoves();
     }
-
-    if (this.chessInstance.isGameOver()) {
-      this.gameService.whoseMove.next('finished');
-    }
   }
 
   getSquare(row: number, column: number) {
@@ -160,6 +156,10 @@ export class BoardComponent implements OnInit {
       await this.chessService.supabase.from('moves').insert(data);
     }
     this.onWhoseMoveChange();
+
+    if (this.chessInstance.isGameOver()) {
+      await this.gameService.finishGame();
+    }
   }
 
   private reloadBoard() {

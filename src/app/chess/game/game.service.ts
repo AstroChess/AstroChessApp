@@ -24,4 +24,9 @@ export class GameService {
         console.log(result)
         return result;
     }
+
+    async finishGame() {
+        this.whoseMove.next('finished');
+        await this.authService.supabase.from('games').update({ended_utc: new Date().toUTCString()}).eq('game_id', this.gameData.game_id);
+    }
 }
