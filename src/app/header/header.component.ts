@@ -13,7 +13,6 @@ import { AuthService } from '../auth/auth.service';
 })
 export class HeaderComponent implements OnInit {
   user: User | null = null;
-  contextMenuHidden = true;
 
   constructor(private authService: AuthService, private router: Router) {}
 
@@ -25,12 +24,8 @@ export class HeaderComponent implements OnInit {
       });
   }
 
-  hideNav() {
-    this.contextMenuHidden = !this.contextMenuHidden;
-  }
-
   logout() {
     this.authService.logout();
-    this.router.navigateByUrl('');
+    this.router.navigateByUrl('/auth/login');
   }
 }
