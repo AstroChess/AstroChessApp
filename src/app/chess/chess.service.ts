@@ -13,7 +13,7 @@ import { AuthService } from '../auth/auth.service';
 })
 export class ChessService {
   supabase: SupabaseClient;
-  createdGame = new Subject<{time: number, gameId: string}>();
+  createdGame = new Subject<{ time: number; gameId: string }>();
 
   constructor(
     private authService: AuthService,
@@ -30,7 +30,9 @@ export class ChessService {
   }
 
   async createGame(minutes: number) {
-    const playersColor = ['white_player', 'black_player'][Math.floor(Math.random() * 2)];
+    const playersColor = ['white_player', 'black_player'][
+      Math.floor(Math.random() * 2)
+    ];
     const insertData = {
       [playersColor]: this.authService.user.value?.id,
       minutes_per_player: minutes,
@@ -43,7 +45,7 @@ export class ChessService {
   }
 
   async findGame(minutesPerPlayer: number) {
-    console.log('aa1')
+    console.log('aa1');
     const { data: games } = await this.supabase
       .from('games')
       .select('*')
@@ -60,11 +62,15 @@ export class ChessService {
         : 'white_player';
       const gameId = chosenGame['game_id'];
 
-      this.gameService.opponent = chosenGame['white_player'] || chosenGame['black_player'];
+      this.gameService.opponent =
+        chosenGame['white_player'] || chosenGame['black_player'];
 
       await this.supabase
         .from('games')
-        .update({ [whichPlayer]: this.authService.user.value?.id })
+        .update({
+          [whichPlayer]: this.authService.user.value?.id,
+          started_utc: new Date().toUTCString(),
+        })
         .eq('game_id', gameId);
 
       this.playAudio('notify');
@@ -79,7 +85,10 @@ export class ChessService {
       return;
     }
 
-    this.createdGame.next({time: minutesPerPlayer, gameId: game.data['game_id']});
+    this.createdGame.next({
+      time: minutesPerPlayer,
+      gameId: game.data['game_id'],
+    });
 
     const gameId = game.data['game_id'];
     const color = game.data['white_player'] ? 'w' : 'b';
@@ -95,7 +104,8 @@ export class ChessService {
           filter: `game_id=eq.${gameId}`,
         },
         (payload: any) => {
-          this.gameService.opponent = payload.new[color === 'w' ? 'black_player' : 'white_player'];
+          this.gameService.opponent =
+            payload.new[color === 'w' ? 'black_player' : 'white_player'];
           this.playAudio('notify');
           this.router.navigate(['game', gameId]);
         }
@@ -115,7 +125,10 @@ export class ChessService {
   }
 
   async deleteGame(gameId: string, time: number) {
-    const error = await this.supabase.from('games').delete().eq('game_id', gameId);
-    this.createdGame.next({time: time, gameId: ''});
+    const error = await this.supabase
+      .from('games')
+      .delete()
+      .eq('game_id', gameId);
+    this.createdGame.next({ time: time, gameId: '' });
   }
 }
