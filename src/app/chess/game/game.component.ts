@@ -32,10 +32,14 @@ export class GameComponent implements OnInit {
   private async setInitialProperties(gameData: any) {
     if(gameData) {
       const playerColor = gameData.black_player.userid===this.authService.user.value!.id ? 'b' : 'w';
-      this.player = playerColor==='w' ? gameData['white_player'] : gameData['black_player'];
-      this.gameService.player = playerColor==='w' ? gameData['white_player'] : gameData['black_player'];
-      this.opponent = playerColor==='w' ? gameData['black_player'] : gameData['white_player'];
-      this.gameService.opponent = playerColor==='w' ? gameData['black_player'] : gameData['white_player'];
+      const player = playerColor==='w' ? gameData['white_player'] : gameData['black_player'];
+      const opponent = playerColor==='w' ? gameData['black_player'] : gameData['white_player'];
+
+      this.player = player;
+      this.opponent = opponent;
+      this.gameService.player = player;
+      this.gameService.opponent = opponent;
+
       this.color = (playerColor as 'w' | 'b');
       this.gameService.gameData = gameData;
     }
