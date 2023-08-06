@@ -19,11 +19,11 @@
   } 
 
   nb-card-body {
+    display: none;
     position: absolute;
     top: 100%;
     width: 100%;
     padding: 0;
-    display: flex;
     background-color: #323259;
     z-index: 100;
   }
@@ -43,8 +43,8 @@
     }
   }
 
-  .hidden {
-    display: none !important;
+  &:hover nb-card-body {
+    display: flex;
   }
 }
 
