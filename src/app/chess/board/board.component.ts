@@ -13,6 +13,7 @@ import { GameService } from '../game/game.service';
 })
 export class BoardComponent implements OnInit {
   @Input() color!: 'w' | 'b';
+  newMovesInsert: any
   selectedRow: number | null = null;
   selectedColumn: number | null = null;
   chessInstance: Chess = new Chess();
@@ -29,13 +30,8 @@ export class BoardComponent implements OnInit {
   ngOnInit(): void {
     this.reloadBoard();
     this.loadOnReload();
-    this.gameService.whoseMove
-      .pipe(
-        filter((val) => val === 'finished'),
-        take(1)
-      )
-      .subscribe(() => this.chessService.playAudio('notify'));
-    this.chessService.supabase
+    
+    this.newMovesInsert = this.chessService.supabase
       .channel('schema-db-changes')
       .on(
         'postgres_changes',
@@ -57,7 +53,7 @@ export class BoardComponent implements OnInit {
       .subscribe();
   }
 
-  handlePositionChange(
+  async handlePositionChange(
     row: number,
     column: number,
     field: { square: Square; type: PieceSymbol; color: Color } | null,
@@ -97,6 +93,11 @@ export class BoardComponent implements OnInit {
     } else {
       this.clearSelectedFields();
       this.clearPossibleMoves();
+    }
+
+    if (this.chessInstance.isGameOver()) {
+      await this.gameService.finishGame();
+      this.newMovesInsert.unsubscribe();
     }
   }
 
@@ -155,10 +156,6 @@ export class BoardComponent implements OnInit {
       await this.chessService.supabase.from('moves').insert(data);
     }
     this.onWhoseMoveChange();
-
-    if (this.chessInstance.isGameOver()) {
-      await this.gameService.finishGame();
-    }
   }
 
   private reloadBoard() {
