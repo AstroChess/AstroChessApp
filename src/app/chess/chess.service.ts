@@ -46,7 +46,6 @@ export class ChessService {
   }
 
   async findGame(minutesPerPlayer: number) {
-    console.log('aa1');
     const { data: games } = await this.supabase
       .from('games')
       .select('*')

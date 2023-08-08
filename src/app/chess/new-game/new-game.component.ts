@@ -27,33 +27,16 @@ export class NewGameComponent implements OnInit {
   }
 
   async findGame(minutesPerPlayer: number) {
-    switch (minutesPerPlayer) {
-      case 1:
-        if (this.foundGamesId[1]) {
-          await this.deleteGame(this.foundGamesId[1], 1);
-          return;
-        };
-        break;
-      case 3:
-        if (this.foundGamesId[3]) {
-          await this.deleteGame(this.foundGamesId[3], 3);
-          return;
-        };
-        break;
-      case 5:
-        if (this.foundGamesId[5]) {
-          await this.deleteGame(this.foundGamesId[5], 5);
-          return;
-        };
-        break;
-      case 10:
-        if (this.foundGamesId[10]) {
-          await this.deleteGame(this.foundGamesId[10], 10);
-          return;
-        };
-        break;
-      }
-    await this.chessService.findGame(minutesPerPlayer);
+    if (this.foundGamesId[minutesPerPlayer]) {
+      await this.deleteGame(this.foundGamesId[minutesPerPlayer], minutesPerPlayer);
+    } else {
+      [1,3,5,10].filter(val=>val!==minutesPerPlayer).forEach(async minutes=>{
+        if(this.foundGamesId[minutes]) {
+          await this.deleteGame(this.foundGamesId[minutes], minutes);
+        }
+      })
+      await this.chessService.findGame(minutesPerPlayer);
+    }
   }
 
   async deleteGame(gameId: string, time: number) {
