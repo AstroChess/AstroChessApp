@@ -13,6 +13,7 @@ import { AuthService } from '../auth/auth.service';
 })
 export class ChessService {
   supabase: SupabaseClient;
+  channelChanges: any;
   createdGame = new Subject<{ time: number; gameId: string }>();
 
   constructor(
@@ -93,7 +94,7 @@ export class ChessService {
     const gameId = game.data['game_id'];
     const color = game.data['white_player'] ? 'w' : 'b';
 
-    this.supabase
+    this.channelChanges = this.supabase
       .channel('schema-db-changes')
       .on(
         'postgres_changes',
@@ -108,6 +109,7 @@ export class ChessService {
             payload.new[color === 'w' ? 'black_player' : 'white_player'];
           this.playAudio('notify');
           this.router.navigate(['game', gameId]);
+          this.channelChanges.unsubscribe();
         }
       )
       .subscribe();
