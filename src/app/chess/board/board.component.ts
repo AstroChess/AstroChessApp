@@ -13,7 +13,6 @@ import { GameService } from '../game/game.service';
 })
 export class BoardComponent implements OnInit {
   @Input() color!: 'w' | 'b';
-  @Input() timeToEnd!: number;
   selectedRow: number | null = null;
   selectedColumn: number | null = null;
   chessInstance: Chess = new Chess();
