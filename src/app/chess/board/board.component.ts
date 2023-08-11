@@ -74,7 +74,7 @@ export class BoardComponent implements OnInit {
     ) {
       return;
     }
-    
+
     if (!this.selectedColumn && !this.selectedRow && this.board[row][column]) {
       if (field?.color === this.gameService.whoseMove.value) {
         this.highlightPossibleMoves(field.square);
@@ -113,6 +113,18 @@ export class BoardComponent implements OnInit {
     }
     return `${String.fromCharCode(97 + 7 - column)}${row + 1}`;
   }
+  
+  getRowAndColumn(square: string) {
+    let column, row;
+    if (this.color === 'w') {
+      column = +square.charCodeAt(0)-97;
+      row = 8 - +square[1];
+    } else {
+      column = 97 + 7 - +square.charCodeAt(0);
+      row = +square[1]-1;
+    }
+    return {column, row};
+  }
 
   private setPositions(row: number, column: number) {
     this.selectedColumn = column;
@@ -125,18 +137,24 @@ export class BoardComponent implements OnInit {
     fromSquare?: string,
     toSquare?: string
   ) {
-    let fromField, toField;
+    let fromField, toField, promotionPiece;
     if (fromSquare && toSquare) {
+      const fromRowAndColumn = this.getRowAndColumn(fromSquare);
       fromField = fromSquare;
       toField = toSquare;
+      promotionPiece = this.board[fromRowAndColumn.row][fromRowAndColumn.row]?.type==='p' && fromRowAndColumn.row===6 ? 'q' : '';
+      console.log(this.board[fromRowAndColumn.row][fromRowAndColumn.row]?.type, fromRowAndColumn.row, 'asdfasdfa')
     } else {
       fromField = this.getSquare(this.selectedRow!, this.selectedColumn!);
       toField = this.getSquare(row, column);
+      promotionPiece = this.board[this.selectedRow!][this.selectedColumn!]?.type==='p' && this.selectedRow===1 ? 'q' : '';
     }
-
+    
+    
     const move = this.chessInstance.move({
       from: fromField,
       to: toField,
+      promotion: promotionPiece
     });
 
     this.lastMoves.push({ from: fromField, to: toField });
