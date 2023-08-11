@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { filter, from, take } from 'rxjs';
 import { Chess, Square, PieceSymbol, Color } from 'chess.js';
 
 import { ChessService } from '../chess.service';
@@ -9,7 +8,7 @@ import { GameService } from '../game/game.service';
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
-  styleUrls: ['./board.component.scss'],
+  styleUrls: ['./board.component.scss']
 })
 export class BoardComponent implements OnInit {
   @Input() color!: 'w' | 'b';
@@ -19,7 +18,6 @@ export class BoardComponent implements OnInit {
   chessInstance: Chess = new Chess();
   board!: ({ square: Square; type: PieceSymbol; color: Color } | null)[][];
   possibleMoves: (string | undefined)[] = [];
-  lastMoves: { from: string; to: string }[] = [];
   lastMove: { from: string; to: string } | undefined;
 
   constructor(
@@ -112,9 +110,10 @@ export class BoardComponent implements OnInit {
       return `${String.fromCharCode(97 + column)}${8 - row}`;
     }
     return `${String.fromCharCode(97 + 7 - column)}${row + 1}`;
+
   }
   
-  getRowAndColumn(square: string) {
+  private getRowAndColumn(square: string) {
     let column, row;
     if (this.color === 'w') {
       column = +square.charCodeAt(0)-97;
@@ -157,7 +156,6 @@ export class BoardComponent implements OnInit {
       promotion: promotionPiece
     });
 
-    this.lastMoves.push({ from: fromField, to: toField });
     this.highlightLastMove(fromField, toField);
 
     this.chessInstance.load(move.after);
