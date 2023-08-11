@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 
-import { filter, take } from 'rxjs';
+import { filter, from, take } from 'rxjs';
 import { Chess, Square, PieceSymbol, Color } from 'chess.js';
 
 import { ChessService } from '../chess.service';
@@ -27,9 +27,13 @@ export class BoardComponent implements OnInit {
     private chessService: ChessService
   ) {}
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.reloadBoard();
     this.loadOnReload();
+
+    if(this.gameService.gameData['ended_utc']) {
+      return;
+    }
     
     this.newMovesInsert = this.chessService.supabase
       .channel('schema-db-changes')
@@ -70,7 +74,7 @@ export class BoardComponent implements OnInit {
     ) {
       return;
     }
-
+    
     if (!this.selectedColumn && !this.selectedRow && this.board[row][column]) {
       if (field?.color === this.gameService.whoseMove.value) {
         this.highlightPossibleMoves(field.square);
@@ -96,8 +100,10 @@ export class BoardComponent implements OnInit {
     }
 
     if (this.chessInstance.isGameOver()) {
-      await this.gameService.finishGame();
-      this.newMovesInsert.unsubscribe();
+      if(this.newMovesInsert) {
+        this.newMovesInsert.unsubscribe()
+      }
+      await this.stopFinishedGame();
     }
   }
 
@@ -209,5 +215,11 @@ export class BoardComponent implements OnInit {
   private loadGameFromFEN(fen: string) {
     this.chessInstance.load(fen);
     this.reloadBoard();
+  }
+
+  private async stopFinishedGame() {
+    this.clearSelectedFields();
+    this.clearPossibleMoves();
+    await this.gameService.finishGame();
   }
 }
