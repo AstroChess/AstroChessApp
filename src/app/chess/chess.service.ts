@@ -126,10 +126,16 @@ export class ChessService {
   }
 
   async deleteGame(gameId: string, time: number) {
-    const error = await this.supabase
+    const {error} = await this.supabase
       .from('games')
       .delete()
       .eq('game_id', gameId);
+
+    if(error) {
+      console.log(error);
+      return;
+    }
+    
     this.createdGame.next({ time: time, gameId: '' });
   }
 }
