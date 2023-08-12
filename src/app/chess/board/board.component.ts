@@ -4,6 +4,7 @@ import { Chess, Square, PieceSymbol, Color } from 'chess.js';
 
 import { ChessService } from '../chess.service';
 import { GameService } from '../game/game.service';
+import { BoardService } from './board.service';
 
 @Component({
   selector: 'app-board',
@@ -22,7 +23,8 @@ export class BoardComponent implements OnInit {
 
   constructor(
     private gameService: GameService,
-    private chessService: ChessService
+    private chessService: ChessService,
+    private boardService: BoardService
   ) {}
 
   async ngOnInit() {
@@ -32,6 +34,10 @@ export class BoardComponent implements OnInit {
     if(this.gameService.gameData['ended_utc']) {
       return;
     }
+
+    this.boardService.lastMove.subscribe(move=>{
+      this.lastMove = move;
+    })
     
     this.newMovesInsert = this.chessService.supabase
       .channel('schema-db-changes')
@@ -110,19 +116,10 @@ export class BoardComponent implements OnInit {
       return `${String.fromCharCode(97 + column)}${8 - row}`;
     }
     return `${String.fromCharCode(97 + 7 - column)}${row + 1}`;
-
   }
   
   private getRowAndColumn(square: string) {
-    let column, row;
-    if (this.color === 'w') {
-      column = +square.charCodeAt(0)-97;
-      row = 8 - +square[1];
-    } else {
-      column = 97 + 7 - +square.charCodeAt(0);
-      row = +square[1]-1;
-    }
-    return {column, row};
+    return this.boardService.getRowAndColumn(square);
   }
 
   private setPositions(row: number, column: number) {
@@ -149,14 +146,13 @@ export class BoardComponent implements OnInit {
       promotionPiece = this.board[this.selectedRow!][this.selectedColumn!]?.type==='p' && this.selectedRow===1 ? 'q' : '';
     }
     
-    
     const move = this.chessInstance.move({
       from: fromField,
       to: toField,
       promotion: promotionPiece
     });
 
-    this.highlightLastMove(fromField, toField);
+    this.boardService.highlightLastMove(fromField, toField);
 
     this.chessInstance.load(move.after);
     this.reloadBoard();
@@ -172,8 +168,7 @@ export class BoardComponent implements OnInit {
       FEN_after: move.after,
       remaining_time_ms: this.gameService.timeToEnd,
     };
-    this.clearSelectedFields();
-    this.clearPossibleMoves();
+    this.clearSelections();
     if (this.gameService.whoseMove.value === this.color) {
       await this.chessService.supabase.from('moves').insert(data);
     }
@@ -195,19 +190,13 @@ export class BoardComponent implements OnInit {
   }
 
   private onWhoseMoveChange() {
-    this.gameService.whoseMove.next(
-      this.gameService.whoseMove.value === 'w' ? 'b' : 'w'
-    );
+    this.boardService.onWhoseMoveChange();
   }
 
   private highlightPossibleMoves(square: Square) {
     this.possibleMoves = this.chessInstance
       .moves({ square: square })
       .map((val) => val.match(/[a-z]{1}[1-8]{1}/)?.join(''));
-  }
-
-  private highlightLastMove(from: string, to: string) {
-    this.lastMove = { from, to };
   }
 
   private clearPossibleMoves() {
@@ -233,9 +222,13 @@ export class BoardComponent implements OnInit {
     this.reloadBoard();
   }
 
-  private async stopFinishedGame() {
+  private clearSelections() {
     this.clearSelectedFields();
     this.clearPossibleMoves();
+  }
+
+  private async stopFinishedGame() {
+    this.clearSelections();
     await this.gameService.finishGame();
   }
 }

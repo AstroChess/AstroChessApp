@@ -12,6 +12,7 @@ export class GameService {
     whoseMove = new BehaviorSubject<'w' | 'b' | 'finished'>('w');
     player!: any;
     opponent!: any;
+    color!: string;
     timeToEnd!: number;
 
     constructor(private authService: AuthService) {}

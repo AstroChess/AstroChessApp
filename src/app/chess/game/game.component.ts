@@ -38,10 +38,11 @@ export class GameComponent implements OnInit {
       this.player = player;
       this.opponent = opponent;
       this.color = (playerColor as 'w' | 'b');
-
+      
       this.gameService.player = player;
       this.gameService.opponent = opponent;
       this.gameService.gameData = gameData;
+      this.gameService.color = (playerColor as 'w' | 'b');
     }
   }
 }
