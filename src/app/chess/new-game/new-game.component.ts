@@ -22,7 +22,6 @@ export class NewGameComponent implements OnInit {
     this.chessService.createdGame.subscribe(async val=>{
       await this.fetchAndMarkCreatedGames();
       this.foundGamesId[val.time] = val.gameId;
-      console.log(this.foundGamesId);
     })
   }
 
@@ -46,7 +45,7 @@ export class NewGameComponent implements OnInit {
   async fetchAndMarkCreatedGames() {
     const foundGame = await this.chessService.searchCreatedGames();
     if (foundGame.error) {
-      console.log(foundGame.error);
+      console.log('Some error occurred: ', foundGame.error);
       return;
     }
     foundGame.data.forEach((game) => {

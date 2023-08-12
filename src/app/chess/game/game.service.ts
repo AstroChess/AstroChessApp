@@ -20,9 +20,8 @@ export class GameService {
     async fetchGameData(gameId: string) {
         const result = await this.authService.supabase.from('games').select('*, minutes_per_player, white_player(userid, username), black_player(userid, username), moves(FEN_after, color, from, to)').eq('game_id', gameId).single();
         if(result.error) {
-            console.log(result.error);
+            console.log('Some error occurred: ', result.error);
         }
-        console.log(result)
         return result;
     }
 

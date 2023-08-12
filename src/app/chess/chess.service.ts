@@ -104,8 +104,7 @@ export class ChessService {
           filter: `game_id=eq.${gameId}`,
         },
         (payload: any) => {
-          this.gameService.opponent =
-            payload.new[color === 'w' ? 'black_player' : 'white_player'];
+          this.gameService.opponent = payload.new[color === 'w' ? 'black_player' : 'white_player'];
           this.playAudio('notify');
           this.router.navigate(['game', gameId]);
           this.channelChanges.unsubscribe();
@@ -132,10 +131,10 @@ export class ChessService {
       .eq('game_id', gameId);
 
     if(error) {
-      console.log(error);
+      console.log('Some error occurred: ', error);
       return;
     }
-    
+
     this.createdGame.next({ time: time, gameId: '' });
   }
 }

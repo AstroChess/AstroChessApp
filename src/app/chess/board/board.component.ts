@@ -54,7 +54,6 @@ export class BoardComponent implements OnInit {
             payload.new['color'] !== (this.color === 'w' ? 'white' : 'black')
           ) {
             this.changePositions(0, 0, payload.new['from'], payload.new['to']);
-            console.log('response', payload);
           }
         }
       )
@@ -139,7 +138,6 @@ export class BoardComponent implements OnInit {
       fromField = fromSquare;
       toField = toSquare;
       promotionPiece = this.board[fromRowAndColumn.row][fromRowAndColumn.row]?.type==='p' && fromRowAndColumn.row===6 ? 'q' : '';
-      console.log(this.board[fromRowAndColumn.row][fromRowAndColumn.row]?.type, fromRowAndColumn.row, 'asdfasdfa')
     } else {
       fromField = this.getSquare(this.selectedRow!, this.selectedColumn!);
       toField = this.getSquare(row, column);
@@ -206,7 +204,6 @@ export class BoardComponent implements OnInit {
   private loadOnReload() {
     const moves = this.gameService.gameData.moves;
     const lastMove = moves.at(-1);
-    console.log(lastMove);
     if (lastMove) {
       this.loadGameFromFEN(lastMove['FEN_after']);
       this.lastMove = {from: lastMove['from'], to: lastMove['to']};

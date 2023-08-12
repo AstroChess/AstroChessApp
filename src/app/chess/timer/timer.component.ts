@@ -25,7 +25,6 @@ export class TimerComponent implements OnInit, OnDestroy {
     
     this.gameService.whoseMove.subscribe(
       (color: 'w' | 'b' | 'finished') => {
-        console.log(this.gameService.player.userid, this.gameService.gameData.white_player.userid, 'abc')
         const whitePlayer = this.gameService.gameData.white_player.userid;
         const blackPlayer = this.gameService.gameData.black_player.userid;
 
