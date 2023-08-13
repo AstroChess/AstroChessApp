@@ -1,15 +1,17 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
 
 import { Chess, Square, PieceSymbol, Color } from 'chess.js';
 
 import { ChessService } from '../chess.service';
 import { GameService } from '../game/game.service';
 import { BoardService } from './board.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
-  styleUrls: ['./board.component.scss']
+  styleUrls: ['./board.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoardComponent implements OnInit {
   @Input() color!: 'w' | 'b';
@@ -17,7 +19,7 @@ export class BoardComponent implements OnInit {
   selectedRow: number | null = null;
   selectedColumn: number | null = null;
   chessInstance: Chess = new Chess();
-  board!: ({ square: Square; type: PieceSymbol; color: Color } | null)[][];
+  board = new BehaviorSubject<({ square: Square; type: PieceSymbol; color: Color } | null)[][]>([[]]);
   possibleMoves: (string | undefined)[] = [];
   lastMove: { from: string; to: string } | undefined;
 
@@ -78,7 +80,7 @@ export class BoardComponent implements OnInit {
       return;
     }
 
-    if (!this.selectedColumn && !this.selectedRow && this.board[row][column]) {
+    if (!this.selectedColumn && !this.selectedRow && this.board.value[row][column]) {
       if (field?.color === this.gameService.whoseMove.value) {
         this.highlightPossibleMoves(field.square);
         this.setPositions(row, column);
@@ -90,7 +92,7 @@ export class BoardComponent implements OnInit {
     ) {
       if (
         field?.color ===
-        this.board[this.selectedRow][this.selectedColumn]?.color
+        this.board.value[this.selectedRow][this.selectedColumn]?.color
       ) {
         this.highlightPossibleMoves(field?.square!);
         this.setPositions(row, column);
@@ -137,11 +139,11 @@ export class BoardComponent implements OnInit {
       const fromRowAndColumn = this.getRowAndColumn(fromSquare);
       fromField = fromSquare;
       toField = toSquare;
-      promotionPiece = this.board[fromRowAndColumn.row][fromRowAndColumn.row]?.type==='p' && fromRowAndColumn.row===6 ? 'q' : '';
+      promotionPiece = this.board.value[fromRowAndColumn.row][fromRowAndColumn.row]?.type==='p' && fromRowAndColumn.row===6 ? 'q' : '';
     } else {
       fromField = this.getSquare(this.selectedRow!, this.selectedColumn!);
       toField = this.getSquare(row, column);
-      promotionPiece = this.board[this.selectedRow!][this.selectedColumn!]?.type==='p' && this.selectedRow===1 ? 'q' : '';
+      promotionPiece = this.board.value[this.selectedRow!][this.selectedColumn!]?.type==='p' && this.selectedRow===1 ? 'q' : '';
     }
     
     const move = this.chessInstance.move({
@@ -175,10 +177,11 @@ export class BoardComponent implements OnInit {
 
   private reloadBoard() {
     if (this.color === 'w') {
-      this.board = this.chessInstance.board();
+      this.board.next(this.chessInstance.board());
     } else {
-      this.board = this.chessInstance.board().reverse();
-      this.board.map((subarray) => subarray.reverse());
+      const board = this.chessInstance.board().reverse();
+      board.map((subarray) => subarray.reverse());
+      this.board.next(board);
     } 
   }
 

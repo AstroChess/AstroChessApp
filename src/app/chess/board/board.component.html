@@ -1,6 +1,6 @@
 <div class="container">
   <ng-container *ngIf="color==='w'; else blackboard">
-    <ng-container *ngFor="let row of board; let rowIndex = index">
+    <ng-container *ngFor="let row of board | async; let rowIndex = index">
       <div class="field-symbol">{{ 8 - rowIndex }}</div>
         <div class="field" *ngFor="let field of row; let columnIndex = index">
           <div
@@ -32,7 +32,7 @@
     </div>
   </ng-container>
   <ng-template #blackboard>
-    <ng-container *ngFor="let row of board; let rowIndex = index">
+    <ng-container *ngFor="let row of board | async; let rowIndex = index">
       <div class="field-symbol">{{ rowIndex+1 }}</div>
         <div class="field" *ngFor="let field of row; let columnIndex = index">
           <div
