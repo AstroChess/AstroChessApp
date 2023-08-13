@@ -15,6 +15,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class BoardComponent implements OnInit {
   @Input() color!: 'w' | 'b';
+  columnSymbolArray: string[] = [];
   newMovesInsert: any
   selectedRow: number | null = null;
   selectedColumn: number | null = null;
@@ -30,6 +31,7 @@ export class BoardComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    this.columnSymbolArray = this.color==='w' ? ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'] : ['', 'H', 'G', 'F', 'E', 'D', 'C', 'B', 'A']
     this.reloadBoard();
     this.loadOnReload();
 
