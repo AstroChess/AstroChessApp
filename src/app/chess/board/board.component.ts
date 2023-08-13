@@ -54,10 +54,11 @@ export class BoardComponent implements OnInit {
           filter: `game_id=eq.${this.gameService.gameData.game_id}`,
         },
         (payload) => {
+          console.log(payload);
           if (
             payload.new['color'] !== (this.color === 'w' ? 'white' : 'black')
           ) {
-            this.changePositions(0, 0, payload.new['from'], payload.new['to']);
+            this.loadGameFromFEN(payload.new);
           }
         }
       )
@@ -133,20 +134,11 @@ export class BoardComponent implements OnInit {
   private async changePositions(
     row: number,
     column: number,
-    fromSquare?: string,
-    toSquare?: string
   ) {
     let fromField, toField, promotionPiece;
-    if (fromSquare && toSquare) {
-      const fromRowAndColumn = this.getRowAndColumn(fromSquare);
-      fromField = fromSquare;
-      toField = toSquare;
-      promotionPiece = this.board.value[fromRowAndColumn.row][fromRowAndColumn.row]?.type==='p' && fromRowAndColumn.row===6 ? 'q' : '';
-    } else {
       fromField = this.getSquare(this.selectedRow!, this.selectedColumn!);
       toField = this.getSquare(row, column);
       promotionPiece = this.board.value[this.selectedRow!][this.selectedColumn!]?.type==='p' && this.selectedRow===1 ? 'q' : '';
-    }
     
     const move = this.chessInstance.move({
       from: fromField,
@@ -210,17 +202,23 @@ export class BoardComponent implements OnInit {
     const moves = this.gameService.gameData.moves;
     const lastMove = moves.at(-1);
     if (lastMove) {
-      this.loadGameFromFEN(lastMove['FEN_after']);
-      this.lastMove = {from: lastMove['from'], to: lastMove['to']};
-
-      if (lastMove['color'] === 'white') {
-        this.onWhoseMoveChange();
-      }
+      this.loadGameFromFEN(lastMove, true);
     }
   }
 
-  private loadGameFromFEN(fen: string) {
-    this.chessInstance.load(fen);
+  private loadGameFromFEN(move: any, init?: boolean) {
+    this.clearSelections();
+    this.chessInstance.load(move['FEN_after']);
+    this.lastMove = {from: move['from'], to: move['to']};
+
+    if ((init && move['color'] === 'white') || (!init && this.gameService.whoseMove.value!==this.color)) {
+      this.onWhoseMoveChange();
+    }
+
+    if(!init) {
+      this.chessService.playAudio('move');
+    }
+
     this.reloadBoard();
   }
 
