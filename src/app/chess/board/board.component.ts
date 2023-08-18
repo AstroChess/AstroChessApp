@@ -161,6 +161,7 @@ export class BoardComponent implements OnInit {
       to: move.to,
       FEN_after: move.after,
       remaining_time_ms: this.gameService.timeToEnd,
+      date_of_move: new Date().toUTCString()
     };
     this.clearSelections();
     if (this.gameService.whoseMove.value === this.color) {
