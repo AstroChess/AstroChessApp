@@ -2,7 +2,7 @@
   width: 100%;
 }
 
-:is(nb-card-header, nb-card-footer) {
+nb-card-header, nb-card-footer {
     display: flex;
     align-items: center;
     padding: 12px;
