@@ -20,8 +20,19 @@ export class TimerComponent implements OnInit, OnDestroy {
   constructor(private gameService: GameService, private chessService: ChessService) {}
   
   ngOnInit(): void {
-    this.p1Time = (this.p2Time = this.gameService.gameData.minutes_per_player * 60 * 1000);
     this.color = this.gameService.gameData.white_player.userid===this.gameService.player.userid ? 'w' : 'b';
+
+    const moves = this.gameService.gameData.moves;
+    if(moves.length===0) {
+      console.log(this.color)
+      const startDate = this.gameService.gameData.started_utc as Date;
+      const now = new Date();
+      const nowDate = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+
+      if(this.color==='w') {
+        this.p2Time = new Date(startDate).getTime() - new Date(nowDate).getTime() + this.gameService.gameData.minutes_per_player*60*1000;
+      }
+    }
     
     this.gameService.whoseMove.subscribe(
       (color: 'w' | 'b' | 'finished') => {
