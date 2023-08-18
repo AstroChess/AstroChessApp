@@ -12,8 +12,8 @@ export class TimerComponent implements OnInit, OnDestroy {
   @Input() playerName!: string;
   @Input() opponentName!: string;
   color!: 'w' | 'b';
-  p1Time = 60 * 5 * 1000;
-  p2Time = 60 * 5 * 1000;
+  p1Time!: number;
+  p2Time!: number;
   p1Interval: any;
   p2Interval: any;
   
@@ -23,14 +23,19 @@ export class TimerComponent implements OnInit, OnDestroy {
     this.color = this.gameService.gameData.white_player.userid===this.gameService.player.userid ? 'w' : 'b';
 
     const moves = this.gameService.gameData.moves;
+    const timePerPlayer = this.gameService.gameData.minutes_per_player*60*1000;
+    const now = new Date();
+    const nowDateUTC = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+
     if(moves.length===0) {
-      console.log(this.color)
       const startDate = this.gameService.gameData.started_utc as Date;
-      const now = new Date();
-      const nowDate = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
 
       if(this.color==='w') {
-        this.p2Time = new Date(startDate).getTime() - new Date(nowDate).getTime() + this.gameService.gameData.minutes_per_player*60*1000;
+        this.p1Time = timePerPlayer;
+        this.p2Time = new Date(startDate).getTime() - new Date(nowDateUTC).getTime() + timePerPlayer;
+      } else {
+        this.p1Time = new Date(startDate).getTime() - new Date(nowDateUTC).getTime() + timePerPlayer;
+        this.p2Time = timePerPlayer;
       }
     }
     
