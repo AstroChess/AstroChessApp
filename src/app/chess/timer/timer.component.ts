@@ -29,12 +29,23 @@ export class TimerComponent implements OnInit, OnDestroy {
 
     if(moves.length===0) {
       const startDate = this.gameService.gameData.started_utc as Date;
+      const remainingTime = new Date(startDate).getTime() - new Date(nowDateUTC).getTime() + timePerPlayer;
 
       if(this.color==='w') {
         this.p1Time = timePerPlayer;
-        this.p2Time = new Date(startDate).getTime() - new Date(nowDateUTC).getTime() + timePerPlayer;
+        this.p2Time = remainingTime;
       } else {
-        this.p1Time = new Date(startDate).getTime() - new Date(nowDateUTC).getTime() + timePerPlayer;
+        this.p1Time = remainingTime;
+        this.p2Time = timePerPlayer;
+      }
+    } else if(moves.length===1) {
+      const remainingTime = new Date(moves[0].date_of_move).getTime() - new Date(nowDateUTC).getTime() + moves[0].remaining_time_ms;
+      
+      if(this.color==='w') {
+        this.p1Time = timePerPlayer;
+        this.p2Time = remainingTime;
+      } else {
+        this.p1Time = remainingTime;
         this.p2Time = timePerPlayer;
       }
     }
