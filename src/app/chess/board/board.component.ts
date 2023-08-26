@@ -167,6 +167,7 @@ export class BoardComponent implements OnInit {
     if (this.gameService.whoseMove.value === this.color) {
       await this.chessService.supabase.from('moves').insert(data);
     }
+    console.log('debbuging new game color change => changing in loadGameFromFEN');
     this.onWhoseMoveChange();
   }
 
@@ -213,6 +214,7 @@ export class BoardComponent implements OnInit {
     this.lastMove = {from: move['from'], to: move['to']};
 
     if ((init && move['color'] === 'white') || (!init && this.gameService.whoseMove.value!==this.color)) {
+      console.log('debbuging new game color change => changing in loadGameFromFEN');
       this.onWhoseMoveChange();
     }
 

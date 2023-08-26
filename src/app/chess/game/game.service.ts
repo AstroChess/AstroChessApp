@@ -15,7 +15,9 @@ export class GameService {
     color!: string;
     timeToEnd!: number;
 
-    constructor(private authService: AuthService) {}
+    constructor(private authService: AuthService) {
+        this.whoseMove.subscribe(val=>console.log('debbuging color value changes ->', val))
+    }
 
     async fetchGameData(gameId: string) {
         const result = await this.authService.supabase.from('games').select('*, minutes_per_player, white_player(userid, username), black_player(userid, username), moves(FEN_after, color, from, to, date_of_move, remaining_time_ms), started_utc').eq('game_id', gameId).single();
