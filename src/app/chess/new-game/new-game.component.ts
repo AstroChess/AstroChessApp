@@ -1,39 +1,48 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 
 import { ChessService } from '../chess.service';
+import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-game',
   templateUrl: './new-game.component.html',
   styleUrls: ['./new-game.component.scss'],
 })
-export class NewGameComponent implements OnInit {
+export class NewGameComponent implements OnInit, OnDestroy {
+  foundGameChanges!: Subscription;
   foundGamesId: { [key: number]: string } = {
     1: '',
     3: '',
     5: '',
     10: '',
   };
+  createdGame: string | null = null;
 
   constructor(private chessService: ChessService) {}
 
   async ngOnInit() {
-    await this.fetchAndMarkCreatedGames();
-    this.chessService.createdGame.subscribe(async val=>{
+    this.chessService.createdGame.subscribe(async (val) => {
       await this.fetchAndMarkCreatedGames();
       this.foundGamesId[val.time] = val.gameId;
-    })
+      this.createdGame = val.gameId;
+    });
   }
 
   async findGame(minutesPerPlayer: number) {
     if (this.foundGamesId[minutesPerPlayer]) {
-      await this.deleteGame(this.foundGamesId[minutesPerPlayer], minutesPerPlayer);
+      await this.deleteGame(
+        this.foundGamesId[minutesPerPlayer],
+        minutesPerPlayer
+      );
     } else {
-      [1,3,5,10].filter(val=>val!==minutesPerPlayer).forEach(async minutes=>{
-        if(this.foundGamesId[minutes]) {
-          await this.deleteGame(this.foundGamesId[minutes], minutes);
-        }
-      })
+      [1, 3, 5, 10]
+        .filter((val) => val !== minutesPerPlayer)
+        .forEach(async (minutes) => {
+          if (this.foundGamesId[minutes]) {
+            await this.deleteGame(this.foundGamesId[minutes], minutes);
+          }
+        });
       await this.chessService.findGame(minutesPerPlayer);
     }
   }
@@ -64,5 +73,12 @@ export class NewGameComponent implements OnInit {
           break;
       }
     });
+  }
+
+  async ngOnDestroy() {
+    await this.chessService.supabase
+      .from('games')
+      .delete()
+      .eq('game_id', this.createdGame);
   }
 }
