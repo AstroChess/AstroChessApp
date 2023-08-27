@@ -3,6 +3,7 @@ import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { ChessService } from '../chess.service';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-new-game',
@@ -19,9 +20,16 @@ export class NewGameComponent implements OnInit, OnDestroy {
   };
   createdGame: string | null = null;
 
-  constructor(private chessService: ChessService) {}
+  constructor(private chessService: ChessService, private authService: AuthService) {}
 
   async ngOnInit() {
+    const { data: games } = await this.chessService.supabase
+      .from('games')
+      .delete()
+      .or(
+        `and(black_player.eq.${this.authService.user.value?.id}, white_player.is.null), and(black_player.is.null, and(white_player.eq.${this.authService.user.value?.id}))`
+      );
+
     this.chessService.createdGame.subscribe(async (val) => {
       await this.fetchAndMarkCreatedGames();
       this.foundGamesId[val.time] = val.gameId;
