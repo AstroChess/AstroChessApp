@@ -1,8 +1,7 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { ChessService } from '../chess.service';
 import { Subscription } from 'rxjs';
-import { Router } from '@angular/router';
 import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
@@ -10,7 +9,7 @@ import { AuthService } from 'src/app/auth/auth.service';
   templateUrl: './new-game.component.html',
   styleUrls: ['./new-game.component.scss'],
 })
-export class NewGameComponent implements OnInit, OnDestroy {
+export class NewGameComponent implements OnInit {
   foundGameChanges!: Subscription;
   foundGamesId: { [key: number]: string } = {
     1: '',
@@ -18,7 +17,6 @@ export class NewGameComponent implements OnInit, OnDestroy {
     5: '',
     10: '',
   };
-  createdGame: string | null = null;
 
   constructor(private chessService: ChessService, private authService: AuthService) {}
 
@@ -33,7 +31,6 @@ export class NewGameComponent implements OnInit, OnDestroy {
     this.chessService.createdGame.subscribe(async (val) => {
       await this.fetchAndMarkCreatedGames();
       this.foundGamesId[val.time] = val.gameId;
-      this.createdGame = val.gameId;
     });
   }
 
@@ -81,12 +78,5 @@ export class NewGameComponent implements OnInit, OnDestroy {
           break;
       }
     });
-  }
-
-  async ngOnDestroy() {
-    await this.chessService.supabase
-      .from('games')
-      .delete()
-      .eq('game_id', this.createdGame);
   }
 }
