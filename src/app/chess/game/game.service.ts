@@ -27,8 +27,10 @@ export class GameService {
         return result;
     }
 
-    async finishGame() {
+    async finishGame(winner: string | null) {
         this.whoseMove.next('finished');
-        await this.authService.supabase.from('games').update({ended_utc: new Date().toUTCString()}).eq('game_id', this.gameData.game_id);
+        if(!this.gameData.ended_utc) {
+            await this.authService.supabase.from('games').update({ended_utc: new Date().toUTCString(), result: winner}).eq('game_id', this.gameData.game_id);
+        }
     }
 }

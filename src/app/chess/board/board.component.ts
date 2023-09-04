@@ -231,6 +231,6 @@ export class BoardComponent implements OnInit {
 
   private async stopFinishedGame() {
     this.clearSelections();
-    await this.gameService.finishGame();
+    await this.gameService.finishGame(null);
   }
 }
