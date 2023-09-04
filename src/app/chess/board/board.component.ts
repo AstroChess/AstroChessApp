@@ -72,13 +72,15 @@ export class BoardComponent implements OnInit {
     mode: 'player' | 'opponent'
   ) {
     const whoseMove = this.gameService.whoseMove.value;
+    const possibleMoves = this.chessInstance.moves({square: field?.square});
     if (
       whoseMove === 'finished' ||
       (field &&
         !this.selectedColumn &&
         !this.selectedRow &&
         this.color !== field.color) ||
-      (whoseMove !== this.color && mode === 'player')
+      (whoseMove !== this.color && mode === 'player') || 
+      possibleMoves.length===0
     ) {
       return;
     }
@@ -135,10 +137,9 @@ export class BoardComponent implements OnInit {
     row: number,
     column: number,
   ) {
-    let fromField, toField, promotionPiece;
-      fromField = this.getSquare(this.selectedRow!, this.selectedColumn!);
-      toField = this.getSquare(row, column);
-      promotionPiece = this.board.value[this.selectedRow!][this.selectedColumn!]?.type==='p' && this.selectedRow===1 ? 'q' : '';
+    let fromField = this.getSquare(this.selectedRow!, this.selectedColumn!);
+    let toField = this.getSquare(row, column);
+    let promotionPiece = this.board.value[this.selectedRow!][this.selectedColumn!]?.type==='p' && this.selectedRow===1 ? 'q' : '';
     
     const move = this.chessInstance.move({
       from: fromField,
