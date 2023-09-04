@@ -80,7 +80,7 @@ export class BoardComponent implements OnInit {
         !this.selectedRow &&
         this.color !== field.color) ||
       (whoseMove !== this.color && mode === 'player') || 
-      possibleMoves.length===0
+      (possibleMoves.length===0 && !this.selectedColumn && !this.selectedRow)
     ) {
       return;
     }
@@ -192,9 +192,7 @@ export class BoardComponent implements OnInit {
   }
 
   private highlightPossibleMoves(square: Square) {
-    this.possibleMoves = this.chessInstance
-      .moves({ square: square })
-      .map((val) => val.match(/[a-z]{1}[1-8]{1}/)?.join(''));
+    this.possibleMoves = this.chessInstance.moves({square, verbose: true}).map((val) => val['to']);
   }
 
   private clearPossibleMoves() {
