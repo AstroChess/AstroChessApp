@@ -56,7 +56,7 @@ export class BoardComponent implements OnInit {
         (payload) => {
           console.log(payload);
           if (
-            payload.new['color'] !== (this.color === 'w' ? 'white' : 'black')
+            payload.new['color'] !== (this.color)
           ) {
             this.loadGameFromFEN(payload.new);
           }
@@ -157,7 +157,7 @@ export class BoardComponent implements OnInit {
     const data = {
       game_id: this.gameService.gameData.game_id,
       user_id: this.gameService.player.userid,
-      color: this.color === 'w' ? 'white' : 'black',
+      color: this.color,
       from: move.from,
       to: move.to,
       FEN_after: move.after,
@@ -212,7 +212,7 @@ export class BoardComponent implements OnInit {
     this.chessInstance.load(move['FEN_after']);
     this.lastMove = {from: move['from'], to: move['to']};
 
-    if ((init && move['color'] === 'white') || (!init && this.gameService.whoseMove.value!==this.color)) {
+    if ((init && move['color'] === 'w') || (!init && this.gameService.whoseMove.value!==this.color)) {
       console.log('debbuging new game color change => changing in loadGameFromFEN');
       this.onWhoseMoveChange();
     }

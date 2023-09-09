@@ -50,8 +50,7 @@ export class TimerComponent implements OnInit, OnDestroy {
     } else {
       const lastTwoMoves = moves.slice(-2);
       console.log(lastTwoMoves);
-      const color = this.color === 'w' ? 'white' : 'black';
-      if(lastTwoMoves[1].color === color) {
+      if(lastTwoMoves[1].color === this.color) {
         this.p1Time = new Date(lastTwoMoves[1].date_of_move).getTime() - new Date(nowDateUTC).getTime() + lastTwoMoves[0].remaining_time_ms;
         this.p2Time = lastTwoMoves[1].remaining_time_ms;
         console.log(this.p1Time, this.p2Time, 'firs')
@@ -63,10 +62,10 @@ export class TimerComponent implements OnInit, OnDestroy {
     }
 
     if (this.p2Time <= 0) {
-      this.gameService.finishGame(this.color==='w' ? 'black' : 'white');
+      this.gameService.finishGame(this.color==='w' ? 'b' : 'w');
       return;
     } else if (this.p1Time <= 0) {
-      this.gameService.finishGame(this.color==='w' ? 'white' : 'black');
+      this.gameService.finishGame(this.color);
       return;
     }
     
@@ -84,7 +83,7 @@ export class TimerComponent implements OnInit, OnDestroy {
             this.p2Time -= 100;
             this.gameService.timeToEnd = this.p2Time;
             if (this.p2Time === 0) {
-              this.gameService.finishGame(this.color==='w' ? 'black' : 'white');
+              this.gameService.finishGame(this.color==='w' ? 'b' : 'w');
               clearInterval(this.p2Interval);
             }
           }, 100);
@@ -97,7 +96,7 @@ export class TimerComponent implements OnInit, OnDestroy {
             }
             this.p1Time -= 100;
             if (this.p1Time === 0) {
-              this.gameService.finishGame(this.color==='w' ? 'white' : 'black');
+              this.gameService.finishGame(this.color);
               clearInterval(this.p1Interval);
             }
           }, 100);
