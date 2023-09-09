@@ -54,7 +54,6 @@ export class BoardComponent implements OnInit {
           filter: `game_id=eq.${this.gameService.gameData.game_id}`,
         },
         (payload) => {
-          console.log(payload);
           if (
             payload.new['color'] !== (this.color)
           ) {

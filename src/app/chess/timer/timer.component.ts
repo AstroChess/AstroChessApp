@@ -49,15 +49,12 @@ export class TimerComponent implements OnInit, OnDestroy {
       }
     } else {
       const lastTwoMoves = moves.slice(-2);
-      console.log(lastTwoMoves);
       if(lastTwoMoves[1].color === this.color) {
         this.p1Time = new Date(lastTwoMoves[1].date_of_move).getTime() - new Date(nowDateUTC).getTime() + lastTwoMoves[0].remaining_time_ms;
         this.p2Time = lastTwoMoves[1].remaining_time_ms;
-        console.log(this.p1Time, this.p2Time, 'firs')
       } else {
         this.p1Time = lastTwoMoves[1].remaining_time_ms;
         this.p2Time = new Date(lastTwoMoves[1].date_of_move).getTime() - new Date(nowDateUTC).getTime() + lastTwoMoves[0].remaining_time_ms;
-        console.log(this.p1Time, this.p2Time, 'sec')
       }
     }
 
