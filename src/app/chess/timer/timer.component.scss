@@ -1,11 +1,11 @@
 :host {
-  width: 100%;
+  width: min(300px, 100%);
 }
 
 nb-card-header, nb-card-footer {
     display: flex;
     align-items: center;
-    padding: 12px;
+    padding: 18px;
 
     .time {
         width: 100%;

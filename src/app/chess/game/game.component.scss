@@ -1,24 +1,27 @@
 :host {
   height: 100%;
   width: 100%;
-  padding: 1%;
 }
 
 .container {
   display: flex;
   height: 100%;
-  gap: 1%;
+  gap: max(10px, 1%);
 }
 
 .main {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex: 1 1 50%;
+  padding: 1%;
 }
 
 .timer, .aside {
   display: flex;
   align-items: center;
-  flex: 1 1 clamp(250px, 25%, 500px);
+  flex: 1 1 25%;
+}
+
+.aside {
+  flex: 1 2 25%
 }
