@@ -110,8 +110,9 @@ export class BoardComponent implements OnInit {
 
     if (this.chessInstance.isGameOver()) {
       if(this.newMovesInsert) {
-        this.newMovesInsert.unsubscribe()
+        this.newMovesInsert.unsubscribe();
       }
+      console.log('finished game')
       await this.stopFinishedGame();
     }
   }

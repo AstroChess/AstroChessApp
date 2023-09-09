@@ -28,6 +28,7 @@ export class GameService {
     }
 
     async finishGame(winner: string | null) {
+        console.log('finished by finishGame in gameservice')
         this.whoseMove.next('finished');
         if(!this.gameData.ended_utc) {
             await this.authService.supabase.from('games').update({ended_utc: new Date().toUTCString(), result: winner}).eq('game_id', this.gameData.game_id);

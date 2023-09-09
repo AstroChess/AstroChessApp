@@ -79,12 +79,12 @@ export class TimerComponent implements OnInit, OnDestroy {
             }
             this.p2Time -= 100;
             this.gameService.timeToEnd = this.p2Time;
-            if (this.p2Time === 0) {
+            if (this.p2Time <= 0) {
               this.gameService.finishGame(this.color==='w' ? 'b' : 'w');
               clearInterval(this.p2Interval);
+              clearInterval(this.p1Interval);
             }
           }, 100);
-          clearInterval(this.p1Interval);
         } else {
           this.p1Interval = setInterval(() => {
             if (this.color===color) {
@@ -92,12 +92,12 @@ export class TimerComponent implements OnInit, OnDestroy {
               return;
             }
             this.p1Time -= 100;
-            if (this.p1Time === 0) {
+            if (this.p1Time <= 0) {
               this.gameService.finishGame(this.color);
               clearInterval(this.p1Interval);
+              clearInterval(this.p2Interval);
             }
           }, 100);
-          clearInterval(this.p2Interval);
         }
       }
     );
