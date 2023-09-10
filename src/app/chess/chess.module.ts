@@ -9,6 +9,7 @@ import { TimerComponent } from './timer/timer.component';
 import { BoardComponent } from './board/board.component';
 import { ChessRoutingModule } from './chess-routing.module';
 import { NewGameComponent } from './new-game/new-game.component';
+import { GameService } from './game/game.service';
 
 @NgModule({
   declarations: [

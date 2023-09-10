@@ -7,7 +7,7 @@ import { AuthService } from 'src/app/auth/auth.service';
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
-  styleUrls: ['./game.component.scss']
+  styleUrls: ['./game.component.scss'],
 })
 export class GameComponent implements OnInit {
   player!: {userid: string, username: string} | null;

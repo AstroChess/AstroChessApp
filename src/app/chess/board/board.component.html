@@ -8,10 +8,11 @@
           'selected': rowIndex === selectedRow && columnIndex === selectedColumn,
           'possible-move': possibleMoves.indexOf(getSquare(rowIndex, columnIndex))!==-1,
           'last-move': lastMove?.from===getSquare(rowIndex, columnIndex) || lastMove?.to===getSquare(rowIndex, columnIndex),
+          'promotion-dim': !!promotionPiece
         }"
       >
-        <div class="promotion" *ngIf="rowIndex===0 && columnIndex===0">
-          <div class="field">
+        <div class="promotion" *ngIf="promotionChoose && promotionSquare?.column===columnIndex && promotionSquare?.row===rowIndex">
+          <div class="field" (click)="setPromotionProperties('q')">
             <img
               [src]="
                 '/assets/images/pieces/' + this.color + 'Q.svg'
@@ -19,7 +20,7 @@
               alt="queen"
             />
           </div>
-          <div class="field">
+          <div class="field" (click)="setPromotionProperties('r')">
             <img
               [src]="
                 '/assets/images/pieces/' + this.color + 'R.svg'
@@ -27,7 +28,7 @@
               alt="rook"
             />
           </div>
-          <div class="field">
+          <div class="field" (click)="setPromotionProperties('b')">
             <img
               [src]="
                 '/assets/images/pieces/' + this.color + 'B.svg'
@@ -35,7 +36,7 @@
               alt="bishop"
             />
           </div>
-          <div class="field">
+          <div class="field" (click)="setPromotionProperties('n')">
             <img
               [src]="
                 '/assets/images/pieces/' + this.color + 'N.svg'

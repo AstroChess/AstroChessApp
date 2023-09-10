@@ -23,6 +23,9 @@ export class BoardComponent implements OnInit {
   board = new BehaviorSubject<({ square: Square; type: PieceSymbol; color: Color } | null)[][]>([[]]);
   possibleMoves: (string | undefined)[] = [];
   lastMove: { from: string; to: string } | undefined;
+  promotionPiece: '' | 'q' | 'r' | 'n' | 'b' = '';
+  promotionSquare: null | {row: number, column: number} = null;
+  promotionChoose = false;
 
   constructor(
     private gameService: GameService,
@@ -34,6 +37,8 @@ export class BoardComponent implements OnInit {
     this.columnSymbolArray = this.color==='w' ? ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'] : ['', 'H', 'G', 'F', 'E', 'D', 'C', 'B', 'A']
     this.reloadBoard();
     this.loadOnReload();
+
+    console.log(this.gameService.gameData)
 
     if(this.gameService.gameData['ended_utc']) {
       return;
@@ -70,6 +75,12 @@ export class BoardComponent implements OnInit {
     field: { square: Square; type: PieceSymbol; color: Color } | null,
     mode: 'player' | 'opponent'
   ) {
+    if(this.promotionPiece && this.gameService.whoseMove.value !== this.color) {
+      this.promotionPiece = '';
+      this.promotionSquare = null;
+      this.promotionChoose = false;
+    }
+
     const whoseMove = this.gameService.whoseMove.value;
     const possibleMoves = this.chessInstance.moves({square: field?.square});
     if (
@@ -100,6 +111,11 @@ export class BoardComponent implements OnInit {
       ) {
         this.highlightPossibleMoves(field?.square!);
         this.setPositions(row, column);
+      } else if(this.board.value[this.selectedRow!][this.selectedColumn!]?.type==='p' && this.selectedRow===1 && !this.promotionPiece) {
+        this.promotionChoose = true;
+        this.promotionSquare = {row, column};
+        console.log('choose piece to promote to');
+        return;
       } else {
         this.changePositions(row, column);
       }
@@ -208,6 +224,10 @@ export class BoardComponent implements OnInit {
   }
 
   private loadGameFromFEN(move: any, init?: boolean) {
+    if (!move) {
+      return;
+    }
+
     this.clearSelections();
     this.chessInstance.load(move['FEN_after']);
     this.lastMove = {from: move['from'], to: move['to']};
@@ -232,5 +252,9 @@ export class BoardComponent implements OnInit {
   private async stopFinishedGame() {
     this.clearSelections();
     await this.gameService.finishGame(null);
+  }
+
+  setPromotionProperties(piece: 'q' | 'r' | 'n' | 'b') {
+    this.promotionPiece = piece;
   }
 }

@@ -19,7 +19,7 @@ export class TimerComponent implements OnInit, OnDestroy {
   
   constructor(private gameService: GameService, private chessService: ChessService) {}
   
-  ngOnInit(): void {
+  async ngOnInit() {
     this.color = this.gameService.gameData.white_player.userid===this.gameService.player.userid ? 'w' : 'b';
 
     const moves: any[] = this.gameService.gameData.moves;
@@ -59,10 +59,12 @@ export class TimerComponent implements OnInit, OnDestroy {
     }
 
     if (this.p2Time <= 0) {
-      this.gameService.finishGame(this.color==='w' ? 'b' : 'w');
+      await this.gameService.finishGame(this.color==='w' ? 'b' : 'w');
+      console.log('winner:' + this.gameService.winner);
       return;
     } else if (this.p1Time <= 0) {
-      this.gameService.finishGame(this.color);
+      await this.gameService.finishGame(this.color);
+      console.log('winner:' + this.gameService.winner);
       return;
     }
     
@@ -81,8 +83,7 @@ export class TimerComponent implements OnInit, OnDestroy {
             this.gameService.timeToEnd = this.p2Time;
             if (this.p2Time <= 0) {
               this.gameService.finishGame(this.color==='w' ? 'b' : 'w');
-              clearInterval(this.p2Interval);
-              clearInterval(this.p1Interval);
+              this.clearIntervals();
             }
           }, 100);
         } else {
@@ -94,18 +95,21 @@ export class TimerComponent implements OnInit, OnDestroy {
             this.p1Time -= 100;
             if (this.p1Time <= 0) {
               this.gameService.finishGame(this.color);
-              clearInterval(this.p1Interval);
-              clearInterval(this.p2Interval);
+              console.log('a')
+              this.clearIntervals();
             }
           }, 100);
         }
       }
     );
+  }
 
+  private clearIntervals() {
+    clearInterval(this.p1Interval);
+    clearInterval(this.p2Interval);
   }
 
   ngOnDestroy(): void {
-    clearInterval(this.p1Interval);
-    clearInterval(this.p2Interval);
+    this.clearIntervals();
   }
 }

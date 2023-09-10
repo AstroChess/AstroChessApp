@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GameService } from './game/game.service';
 
 @Component({
   selector: 'app-chess',

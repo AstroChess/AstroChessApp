@@ -22,6 +22,10 @@
   align-items: center;
   position: relative;
 
+  .promotion-dim {
+    filter: grayscale(1);
+  }
+
   .promotion {
     height: 400%;
     display: grid;

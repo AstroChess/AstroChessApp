@@ -14,6 +14,7 @@ export class GameService {
     opponent!: any;
     color!: string;
     timeToEnd!: number;
+    winner: string | null = null; 
 
     constructor(private authService: AuthService) {
         this.whoseMove.subscribe(val=>console.log('debbuging color value changes ->', val))
@@ -28,10 +29,14 @@ export class GameService {
     }
 
     async finishGame(winner: string | null) {
-        console.log('finished by finishGame in gameservice')
-        this.whoseMove.next('finished');
-        if(!this.gameData.ended_utc) {
-            await this.authService.supabase.from('games').update({ended_utc: new Date().toUTCString(), result: winner}).eq('game_id', this.gameData.game_id);
+        console.log('finished by finishGame in gameservice');
+        if(this.whoseMove.value !== 'finished') {
+            this.winner = winner;
+            this.whoseMove.next('finished');
+            if(!this.gameData.ended_utc) {
+                const {data} = await this.authService.supabase.from('games').update({ended_utc: new Date().toUTCString(), result: winner}).eq('game_id', this.gameData.game_id).select().single();
+                this.gameData = data;
+            }
         }
     }
 }
