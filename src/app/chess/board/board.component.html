@@ -10,6 +10,40 @@
           'last-move': lastMove?.from===getSquare(rowIndex, columnIndex) || lastMove?.to===getSquare(rowIndex, columnIndex),
         }"
       >
+        <div class="promotion" *ngIf="rowIndex===0 && columnIndex===0">
+          <div class="field">
+            <img
+              [src]="
+                '/assets/images/pieces/' + this.color + 'Q.svg'
+              "
+              alt="queen"
+            />
+          </div>
+          <div class="field">
+            <img
+              [src]="
+                '/assets/images/pieces/' + this.color + 'R.svg'
+              "
+              alt="rook"
+            />
+          </div>
+          <div class="field">
+            <img
+              [src]="
+                '/assets/images/pieces/' + this.color + 'B.svg'
+              "
+              alt="bishop"
+            />
+          </div>
+          <div class="field">
+            <img
+              [src]="
+                '/assets/images/pieces/' + this.color + 'N.svg'
+              "
+              alt="knight"
+            />
+          </div>
+        </div>
         <img
           *ngIf="field"
           [src]="
