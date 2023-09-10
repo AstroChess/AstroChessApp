@@ -2,6 +2,7 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 
 import { GameService } from '../game/game.service';
 import { ChessService } from '../chess.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-timer',
@@ -68,7 +69,7 @@ export class TimerComponent implements OnInit, OnDestroy {
       return;
     }
     
-    this.gameService.whoseMove.subscribe(
+    this.gameService.whoseMove.pipe(filter(whoseMove=>whoseMove!=='finished')).subscribe(
       (color: 'w' | 'b' | 'finished') => {
         const whitePlayer = this.gameService.gameData.white_player.userid;
         const blackPlayer = this.gameService.gameData.black_player.userid;
@@ -96,7 +97,9 @@ export class TimerComponent implements OnInit, OnDestroy {
             if (this.p1Time <= 0) {
               this.gameService.finishGame(this.color);
               console.log('a')
+              console.log(this.p1Interval, this.p2Interval)
               this.clearIntervals();
+              console.log(this.p1Interval, this.p2Interval)
             }
           }, 100);
         }

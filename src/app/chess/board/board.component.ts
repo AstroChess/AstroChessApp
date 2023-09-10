@@ -75,12 +75,6 @@ export class BoardComponent implements OnInit {
     field: { square: Square; type: PieceSymbol; color: Color } | null,
     mode: 'player' | 'opponent'
   ) {
-    if(this.promotionPiece && this.gameService.whoseMove.value !== this.color) {
-      this.promotionPiece = '';
-      this.promotionSquare = null;
-      this.promotionChoose = false;
-    }
-
     const whoseMove = this.gameService.whoseMove.value;
     const possibleMoves = this.chessInstance.moves({square: field?.square});
     if (
@@ -111,12 +105,13 @@ export class BoardComponent implements OnInit {
       ) {
         this.highlightPossibleMoves(field?.square!);
         this.setPositions(row, column);
+        this.clearPromotionProperties();
       } else if(this.board.value[this.selectedRow!][this.selectedColumn!]?.type==='p' && this.selectedRow===1 && !this.promotionPiece) {
         this.promotionChoose = true;
         this.promotionSquare = {row, column};
-        console.log('choose piece to promote to');
         return;
       } else {
+        this.clearPromotionProperties();
         this.changePositions(row, column);
       }
     } else {
@@ -256,5 +251,11 @@ export class BoardComponent implements OnInit {
 
   setPromotionProperties(piece: 'q' | 'r' | 'n' | 'b') {
     this.promotionPiece = piece;
+  }
+
+  private clearPromotionProperties() {
+    this.promotionPiece = '';
+    this.promotionSquare = null;
+    this.promotionChoose = false;
   }
 }

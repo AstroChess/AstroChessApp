@@ -14,7 +14,7 @@ export class GameService {
     opponent!: any;
     color!: string;
     timeToEnd!: number;
-    winner: string | null = null; 
+    winner: string | null = null;
 
     constructor(private authService: AuthService) {
         this.whoseMove.subscribe(val=>console.log('debbuging color value changes ->', val))
@@ -38,5 +38,15 @@ export class GameService {
                 this.gameData = data;
             }
         }
+    }
+
+    createNewState(gameData: any, player: string, opponent: string, color: string) {
+        this.gameData = gameData;
+        this.whoseMove = new BehaviorSubject<'w' | 'b' | 'finished'>('w');
+        this.winner = null;
+        this.player = player;
+        this.opponent = opponent;
+        this.gameData = gameData;
+        this.color = color;
     }
 }
