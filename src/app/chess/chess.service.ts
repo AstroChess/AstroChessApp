@@ -5,7 +5,6 @@ import { Subject } from 'rxjs';
 import { environment as env } from 'src/environments/environment';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
 
-import { GameService } from './game/game.service';
 import { AuthService } from '../auth/auth.service';
 
 @Injectable({
@@ -18,7 +17,6 @@ export class ChessService {
 
   constructor(
     private authService: AuthService,
-    private gameService: GameService,
     private router: Router
   ) {
     this.supabase = createClient(env.supabaseUrl, env.supabaseApi);
@@ -62,9 +60,6 @@ export class ChessService {
         : 'white_player';
       const gameId = chosenGame['game_id'];
 
-      this.gameService.opponent =
-        chosenGame['white_player'] || chosenGame['black_player'];
-
       await this.supabase
         .from('games')
         .update({
@@ -104,7 +99,6 @@ export class ChessService {
           filter: `game_id=eq.${gameId}`,
         },
         (payload: any) => {
-          this.gameService.opponent = payload.new[color === 'w' ? 'black_player' : 'white_player'];
           this.playAudio('notify');
           this.router.navigate(['game', gameId]);
           this.channelChanges.unsubscribe();
