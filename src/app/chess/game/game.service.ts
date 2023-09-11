@@ -4,9 +4,7 @@ import { BehaviorSubject } from "rxjs";
 
 import { AuthService } from "src/app/auth/auth.service";
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class GameService {
     gameData: any = null;
     whoseMove = new BehaviorSubject<'w' | 'b' | 'finished'>('w');
@@ -18,14 +16,6 @@ export class GameService {
 
     constructor(private authService: AuthService) {
         this.whoseMove.subscribe(val=>console.log('debbuging color value changes ->', val))
-    }
-
-    async fetchGameData(gameId: string) {
-        const result = await this.authService.supabase.from('games').select('*, minutes_per_player, white_player(userid, username), black_player(userid, username), moves(FEN_after, color, from, to, date_of_move, remaining_time_ms), started_utc').eq('game_id', gameId).single();
-        if(result.error) {
-            console.log('Some error occurred: ', result.error);
-        }
-        return result;
     }
 
     async finishGame(winner: string | null) {
@@ -42,11 +32,9 @@ export class GameService {
 
     createNewState(gameData: any, player: string, opponent: string, color: string) {
         this.gameData = gameData;
-        this.whoseMove = new BehaviorSubject<'w' | 'b' | 'finished'>('w');
-        this.winner = null;
         this.player = player;
         this.opponent = opponent;
-        this.gameData = gameData;
+        this.gameData = gameData
         this.color = color;
     }
 }

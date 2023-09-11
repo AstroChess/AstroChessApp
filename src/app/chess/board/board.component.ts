@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, Self } from '@angular/core';
 
 import { Chess, Square, PieceSymbol, Color } from 'chess.js';
 
@@ -11,6 +11,7 @@ import { BehaviorSubject } from 'rxjs';
   selector: 'app-board',
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.scss'],
+  providers: [BoardService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BoardComponent implements OnInit {

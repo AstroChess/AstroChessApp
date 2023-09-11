@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { GameService } from '../game/game.service';
 import { Subject } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class BoardService {
   lastMove = new Subject<{from: string, to: string}>();
 

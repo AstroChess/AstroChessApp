@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Self } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { GameService } from './game.service';
@@ -8,6 +8,7 @@ import { AuthService } from 'src/app/auth/auth.service';
   selector: 'app-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.scss'],
+  providers: [GameService]
 })
 export class GameComponent implements OnInit {
   player!: {userid: string, username: string} | null;
