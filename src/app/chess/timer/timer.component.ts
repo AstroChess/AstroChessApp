@@ -96,8 +96,6 @@ export class TimerComponent implements OnInit, OnDestroy {
               }
             }, 100);
           }
-
-          return this.stopTimer;
         }
       );
     }
