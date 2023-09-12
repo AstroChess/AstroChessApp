@@ -101,6 +101,7 @@ export class ChessService {
         (payload: any) => {
           this.playAudio('notify');
           this.router.navigate(['game', gameId]);
+          console.log('found game')
           this.channelChanges.unsubscribe();
         }
       )

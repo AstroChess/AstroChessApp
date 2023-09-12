@@ -1,8 +1,8 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 
-import { GameService } from '../game/game.service';
+import { Subscription } from 'rxjs';
 import { ChessService } from '../chess.service';
-import { filter } from 'rxjs';
+import { GameService } from '../game/game.service';
 
 @Component({
   selector: 'app-timer',
@@ -12,6 +12,7 @@ import { filter } from 'rxjs';
 export class TimerComponent implements OnInit, OnDestroy {
   @Input() playerName!: string;
   @Input() opponentName!: string;
+  whoseMoveSub!: Subscription;
   color!: 'w' | 'b';
   p1Time!: number;
   p2Time!: number;
@@ -59,55 +60,71 @@ export class TimerComponent implements OnInit, OnDestroy {
       }
     }
 
-    if (this.p2Time <= 0) {
-      await this.gameService.finishGame(this.color==='w' ? 'b' : 'w');
-      return;
-    } else if (this.p1Time <= 0) {
-      await this.gameService.finishGame(this.color);
-      return;
-    }
+    const winner = await this.checkTimeForWinner();
     
-    this.gameService.whoseMove.pipe(filter(whoseMove=>whoseMove!=='finished')).subscribe(
-      (color: 'w' | 'b' | 'finished') => {
-        const whitePlayer = this.gameService.gameData.white_player.userid;
-        const blackPlayer = this.gameService.gameData.black_player.userid;
+    if(!winner) {
+      this.whoseMoveSub = this.gameService.whoseMove.subscribe(
+        (color: 'w' | 'b' | 'finished') => {
+          const whitePlayer = this.gameService.gameData.white_player.userid;
+          const blackPlayer = this.gameService.gameData.black_player.userid;
 
-        if ((color==='w' && this.gameService.player.userid===whitePlayer) || (color==='b' && this.gameService.player.userid===blackPlayer)) {
-          this.p2Interval = setInterval(() => {
-            if (this.color!==color) {
-              clearInterval(this.p2Interval);
-              return;
-            }
-            this.p2Time -= 100;
-            this.gameService.timeToEnd = this.p2Time;
-            if (this.p2Time <= 0) {
-              this.gameService.finishGame(this.color==='w' ? 'b' : 'w');
-              this.clearIntervals();
-            }
-          }, 100);
-        } else {
-          this.p1Interval = setInterval(() => {
-            if (this.color===color) {
-              clearInterval(this.p1Interval);
-              return;
-            }
-            this.p1Time -= 100;
-            if (this.p1Time <= 0) {
-              this.gameService.finishGame(this.color);
-              this.clearIntervals();
-            }
-          }, 100);
+          if(color==='finished') return;
+  
+          if ((color==='w' && this.gameService.player.userid===whitePlayer) || (color==='b' && this.gameService.player.userid===blackPlayer)) {
+            this.p2Interval = setInterval(() => {
+              if (this.color!==color) {
+                clearInterval(this.p2Interval);
+                return;
+              }
+              this.p2Time -= 100;
+              this.gameService.timeToEnd = this.p2Time;
+              if (this.p2Time <= 0) {
+                this.gameService.finishGame(this.color==='w' ? 'b' : 'w');
+                this.stopTimer();
+              }
+            }, 100);
+          } else {
+            this.p1Interval = setInterval(() => {
+              if (this.color===color) {
+                clearInterval(this.p1Interval);
+                return;
+              }
+              this.p1Time -= 100;
+              if (this.p1Time <= 0) {
+                this.gameService.finishGame(this.color);
+                this.stopTimer();
+              }
+            }, 100);
+          }
+
+          return this.stopTimer;
         }
-      }
-    );
+      );
+    }
   }
 
-  private clearIntervals() {
+  private stopTimer() {
+    if(this.whoseMoveSub) {
+      this.whoseMoveSub.unsubscribe();
+    }
     clearInterval(this.p1Interval);
     clearInterval(this.p2Interval);
   }
 
+  private async checkTimeForWinner() {
+    if (this.p2Time <= 0) {
+      const opponentColor = this.color==='w' ? 'b' : 'w';
+      await this.gameService.finishGame(opponentColor);
+      return opponentColor;
+    }
+    if (this.p1Time <= 0) {
+      await this.gameService.finishGame(this.color);
+      return this.color;
+    }
+    return null;
+  }
+
   ngOnDestroy(): void {
-    this.clearIntervals();
+    this.stopTimer();
   }
 }
