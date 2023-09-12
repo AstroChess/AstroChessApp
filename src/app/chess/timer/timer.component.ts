@@ -61,11 +61,9 @@ export class TimerComponent implements OnInit, OnDestroy {
 
     if (this.p2Time <= 0) {
       await this.gameService.finishGame(this.color==='w' ? 'b' : 'w');
-      console.log('winner:' + this.gameService.winner);
       return;
     } else if (this.p1Time <= 0) {
       await this.gameService.finishGame(this.color);
-      console.log('winner:' + this.gameService.winner);
       return;
     }
     
@@ -96,10 +94,7 @@ export class TimerComponent implements OnInit, OnDestroy {
             this.p1Time -= 100;
             if (this.p1Time <= 0) {
               this.gameService.finishGame(this.color);
-              console.log('a')
-              console.log(this.p1Interval, this.p2Interval)
               this.clearIntervals();
-              console.log(this.p1Interval, this.p2Interval)
             }
           }, 100);
         }

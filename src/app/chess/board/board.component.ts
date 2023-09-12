@@ -39,8 +39,6 @@ export class BoardComponent implements OnInit {
     this.reloadBoard();
     this.loadOnReload();
 
-    console.log(this.gameService.gameData)
-
     if(this.gameService.gameData['ended_utc']) {
       return;
     }
@@ -124,7 +122,6 @@ export class BoardComponent implements OnInit {
       if(this.newMovesInsert) {
         this.newMovesInsert.unsubscribe();
       }
-      console.log('finished game')
       await this.stopFinishedGame();
     }
   }
@@ -180,7 +177,6 @@ export class BoardComponent implements OnInit {
     if (this.gameService.whoseMove.value === this.color) {
       await this.chessService.supabase.from('moves').insert(data);
     }
-    console.log('debbuging new game color change => changing in loadGameFromFEN');
     this.onWhoseMoveChange();
   }
 
@@ -229,7 +225,6 @@ export class BoardComponent implements OnInit {
     this.lastMove = {from: move['from'], to: move['to']};
 
     if ((init && move['color'] === 'w') || (!init && this.gameService.whoseMove.value!==this.color)) {
-      console.log('debbuging new game color change => changing in loadGameFromFEN');
       this.onWhoseMoveChange();
     }
 

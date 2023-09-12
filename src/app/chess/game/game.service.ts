@@ -15,11 +15,9 @@ export class GameService {
     winner: string | null = null;
 
     constructor(private authService: AuthService) {
-        this.whoseMove.subscribe(val=>console.log('debbuging color value changes ->', val))
     }
 
     async finishGame(winner: string | null) {
-        console.log('finished by finishGame in gameservice');
         if(this.whoseMove.value !== 'finished') {
             this.winner = winner;
             this.whoseMove.next('finished');
