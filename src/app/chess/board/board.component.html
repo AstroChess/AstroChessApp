@@ -12,7 +12,7 @@
         }"
       >
         <div class="promotion" *ngIf="promotionChoose && promotionSquare?.column===columnIndex && promotionSquare?.row===rowIndex">
-          <div class="field" (click)="setPromotionProperties('q')">
+          <div class="field" (click)="handlePiecePromotion('q', $event, field)">
             <img
               [src]="
                 '/assets/images/pieces/' + this.color + 'Q.svg'
@@ -20,7 +20,7 @@
               alt="queen"
             />
           </div>
-          <div class="field" (click)="setPromotionProperties('r')">
+          <div class="field" (click)="handlePiecePromotion('r', $event, field)">
             <img
               [src]="
                 '/assets/images/pieces/' + this.color + 'R.svg'
@@ -28,7 +28,7 @@
               alt="rook"
             />
           </div>
-          <div class="field" (click)="setPromotionProperties('b')">
+          <div class="field" (click)="handlePiecePromotion('b', $event, field)">
             <img
               [src]="
                 '/assets/images/pieces/' + this.color + 'B.svg'
@@ -36,7 +36,7 @@
               alt="bishop"
             />
           </div>
-          <div class="field" (click)="setPromotionProperties('n')">
+          <div class="field" (click)="handlePiecePromotion('n', $event, field)">
             <img
               [src]="
                 '/assets/images/pieces/' + this.color + 'N.svg'

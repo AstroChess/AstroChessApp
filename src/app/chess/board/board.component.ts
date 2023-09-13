@@ -105,15 +105,20 @@ export class BoardComponent implements OnInit {
         this.highlightPossibleMoves(field?.square!);
         this.setPositions(row, column);
         this.clearPromotionProperties();
-      } else if(this.board.value[this.selectedRow!][this.selectedColumn!]?.type==='p' && this.selectedRow===1 && !this.promotionPiece) {
-        this.promotionChoose = true;
-        this.promotionSquare = {row, column};
-        return;
+      } else if(this.board.value[this.selectedRow!][this.selectedColumn!]?.type==='p' && this.selectedRow===1) {
+        if(!this.promotionPiece) {
+          this.promotionChoose = true;
+          this.promotionSquare = {row, column};
+          return;
+        }
+        this.changePositions(row, column);
+        this.clearPromotionProperties();
       } else {
         this.clearPromotionProperties();
         this.changePositions(row, column);
       }
     } else {
+      this.clearPromotionProperties();
       this.clearSelectedFields();
       this.clearPossibleMoves();
     }
@@ -148,12 +153,11 @@ export class BoardComponent implements OnInit {
   ) {
     let fromField = this.getSquare(this.selectedRow!, this.selectedColumn!);
     let toField = this.getSquare(row, column);
-    let promotionPiece = this.board.value[this.selectedRow!][this.selectedColumn!]?.type==='p' && this.selectedRow===1 ? 'q' : '';
     
     const move = this.chessInstance.move({
       from: fromField,
       to: toField,
-      promotion: promotionPiece
+      promotion: this.promotionPiece
     });
 
     this.boardService.highlightLastMove(fromField, toField);
@@ -243,6 +247,15 @@ export class BoardComponent implements OnInit {
   private async stopFinishedGame() {
     this.clearSelections();
     await this.gameService.finishGame(null);
+  }
+
+  handlePiecePromotion(
+    piece: 'q' | 'r' | 'n' | 'b',
+    event: any,
+    field: { square: Square; type: PieceSymbol; color: Color } | null) {
+      event.stopPropagation();
+      this.setPromotionProperties(piece);
+      this.handlePositionChange(this.promotionSquare!.row, this.promotionSquare!.column, field, 'player');
   }
 
   setPromotionProperties(piece: 'q' | 'r' | 'n' | 'b') {
