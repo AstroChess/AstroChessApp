@@ -65,33 +65,35 @@ export class TimerComponent implements OnInit, OnDestroy {
     if(!winner) {
       this.whoseMoveSub = this.gameService.whoseMove.subscribe(
         (color: 'w' | 'b' | 'finished') => {
-          const whitePlayer = this.gameService.gameData.white_player.userid;
-          const blackPlayer = this.gameService.gameData.black_player.userid;
+          console.log('aaaaa')
 
-          if(color==='finished') return;
+          if(color==='finished') {
+            this.stopTimer();
+            return;
+          };
+
+          this.stopTimer();
   
-          if ((color==='w' && this.gameService.player.userid===whitePlayer) || (color==='b' && this.gameService.player.userid===blackPlayer)) {
+          if ((color==='w' && this.color==='w') || (color==='b' && this.color==='b')) {
             this.p2Interval = setInterval(() => {
-              if (this.color!==color) {
-                clearInterval(this.p2Interval);
-                return;
-              }
               this.p2Time -= 100;
               this.gameService.timeToEnd = this.p2Time;
               if (this.p2Time <= 0) {
                 this.gameService.finishGame(this.color==='w' ? 'b' : 'w');
+                if(this.whoseMoveSub) {
+                  this.whoseMoveSub.unsubscribe();
+                }
                 this.stopTimer();
               }
             }, 100);
           } else {
             this.p1Interval = setInterval(() => {
-              if (this.color===color) {
-                clearInterval(this.p1Interval);
-                return;
-              }
               this.p1Time -= 100;
               if (this.p1Time <= 0) {
                 this.gameService.finishGame(this.color);
+                if(this.whoseMoveSub) {
+                  this.whoseMoveSub.unsubscribe();
+                }
                 this.stopTimer();
               }
             }, 100);
@@ -101,10 +103,7 @@ export class TimerComponent implements OnInit, OnDestroy {
     }
   }
 
-  private stopTimer() {
-    if(this.whoseMoveSub) {
-      this.whoseMoveSub.unsubscribe();
-    }
+  stopTimer() {
     clearInterval(this.p1Interval);
     clearInterval(this.p2Interval);
   }
@@ -120,6 +119,11 @@ export class TimerComponent implements OnInit, OnDestroy {
       return this.color;
     }
     return null;
+  }
+
+  surrender() {
+    this.stopTimer();
+    this.gameService.finishGame(this.color==='w' ? 'b' : 'w');
   }
 
   ngOnDestroy(): void {
