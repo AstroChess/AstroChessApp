@@ -15,3 +15,21 @@ nb-card-header, nb-card-footer {
         font-size: 2rem;
     }
 }
+
+nb-card-body {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+
+  .surrender-icon {
+    color: rgb(18, 133, 133);
+    height: 40%;
+    filter: invert(100%);
+    cursor: pointer;
+    transition: 0.2s;
+
+    &:hover {
+      scale: 1.1;
+    }
+  }
+}

@@ -6,7 +6,9 @@
     <div class="time">{{ p1Time | timer }}</div>
   </nb-card-header>
   
-  <nb-card-body></nb-card-body>
+  <nb-card-body>
+    <img class="surrender-icon" src="/assets/images/flag.svg" alt="surrender" (click)="surrender()">
+  </nb-card-body>
   
   <nb-card-footer>
     <div class="time">{{ p2Time | timer }}</div>
