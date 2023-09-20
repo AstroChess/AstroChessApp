@@ -37,7 +37,6 @@ export class BoardComponent implements OnInit {
 
     this.boardService.board.subscribe(
       (boardStructure: ({ square: Square; type: PieceSymbol; color: Color } | null)[][]) => {
-        console.log('cvhag')
         this.board.next(boardStructure);
       }
     )

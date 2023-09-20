@@ -61,13 +61,10 @@ export class TimerComponent implements OnInit, OnDestroy {
     }
 
     const winner = this.checkTimeForWinner();
-    console.log(winner, 'winner11')
     
     if(!winner) {
       this.whoseMoveSub = this.gameService.whoseMove.subscribe(
         (color: 'w' | 'b' | 'finished') => {
-          console.log('aaaaa')
-
           if(color==='finished') {
             this.stopTimer();
             return;
