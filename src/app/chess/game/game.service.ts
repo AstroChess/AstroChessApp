@@ -10,7 +10,7 @@ export class GameService {
     whoseMove = new BehaviorSubject<'w' | 'b' | 'finished'>('w');
     player!: any;
     opponent!: any;
-    color!: string;
+    color!: 'w' | 'b';
     timeToEnd!: number;
     winner: string | null = null;
 
@@ -28,7 +28,7 @@ export class GameService {
         }
     }
 
-    createNewState(gameData: any, player: string, opponent: string, color: string) {
+    createNewState(gameData: any, player: string, opponent: string, color: 'w' | 'b') {
         this.gameData = gameData;
         this.player = player;
         this.opponent = opponent;
