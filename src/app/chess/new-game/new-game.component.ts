@@ -20,8 +20,8 @@ export class NewGameComponent implements OnInit {
 
   constructor(private chessService: ChessService, private authService: AuthService) {}
 
-  async ngOnInit() {
-    const { data: games } = await this.chessService.supabase
+  ngOnInit() {
+    this.chessService.supabase
       .from('games')
       .delete()
       .or(

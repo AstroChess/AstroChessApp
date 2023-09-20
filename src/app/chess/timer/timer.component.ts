@@ -60,7 +60,8 @@ export class TimerComponent implements OnInit, OnDestroy {
       }
     }
 
-    const winner = await this.checkTimeForWinner();
+    const winner = this.checkTimeForWinner();
+    console.log(winner, 'winner11')
     
     if(!winner) {
       this.whoseMoveSub = this.gameService.whoseMove.subscribe(
@@ -108,14 +109,14 @@ export class TimerComponent implements OnInit, OnDestroy {
     clearInterval(this.p2Interval);
   }
 
-  private async checkTimeForWinner() {
+  private checkTimeForWinner() {
     if (this.p2Time <= 0) {
       const opponentColor = this.color==='w' ? 'b' : 'w';
-      await this.gameService.finishGame(opponentColor);
+      this.gameService.finishGame(opponentColor);
       return opponentColor;
     }
     if (this.p1Time <= 0) {
-      await this.gameService.finishGame(this.color);
+      this.gameService.finishGame(this.color);
       return this.color;
     }
     return null;

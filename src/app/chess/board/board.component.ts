@@ -34,7 +34,7 @@ export class BoardComponent implements OnInit {
     private boardService: BoardService
   ) {}
 
-  async ngOnInit() {
+  ngOnInit() {
     this.columnSymbolArray = this.color==='w' ? ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'] : ['', 'H', 'G', 'F', 'E', 'D', 'C', 'B', 'A']
     this.reloadBoard();
     this.loadOnReload();
