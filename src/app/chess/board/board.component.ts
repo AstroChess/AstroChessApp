@@ -43,7 +43,7 @@ export class BoardComponent implements OnInit {
       return;
     }
 
-    this.boardService.lastMove.subscribe(move=>{
+    this.boardService.lastMove.subscribe((move: any)=>{
       this.lastMove = move;
     })
     
@@ -57,7 +57,7 @@ export class BoardComponent implements OnInit {
           table: 'moves',
           filter: `game_id=eq.${this.gameService.gameData.game_id}`,
         },
-        (payload) => {
+        (payload: any) => {
           if (
             payload.new['color'] !== (this.color)
           ) {
@@ -90,7 +90,7 @@ export class BoardComponent implements OnInit {
 
     if (!this.selectedColumn && !this.selectedRow && this.board.value[row][column]) {
       if (field?.color === this.gameService.whoseMove.value) {
-        this.highlightPossibleMoves(field.square);
+        this.highlightPossibleMoves(field?.square);
         this.setPositions(row, column);
       }
     } else if (
@@ -189,7 +189,7 @@ export class BoardComponent implements OnInit {
       this.board.next(this.chessInstance.board());
     } else {
       const board = this.chessInstance.board().reverse();
-      board.map((subarray) => subarray.reverse());
+      board.map((subarray: any[]) => subarray.reverse());
       this.board.next(board);
     } 
   }
@@ -204,7 +204,7 @@ export class BoardComponent implements OnInit {
   }
 
   private highlightPossibleMoves(square: Square) {
-    this.possibleMoves = this.chessInstance.moves({square, verbose: true}).map((val) => val['to']);
+    this.possibleMoves = this.chessInstance.moves({square, verbose: true}).map(val => val['to']);
   }
 
   private clearPossibleMoves() {
