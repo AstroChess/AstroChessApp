@@ -14,6 +14,7 @@
   justify-content: center;
   align-items: center;
   padding: 1%;
+  min-width: 65%;
 }
 
 .timer, .aside {
@@ -23,5 +24,5 @@
 }
 
 .aside {
-  flex: 1 2 25%
+  flex: 1 2 25%;
 }
