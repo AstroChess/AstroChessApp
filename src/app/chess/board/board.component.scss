@@ -56,12 +56,20 @@
   }
 }
 
+.field div {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .field:nth-child(even) {
   background-color: #86a666;
 }
 
 .field .selected {
-  background-color: #b6fd73 !important;
+  background-color: #6f8c52;
 }
 
 .field-symbol {
@@ -95,5 +103,5 @@
 }
 
 .last-move {
-  background-color: rgba(246, 255, 0, 0.4);
+  background-color: rgba(255, 255, 0, 0.5);
 }
