@@ -3,7 +3,9 @@ import {
   RouterStateSnapshot,
   ActivatedRouteSnapshot
 } from '@angular/router';
+
 import { Observable } from 'rxjs';
+
 import { AuthService } from 'src/app/auth/auth.service';
 
 @Injectable({

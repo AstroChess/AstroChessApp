@@ -1,6 +1,6 @@
 import { Injectable, OnDestroy } from '@angular/core';
 
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { RealtimeChannel } from '@supabase/supabase-js';
 import { Chess, Color, PieceSymbol, Square } from 'chess.js';
 
@@ -20,7 +20,7 @@ export class BoardService implements OnDestroy {
     square: null | {row: number, column: number}, 
     choose: boolean 
   }>({ piece: '', square: null, choose: false })
-  lastMove = new Subject<{from: string, to: string}>();
+  lastMove = new BehaviorSubject<{from: string, to: string} | undefined>(undefined);
 
   constructor(private gameService: GameService, private chessService: ChessService) {}
 
@@ -198,6 +198,7 @@ export class BoardService implements OnDestroy {
     const lastMove = moves.at(-1);
     if (lastMove) {
       this.loadGameFromFEN(lastMove, true);
+      this.lastMove.next(lastMove);
     }
   }
 
