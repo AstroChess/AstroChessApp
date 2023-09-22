@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 
 import { BehaviorSubject } from 'rxjs';
-import { Chess, Square, PieceSymbol, Color } from 'chess.js';
+import { Subscription } from '@supabase/supabase-js';
+import { Square, PieceSymbol, Color } from 'chess.js';
 
 import { BoardService } from './board.service';
-import { Subscription } from '@supabase/supabase-js';
 
 @Component({
   selector: 'app-board',
@@ -13,7 +13,7 @@ import { Subscription } from '@supabase/supabase-js';
   providers: [BoardService],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent implements OnInit, OnDestroy {
   @Input() color!: 'w' | 'b';
   columnSymbolArray: string[] = [];
   selectedRow: number | null = null;
@@ -21,10 +21,12 @@ export class BoardComponent implements OnInit {
   board = new BehaviorSubject<({ square: Square; type: PieceSymbol; color: Color } | null)[][]>([[]]);
   possibleMoves: (string | undefined)[] = [];
   lastMove: { from: string; to: string } | undefined;
-  promotionPiece: '' | 'q' | 'r' | 'n' | 'b' = '';
-  promotionSquare: null | {row: number, column: number} = null;
-  promotionChoose = false;
-  subscriptions: Subscription[] = [];
+  promotion: {
+    piece: '' | 'q' | 'r' | 'n' | 'b', 
+    square: null | {row: number, column: number}, 
+    choose: boolean 
+  } = { piece: '', square: null, choose: false };
+  subscriptions!: any[];
 
   constructor(
     private boardService: BoardService
@@ -40,14 +42,14 @@ export class BoardComponent implements OnInit {
         this.board.next(boardStructure);
       }
     )
-
-    this.boardService.selectedRow.subscribe(row=>this.selectedRow=row);
-    this.boardService.selectedColumn.subscribe(column=>this.selectedColumn=column);
-    this.boardService.lastMove.subscribe(move=>this.lastMove=move);
-    this.boardService.possibleMoves.subscribe(moves=>this.possibleMoves=moves);
-    this.boardService.promotionPiece.subscribe(piece=>this.promotionPiece=piece);
-    this.boardService.promotionSquare.subscribe(square=>this.promotionSquare=square);
-    this.boardService.promotionChoose.subscribe(choose=>this.promotionChoose=choose);
+    
+    this.subscriptions = [
+      this.boardService.selectedRow.subscribe(row=>this.selectedRow=row),
+      this.boardService.selectedColumn.subscribe(column=>this.selectedColumn=column),
+      this.boardService.lastMove.subscribe(move=>this.lastMove=move),
+      this.boardService.possibleMoves.subscribe(moves=>this.possibleMoves=moves),
+      this.boardService.promotion.subscribe(promotionData=>this.promotion=promotionData),
+    ]
   }
 
   async handlePositionChange(
@@ -72,5 +74,11 @@ export class BoardComponent implements OnInit {
     field: { square: Square; type: PieceSymbol; color: Color } | null) {
       event.stopPropagation();
       this.boardService.handlePiecePromotion(piece, field);
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription=>{
+      subscription.unsubscribe();
+    })
   }
 }

@@ -1,9 +1,11 @@
 import { Injectable, OnDestroy } from '@angular/core';
-import { GameService } from '../game/game.service';
+
 import { BehaviorSubject, Subject } from 'rxjs';
-import { Chess, Color, PieceSymbol, Square } from 'chess.js';
-import { ChessService } from '../chess.service';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import { Chess, Color, PieceSymbol, Square } from 'chess.js';
+
+import { ChessService } from '../chess.service';
+import { GameService } from '../game/game.service';
 
 @Injectable()
 export class BoardService implements OnDestroy {
@@ -13,9 +15,11 @@ export class BoardService implements OnDestroy {
   chessInstance: Chess = new Chess();
   board = new BehaviorSubject<({ square: Square; type: PieceSymbol; color: Color } | null)[][]>([[]]);
   possibleMoves = new BehaviorSubject<(string | undefined)[]>([]);
-  promotionPiece = new BehaviorSubject<'' | 'q' | 'r' | 'n' | 'b'>('');
-  promotionSquare = new BehaviorSubject<null | {row: number, column: number}>(null);
-  promotionChoose = new BehaviorSubject<boolean>(false);
+  promotion = new BehaviorSubject<{
+    piece: '' | 'q' | 'r' | 'n' | 'b', 
+    square: null | {row: number, column: number}, 
+    choose: boolean 
+  }>({ piece: '', square: null, choose: false })
   lastMove = new Subject<{from: string, to: string}>();
 
   constructor(private gameService: GameService, private chessService: ChessService) {}
@@ -87,9 +91,8 @@ export class BoardService implements OnDestroy {
         this.setPositions(row, column);
         this.clearPromotionProperties();
       } else if(this.board.value[this.selectedRow.value!][this.selectedColumn.value!]?.type==='p' && this.selectedRow.value===1) {
-        if(!this.promotionPiece.value) {
-          this.promotionChoose.next(true);
-          this.promotionSquare.next({row, column});
+        if(!this.promotion.value.piece) {
+          this.promotion.next({piece: '', square: {row, column}, choose: true});
           return;
         }
         this.changePositions(row, column);
@@ -134,7 +137,7 @@ export class BoardService implements OnDestroy {
     const move = this.chessInstance.move({
       from: fromField,
       to: toField,
-      promotion: this.promotionPiece.value
+      promotion: this.promotion.value.piece
     });
 
     this.highlightLastMove(fromField, toField);
@@ -232,17 +235,15 @@ export class BoardService implements OnDestroy {
     piece: 'q' | 'r' | 'n' | 'b',
     field: { square: Square; type: PieceSymbol; color: Color } | null) {
       this.setPromotionProperties(piece);
-      this.handlePositionChange(this.promotionSquare.value!.row, this.promotionSquare.value!.column, field, 'player');
+      this.handlePositionChange(this.promotion.value.square!.row, this.promotion.value.square!.column, field, 'player');
   }
 
   setPromotionProperties(piece: 'q' | 'r' | 'n' | 'b') {
-    this.promotionPiece.next(piece);
+    this.promotion.next({...this.promotion.value, piece: piece});
   }
 
   private clearPromotionProperties() {
-    this.promotionPiece.next('');
-    this.promotionSquare.next(null);
-    this.promotionChoose.next(false);
+    this.promotion.next({piece: '', square: null, choose: false});
   }
 
   highlightLastMove(from: string, to: string) {

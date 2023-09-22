@@ -9,10 +9,10 @@
           'selected': rowIndex === selectedRow && columnIndex === selectedColumn,
           'possible-move': possibleMoves.indexOf(getSquare(rowIndex, columnIndex))!==-1,
           'last-move': lastMove?.from===getSquare(rowIndex, columnIndex) || lastMove?.to===getSquare(rowIndex, columnIndex),
-          'promotion-dim': !!promotionPiece
+          'promotion-dim': !!promotion.piece
         }"
       >
-        <div class="promotion" *ngIf="promotionChoose && promotionSquare?.column===columnIndex && promotionSquare?.row===rowIndex">
+        <div class="promotion" *ngIf="promotion.choose && promotion.square?.column===columnIndex && promotion.square?.row===rowIndex">
           <div class="field" (click)="handlePiecePromotion('q', $event, field)">
             <img
               [src]="
