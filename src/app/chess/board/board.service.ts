@@ -10,8 +10,7 @@ import { GameService } from '../game/game.service';
 @Injectable()
 export class BoardService implements OnDestroy {
   newMovesInsert!: RealtimeChannel;
-  selectedRow = new BehaviorSubject<number | null>(null);
-  selectedColumn = new BehaviorSubject<number | null>(null);
+  selected = new BehaviorSubject<{row: number, column: number} | null>(null);
   chessInstance: Chess = new Chess();
   board = new BehaviorSubject<({ square: Square; type: PieceSymbol; color: Color } | null)[][]>([[]]);
   possibleMoves = new BehaviorSubject<(string | undefined)[]>([]);
@@ -64,33 +63,33 @@ export class BoardService implements OnDestroy {
     if (
       whoseMove === 'finished' ||
       (field &&
-        !this.selectedColumn.value &&
-        !this.selectedRow.value &&
+        !this.selected.value?.column &&
+        !this.selected.value?.row &&
         this.gameService.color !== field.color) ||
       (whoseMove !== this.gameService.color && mode === 'player') || 
-      (possibleMoves.length===0 && !this.selectedColumn.value && !this.selectedRow.value)
+      (possibleMoves.length===0 && !this.selected.value?.column && !this.selected.value?.row)
     ) {
       return;
     }
 
-    if (!this.selectedColumn.value && !this.selectedRow.value && this.board.value[row][column]) {
+    if (!this.selected.value?.column && !this.selected.value?.row && this.board.value[row][column]) {
       if (field?.color === this.gameService.whoseMove.value) {
         this.highlightPossibleMoves(field?.square);
         this.setPositions(row, column);
       }
     } else if (
-      this.selectedColumn.value !== null &&
-      this.selectedRow.value !== null &&
-      !(row === this.selectedRow.value && column === this.selectedColumn.value)
+      this.selected.value?.column !== null &&
+      this.selected.value?.row !== null &&
+      !(row === this.selected.value?.row && column === this.selected.value?.column)
     ) {
       if (
         field?.color ===
-        this.board.value[this.selectedRow.value][this.selectedColumn.value]?.color
+        this.board.value[this.selected.value?.row!][this.selected.value?.column!]?.color
       ) {
         this.highlightPossibleMoves(field?.square!);
         this.setPositions(row, column);
         this.clearPromotionProperties();
-      } else if(this.board.value[this.selectedRow.value!][this.selectedColumn.value!]?.type==='p' && this.selectedRow.value===1) {
+      } else if(this.board.value[this.selected.value?.row!][this.selected.value?.column!]?.type==='p' && this.selected.value?.row===1) {
         if(!this.promotion.value.piece) {
           this.promotion.next({piece: '', square: {row, column}, choose: true});
           return;
@@ -123,15 +122,14 @@ export class BoardService implements OnDestroy {
   }
   
   private setPositions(row: number, column: number) {
-    this.selectedColumn.next(column);
-    this.selectedRow.next(row);
+    this.selected.next({row, column});
   }
 
   private async changePositions(
     row: number,
     column: number,
   ) {
-    let fromField = this.getSquare(this.selectedRow.value!, this.selectedColumn.value!);
+    let fromField = this.getSquare(this.selected.value?.row!, this.selected.value?.column!);
     let toField = this.getSquare(row, column);
     
     const move = this.chessInstance.move({
@@ -175,8 +173,7 @@ export class BoardService implements OnDestroy {
   }
 
   private clearSelectedFields() {
-    this.selectedColumn.next(null);
-    this.selectedRow.next(null);
+    this.selected.next(null);
   }
 
   private onWhoseMoveChange() {

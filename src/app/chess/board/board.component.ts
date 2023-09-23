@@ -16,8 +16,7 @@ import { BoardService } from './board.service';
 export class BoardComponent implements OnInit, OnDestroy {
   @Input() color!: 'w' | 'b';
   columnSymbolArray: string[] = [];
-  selectedRow: number | null = null;
-  selectedColumn: number | null = null;
+  selected: {row: number, column: number} | null = null;
   board = new BehaviorSubject<({ square: Square; type: PieceSymbol; color: Color } | null)[][]>([[]]);
   possibleMoves: (string | undefined)[] = [];
   lastMove: { from: string; to: string } | undefined;
@@ -44,8 +43,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     )
     
     this.subscriptions = [
-      this.boardService.selectedRow.subscribe(row=>this.selectedRow=row),
-      this.boardService.selectedColumn.subscribe(column=>this.selectedColumn=column),
+      this.boardService.selected.subscribe(square=>this.selected=square),
       this.boardService.lastMove.subscribe(move=>this.lastMove=move),
       this.boardService.possibleMoves.subscribe(moves=>this.possibleMoves=moves),
       this.boardService.promotion.subscribe(promotionData=>this.promotion=promotionData),

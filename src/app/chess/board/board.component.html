@@ -5,7 +5,7 @@
       <div
         (click)="handlePositionChange(rowIndex, columnIndex, field, 'player')"
         [ngClass]="{
-          'selected': rowIndex === selectedRow && columnIndex === selectedColumn,
+          'selected': rowIndex === selected?.row && columnIndex === selected?.column,
           'last-move': lastMove?.from===getSquare(rowIndex, columnIndex) || lastMove?.to===getSquare(rowIndex, columnIndex),
           'possible-move': possibleMoves.indexOf(getSquare(rowIndex, columnIndex))!==-1,
           'promotion-dim': !!promotion.piece
