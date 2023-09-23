@@ -35,18 +35,29 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.columnSymbolArray = this.color==='w' ? ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'] : ['', 'H', 'G', 'F', 'E', 'D', 'C', 'B', 'A'];
 
     this.boardService.initialState();
-
-    this.boardService.board.subscribe(
-      (boardStructure: ({ square: Square; type: PieceSymbol; color: Color } | null)[][]) => {
-        this.board.next(boardStructure);
-      }
-    )
     
     this.subscriptions = [
-      this.boardService.selected.subscribe(square=>this.selected=square),
-      this.boardService.lastMove.subscribe(move=>this.lastMove=move),
-      this.boardService.possibleMoves.subscribe(moves=>this.possibleMoves=moves),
-      this.boardService.promotion.subscribe(promotionData=>this.promotion=promotionData),
+      this.boardService.board.subscribe(
+        (boardStructure: ({ square: Square; type: PieceSymbol; color: Color } | null)[][]) => {
+          this.board.next(boardStructure);
+        }
+      ),
+
+      this.boardService.selected.subscribe(
+        (square: { row: number; column: number; } | null) => this.selected=square
+      ),
+
+      this.boardService.lastMove.subscribe(
+        (move: {from: string, to: string} | undefined) => this.lastMove=move
+      ),
+
+      this.boardService.possibleMoves.subscribe(
+        (moves: (string | never)[]) => this.possibleMoves=moves
+      ),
+      
+      this.boardService.promotion.subscribe(
+        (promotionData: {piece: "" | "n" | "b" | "r" | "q", square: {row: number, column: number} | null, choose: boolean;}) => this.promotion=promotionData
+      ),
     ]
   }
 

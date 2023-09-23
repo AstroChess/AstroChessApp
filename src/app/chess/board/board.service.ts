@@ -13,7 +13,7 @@ export class BoardService implements OnDestroy {
   selected = new BehaviorSubject<{row: number, column: number} | null>(null);
   chessInstance: Chess = new Chess();
   board = new BehaviorSubject<({ square: Square; type: PieceSymbol; color: Color } | null)[][]>([[]]);
-  possibleMoves = new BehaviorSubject<(string | undefined)[]>([]);
+  possibleMoves = new BehaviorSubject<(string | never)[]>([]);
   promotion = new BehaviorSubject<{
     piece: '' | 'q' | 'r' | 'n' | 'b', 
     square: null | {row: number, column: number}, 
