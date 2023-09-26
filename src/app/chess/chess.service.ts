@@ -101,7 +101,7 @@ export class ChessService implements OnDestroy {
           this.router.navigate(['game', gameId]);
           this.channelChanges.unsubscribe();
         }
-      )
+      ).subscribe();
   }
 
   async searchCreatedGames() {
