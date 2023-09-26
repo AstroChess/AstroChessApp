@@ -12,20 +12,24 @@ export class GameService {
     opponent!: any;
     color!: 'w' | 'b';
     timeToEnd!: number;
-    winner: string | null = null;
+    winner: 'w' | 'b' | 'draw' | null = null;
 
     constructor(private authService: AuthService) {
     }
 
-    async finishGame(winner: string | null) {
+    async finishGame(winner: 'w' | 'b' | 'draw' | null) {
         if(this.whoseMove.value !== 'finished') {
-            this.winner = winner;
-            this.whoseMove.next('finished');
+            this.stopGame();
             if(!this.gameData.ended_utc) {
                 const {data} = await this.authService.supabase.from('games').update({ended_utc: new Date().toUTCString(), result: winner}).eq('game_id', this.gameData.game_id).select().single();
                 this.gameData = data;
             }
+            this.winner = this.gameData.result;
         }
+    }
+
+    stopGame() {
+        this.whoseMove.next('finished');
     }
 
     createNewState(gameData: any, player: string, opponent: string, color: 'w' | 'b') {

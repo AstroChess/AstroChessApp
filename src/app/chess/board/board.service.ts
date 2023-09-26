@@ -226,7 +226,7 @@ export class BoardService implements OnDestroy {
 
   private async stopFinishedGame() {
     this.clearSelections();
-    await this.gameService.finishGame(null);
+    await this.gameService.stopGame();
   }
 
   handlePiecePromotion(

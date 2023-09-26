@@ -19,7 +19,7 @@ export class TimerComponent implements OnInit, OnDestroy {
   p1Interval: any;
   p2Interval: any;
   
-  constructor(private gameService: GameService, private chessService: ChessService) {}
+  constructor(private gameService: GameService) {}
   
   async ngOnInit() {
     this.color = this.gameService.gameData.white_player.userid===this.gameService.player.userid ? 'w' : 'b';
