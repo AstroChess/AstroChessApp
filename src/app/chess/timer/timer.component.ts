@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 
 import { Subscription } from 'rxjs';
-import { ChessService } from '../chess.service';
 import { GameService } from '../game/game.service';
 
 @Component({
@@ -18,10 +17,16 @@ export class TimerComponent implements OnInit, OnDestroy {
   p2Time!: number;
   p1Interval: any;
   p2Interval: any;
+  winner!: 'w' | 'b' | 'draw' | null;
+  winnerSub!: Subscription;
   
   constructor(private gameService: GameService) {}
   
   async ngOnInit() {
+    this.winnerSub = this.gameService.winner.subscribe(
+      winner =>{ this.winner = winner; console.log(winner, this.color)}
+    )
+
     this.color = this.gameService.gameData.white_player.userid===this.gameService.player.userid ? 'w' : 'b';
 
     const moves: any[] = this.gameService.gameData.moves;

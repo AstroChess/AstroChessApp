@@ -12,7 +12,7 @@ export class GameService {
     opponent!: any;
     color!: 'w' | 'b';
     timeToEnd!: number;
-    winner: 'w' | 'b' | 'draw' | null = null;
+    winner = new BehaviorSubject<'w' | 'b' | 'draw' | null>(null);
 
     constructor(private authService: AuthService) {
     }
@@ -24,7 +24,7 @@ export class GameService {
                 const {data} = await this.authService.supabase.from('games').update({ended_utc: new Date().toUTCString(), result: winner}).eq('game_id', this.gameData.game_id).select().single();
                 this.gameData = data;
             }
-            this.winner = this.gameData.result;
+            this.winner.next(this.gameData.result);
         }
     }
 

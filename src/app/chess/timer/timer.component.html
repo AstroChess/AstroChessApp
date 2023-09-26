@@ -1,19 +1,34 @@
 <nb-card size="small">
   <nb-card-header>
-    <div class="name">{{ opponentName }}</div>
+    <div
+      class="name"
+      [ngClass]="{ winner: winner===(color==='w' ? 'b' : 'w'), loser: winner===color, draw: winner==='draw' }"
+    >
+      {{ opponentName }}
+    </div>
   </nb-card-header>
   <nb-card-header>
     <div class="time">{{ p1Time | timer }}</div>
   </nb-card-header>
-  
+
   <nb-card-body>
-    <img class="surrender-icon" src="/assets/images/flag.svg" alt="surrender" (click)="surrender()">
+    <img
+      class="surrender-icon"
+      src="/assets/images/flag.svg"
+      alt="surrender"
+      (click)="surrender()"
+    />
   </nb-card-body>
-  
+
   <nb-card-footer>
     <div class="time">{{ p2Time | timer }}</div>
   </nb-card-footer>
   <nb-card-footer>
-    <div class="name">{{ playerName }}</div>
+    <div
+      class="name"
+      [ngClass]="{ winner: winner===color, loser: winner===(color==='w' ? 'b' : 'w'), draw: winner==='draw' }"
+    >
+      {{ playerName }}
+    </div>
   </nb-card-footer>
 </nb-card>

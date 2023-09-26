@@ -6,6 +6,7 @@ nb-card-header, nb-card-footer {
     display: flex;
     align-items: center;
     padding: 18px;
+    font-weight: bold;
 
     .time {
         width: 100%;
@@ -32,4 +33,16 @@ nb-card-body {
       scale: 1.1;
     }
   }
+}
+
+.winner {
+  color: lightgreen;
+}
+
+.loser {
+  color: lightcoral;
+}
+
+.draw {
+  color: yellow;
 }
