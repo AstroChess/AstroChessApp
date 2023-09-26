@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 
 import { Subject } from 'rxjs';
 import { environment as env } from 'src/environments/environment';
@@ -7,10 +7,8 @@ import { SupabaseClient, createClient } from '@supabase/supabase-js';
 
 import { AuthService } from '../auth/auth.service';
 
-@Injectable({
-  providedIn: 'root',
-})
-export class ChessService {
+@Injectable()
+export class ChessService implements OnDestroy {
   supabase: SupabaseClient;
   channelChanges: any;
   createdGame = new Subject<{ time: number; gameId: string }>();
@@ -101,11 +99,9 @@ export class ChessService {
         (payload: any) => {
           this.playAudio('notify');
           this.router.navigate(['game', gameId]);
-          console.log('found game')
           this.channelChanges.unsubscribe();
         }
       )
-      .subscribe();
   }
 
   async searchCreatedGames() {
@@ -131,5 +127,9 @@ export class ChessService {
     }
 
     this.createdGame.next({ time: time, gameId: '' });
+  }
+
+  ngOnDestroy(): void {
+    this.channelChanges.unsubscribe();
   }
 }
