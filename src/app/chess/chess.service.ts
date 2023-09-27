@@ -86,8 +86,6 @@ export class ChessService implements OnDestroy {
 
     const gameId = game.data['game_id'];
     const color = game.data['white_player'] ? 'w' : 'b';
-
-    console.log('chessservice1')
     
     this.channelChanges = this.supabase
       .channel('schema-db-changes')
@@ -99,9 +97,11 @@ export class ChessService implements OnDestroy {
           table: 'games',
           filter: `game_id=eq.${gameId}`,
         },
-        async (payload: any) => {
-          this.playAudio('notify');
-          await this.router.navigate(['game', gameId]);
+        async (payload) => {
+          if(!payload.new['result']) {
+            this.playAudio('notify');
+            await this.router.navigate(['game', gameId]);
+          }
           this.channelChanges.unsubscribe();
         }
       ).subscribe();
