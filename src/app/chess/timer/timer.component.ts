@@ -24,10 +24,19 @@ export class TimerComponent implements OnInit, OnDestroy {
   
   async ngOnInit() {
     this.winnerSub = this.gameService.winner.subscribe(
-      winner =>{ this.winner = winner; console.log(winner, this.color)}
+      winner => { 
+        this.winner = winner;
+        this.stopTimer();
+      }
     )
 
     this.color = this.gameService.gameData.white_player.userid===this.gameService.player.userid ? 'w' : 'b';
+
+    if(this.winner) {
+      this.p1Time = 0;
+      this.p2Time = 0;
+      return;
+    }
 
     const moves: any[] = this.gameService.gameData.moves;
     const timePerPlayer = this.gameService.gameData.minutes_per_player*60*1000;
@@ -131,5 +140,8 @@ export class TimerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.stopTimer();
+    if(this.winnerSub) {
+      this.winnerSub.unsubscribe();
+    }
   }
 }

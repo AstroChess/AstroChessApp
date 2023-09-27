@@ -36,7 +36,9 @@ export class GameService {
         this.gameData = gameData;
         this.player = player;
         this.opponent = opponent;
-        this.gameData = gameData
         this.color = color;
+        if(this.gameData.result) {
+            this.winner.next(this.gameData.result);
+        }
     }
 }
