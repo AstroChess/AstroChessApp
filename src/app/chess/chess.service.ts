@@ -133,6 +133,8 @@ export class ChessService implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.channelChanges.unsubscribe();
+    if(this.channelChanges) {
+      this.channelChanges.unsubscribe();
+    }
   }
 }
