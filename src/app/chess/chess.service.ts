@@ -9,6 +9,7 @@ import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class ChessService implements OnDestroy {
+  audio = new Audio();
   supabase: SupabaseClient;
   channelChanges: any;
   createdGame = new Subject<{ time: number; gameId: string }>();
@@ -21,9 +22,9 @@ export class ChessService implements OnDestroy {
   }
 
   playAudio(type: 'check' | 'move' | 'notify') {
-    const audio = new Audio(`/assets/sound/${type}.mp3`);
-    audio.load();
-    audio.play();
+    this.audio.src = `/assets/sound/${type}.mp3`;
+    this.audio.load();
+    this.audio.play();
   }
 
   async createGame(minutes: number) {
@@ -86,6 +87,8 @@ export class ChessService implements OnDestroy {
     const gameId = game.data['game_id'];
     const color = game.data['white_player'] ? 'w' : 'b';
 
+    console.log('chessservice1')
+    
     this.channelChanges = this.supabase
       .channel('schema-db-changes')
       .on(
@@ -96,9 +99,9 @@ export class ChessService implements OnDestroy {
           table: 'games',
           filter: `game_id=eq.${gameId}`,
         },
-        (payload: any) => {
+        async (payload: any) => {
           this.playAudio('notify');
-          this.router.navigate(['game', gameId]);
+          await this.router.navigate(['game', gameId]);
           this.channelChanges.unsubscribe();
         }
       ).subscribe();
