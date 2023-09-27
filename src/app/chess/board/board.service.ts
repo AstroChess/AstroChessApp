@@ -131,35 +131,39 @@ export class BoardService implements OnDestroy {
   ) {
     let fromField = this.getSquare(this.selected.value?.row!, this.selected.value?.column!);
     let toField = this.getSquare(row, column);
-    
-    const move = this.chessInstance.move({
-      from: fromField,
-      to: toField,
-      promotion: this.promotion.value.piece
-    });
 
-    this.highlightLastMove(fromField, toField);
-
-    this.chessInstance.load(move.after);
-    this.reloadBoard();
-
-    this.chessService.playAudio('move');
-
-    const data = {
-      game_id: this.gameService.gameData.game_id,
-      user_id: this.gameService.player.userid,
-      color: this.gameService.color,
-      from: move.from,
-      to: move.to,
-      FEN_after: move.after,
-      remaining_time_ms: this.gameService.timeToEnd,
-      date_of_move: new Date().toUTCString()
-    };
-    this.clearSelections();
-    if (this.gameService.whoseMove.value === this.gameService.color) {
-      await this.chessService.supabase.from('moves').insert(data);
+    try {
+      const move = this.chessInstance.move({
+        from: fromField,
+        to: toField,
+        promotion: this.promotion.value.piece
+      });
+  
+      this.highlightLastMove(fromField, toField);
+  
+      this.chessInstance.load(move.after);
+      this.reloadBoard();
+  
+      this.chessService.playAudio('move');
+  
+      const data = {
+        game_id: this.gameService.gameData.game_id,
+        user_id: this.gameService.player.userid,
+        color: this.gameService.color,
+        from: move.from,
+        to: move.to,
+        FEN_after: move.after,
+        remaining_time_ms: this.gameService.timeToEnd,
+        date_of_move: new Date().toUTCString()
+      };
+      this.clearSelections();
+      if (this.gameService.whoseMove.value === this.gameService.color) {
+        await this.chessService.supabase.from('moves').insert(data);
+      }
+      this.onWhoseMoveChange();
+    } catch (error) {
+      console.log('Invalid move')
     }
-    this.onWhoseMoveChange();
   }
 
   private reloadBoard() {
