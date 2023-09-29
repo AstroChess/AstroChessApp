@@ -1,6 +1,9 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 
 import { Subscription } from 'rxjs';
+import { environment as env } from 'src/environments/environment';
+import { RealtimeChannel, SupabaseClient, createClient } from '@supabase/supabase-js';
+
 import { GameService } from '../game/game.service';
 
 @Component({
@@ -11,6 +14,9 @@ import { GameService } from '../game/game.service';
 export class TimerComponent implements OnInit, OnDestroy {
   @Input() playerName!: string;
   @Input() opponentName!: string;
+
+  supabaseWinner!: SupabaseClient;
+  supabaseWinnerSub!: RealtimeChannel;
   whoseMoveSub!: Subscription;
   color!: 'w' | 'b';
   p1Time!: number;
@@ -20,7 +26,26 @@ export class TimerComponent implements OnInit, OnDestroy {
   winner!: 'w' | 'b' | 'draw' | null;
   winnerSub!: Subscription;
   
-  constructor(private gameService: GameService) {}
+  constructor(private gameService: GameService) {
+    this.supabaseWinner = createClient(env.supabaseUrl, env.supabaseApi);
+    this.supabaseWinnerSub = this.supabaseWinner
+      .channel('schema-db-changes')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'games',
+          filter: `game_id=eq.${this.gameService.gameData.game_id}`,
+        },
+        async (payload) => {
+          if(payload.new['result']) {
+            this.gameService.finishGame(payload.new['result']);
+            this.supabaseWinnerSub.unsubscribe();
+          }
+        }
+      ).subscribe();
+  }
   
   async ngOnInit() {
     this.winnerSub = this.gameService.winner.subscribe(
@@ -142,6 +167,9 @@ export class TimerComponent implements OnInit, OnDestroy {
     this.stopTimer();
     if(this.winnerSub) {
       this.winnerSub.unsubscribe();
+    }
+    if(this.supabaseWinnerSub) {
+      this.supabaseWinnerSub.unsubscribe();
     }
   }
 }
