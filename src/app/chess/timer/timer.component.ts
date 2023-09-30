@@ -65,6 +65,7 @@ export class TimerComponent implements OnInit, OnDestroy {
     this.calculateTime(moves, timePerPlayer, nowDateUTC, startDate);
     
     if(this.winner) {
+      this.calculateTime(moves, timePerPlayer, this.gameService.gameData.ended_utc, startDate);
       return;
     }
 
