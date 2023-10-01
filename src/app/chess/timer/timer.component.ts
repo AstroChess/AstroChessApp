@@ -51,7 +51,7 @@ export class TimerComponent implements OnInit, OnDestroy {
     this.winnerSub = this.gameService.winner.subscribe(
       winner => { 
         this.winner = winner;
-        this.stopTimer();
+        this.stopTimers();
       }
     )
 
@@ -74,20 +74,19 @@ export class TimerComponent implements OnInit, OnDestroy {
     if(!winner) {
       this.whoseMoveSub = this.gameService.whoseMove.subscribe(
         (color: 'w' | 'b' | 'finished') => {
+          this.stopTimers();
+          
           if(color==='finished') {
-            this.stopTimer();
             return;
           };
 
-          this.stopTimer();
           this.setTimers(color);
-          
         }
       );
     }
   }
 
-  stopTimer() {
+  stopTimers() {
     clearInterval(this.p1Interval);
     clearInterval(this.p2Interval);
   }
@@ -106,7 +105,7 @@ export class TimerComponent implements OnInit, OnDestroy {
   }
 
   surrender() {
-    this.stopTimer();
+    this.stopTimers();
     this.gameService.finishGame(this.color==='w' ? 'b' : 'w');
   }
 
@@ -152,7 +151,7 @@ export class TimerComponent implements OnInit, OnDestroy {
           if(this.whoseMoveSub) {
             this.whoseMoveSub.unsubscribe();
           }
-          this.stopTimer();
+          this.stopTimers();
         }
       }, 100);
     } else {
@@ -163,14 +162,14 @@ export class TimerComponent implements OnInit, OnDestroy {
           if(this.whoseMoveSub) {
             this.whoseMoveSub.unsubscribe();
           }
-          this.stopTimer();
+          this.stopTimers();
         }
       }, 100);
     }
   }
 
   ngOnDestroy(): void {
-    this.stopTimer();
+    this.stopTimers();
     if(this.winnerSub) {
       this.winnerSub.unsubscribe();
     }
