@@ -80,31 +80,8 @@ export class TimerComponent implements OnInit, OnDestroy {
           };
 
           this.stopTimer();
-  
-          if ((color==='w' && this.color==='w') || (color==='b' && this.color==='b')) {
-            this.p2Interval = setInterval(() => {
-              this.p2Time -= 100;
-              this.gameService.timeToEnd = this.p2Time;
-              if (this.p2Time <= 0) {
-                this.gameService.finishGame(this.color==='w' ? 'b' : 'w');
-                if(this.whoseMoveSub) {
-                  this.whoseMoveSub.unsubscribe();
-                }
-                this.stopTimer();
-              }
-            }, 100);
-          } else {
-            this.p1Interval = setInterval(() => {
-              this.p1Time -= 100;
-              if (this.p1Time <= 0) {
-                this.gameService.finishGame(this.color);
-                if(this.whoseMoveSub) {
-                  this.whoseMoveSub.unsubscribe();
-                }
-                this.stopTimer();
-              }
-            }, 100);
-          }
+          this.setTimers(color);
+          
         }
       );
     }
@@ -162,6 +139,33 @@ export class TimerComponent implements OnInit, OnDestroy {
         this.p1Time = lastTwoMoves[1].remaining_time_ms;
         this.p2Time = new Date(lastTwoMoves[1].date_of_move).getTime() - new Date(nowDateUTC).getTime() + lastTwoMoves[0].remaining_time_ms;
       }
+    }
+  }
+
+  private setTimers(color: 'w' | 'b') {
+    if ((color==='w' && this.color==='w') || (color==='b' && this.color==='b')) {
+      this.p2Interval = setInterval(() => {
+        this.p2Time -= 100;
+        this.gameService.timeToEnd = this.p2Time;
+        if (this.p2Time <= 0) {
+          this.gameService.finishGame(this.color==='w' ? 'b' : 'w');
+          if(this.whoseMoveSub) {
+            this.whoseMoveSub.unsubscribe();
+          }
+          this.stopTimer();
+        }
+      }, 100);
+    } else {
+      this.p1Interval = setInterval(() => {
+        this.p1Time -= 100;
+        if (this.p1Time <= 0) {
+          this.gameService.finishGame(this.color);
+          if(this.whoseMoveSub) {
+            this.whoseMoveSub.unsubscribe();
+          }
+          this.stopTimer();
+        }
+      }, 100);
     }
   }
 
