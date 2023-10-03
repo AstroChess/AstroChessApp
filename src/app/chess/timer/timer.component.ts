@@ -142,7 +142,7 @@ export class TimerComponent implements OnInit, OnDestroy {
   }
 
   private setTimers(color: 'w' | 'b') {
-    if ((color==='w' && this.color==='w') || (color==='b' && this.color==='b')) {
+    if (color===this.color) {
       this.p2Interval = setInterval(() => {
         this.p2Time -= 100;
         this.gameService.timeToEnd = this.p2Time;
@@ -175,6 +175,9 @@ export class TimerComponent implements OnInit, OnDestroy {
     }
     if(this.supabaseWinnerSub) {
       this.supabaseWinnerSub.unsubscribe();
+    }
+    if(this.whoseMoveSub) {
+      this.whoseMoveSub.unsubscribe();
     }
   }
 }
