@@ -131,13 +131,9 @@ export class TimerComponent implements OnInit, OnDestroy {
       }
     } else {
       const lastTwoMoves = moves.slice(-2);
-      if(lastTwoMoves[1].color === this.color) {
-        this.p1Time = new Date(lastTwoMoves[1].date_of_move).getTime() - new Date(nowDateUTC).getTime() + lastTwoMoves[0].remaining_time_ms;
-        this.p2Time = lastTwoMoves[1].remaining_time_ms;
-      } else {
-        this.p1Time = lastTwoMoves[1].remaining_time_ms;
-        this.p2Time = new Date(lastTwoMoves[1].date_of_move).getTime() - new Date(nowDateUTC).getTime() + lastTwoMoves[0].remaining_time_ms;
-      }
+      const lastMoveTime = new Date(lastTwoMoves[1].date_of_move).getTime() - new Date(nowDateUTC).getTime() + lastTwoMoves[0].remaining_time_ms;
+      this.p1Time = lastTwoMoves[1].color === this.color ? lastMoveTime : lastTwoMoves[1].remaining_time_ms;
+      this.p2Time = lastTwoMoves[1].color === this.color ? lastTwoMoves[1].remaining_time_ms : lastMoveTime;
     }
   }
 
