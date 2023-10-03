@@ -48,14 +48,14 @@ export class TimerComponent implements OnInit, OnDestroy {
   }
   
   async ngOnInit() {
+    this.color = this.gameService.gameData.white_player.userid===this.gameService.player.userid ? 'w' : 'b';
+
     this.winnerSub = this.gameService.winner.subscribe(
       winner => { 
         this.winner = winner;
         this.stopTimers();
       }
     )
-
-    this.color = this.gameService.gameData.white_player.userid===this.gameService.player.userid ? 'w' : 'b';
 
     const moves: any[] = this.gameService.gameData.moves;
     const timePerPlayer = this.gameService.gameData.minutes_per_player*60*1000;
@@ -112,26 +112,18 @@ export class TimerComponent implements OnInit, OnDestroy {
   calculateTime(moves: any[], timePerPlayer: number, nowDateUTC: Date, startDate: Date) {
     if(moves.length===0) {
       const remainingTime = new Date(startDate).getTime() - new Date(nowDateUTC).getTime() + timePerPlayer;
+      this.p1Time = this.color==='w' ? timePerPlayer : remainingTime;
+      this.p2Time = this.color==='w' ? remainingTime : timePerPlayer;
 
-      if(this.color==='w') {
-        this.p1Time = timePerPlayer;
-        this.p2Time = remainingTime;
-      } else {
-        this.p1Time = remainingTime;
-        this.p2Time = timePerPlayer;
-      }
     } else if(moves.length===1) {
       const timeDiff = new Date(moves[0].date_of_move).getTime() - new Date(nowDateUTC).getTime();
-      if(this.color==='w') {
-        this.p1Time = timeDiff + timePerPlayer;
-        this.p2Time = moves[0].remaining_time_ms;
-      } else {
-        this.p1Time = moves[0].remaining_time_ms;
-        this.p2Time = timeDiff + timePerPlayer;
-      }
+      
+      this.p1Time = this.color==='w' ? timeDiff + timePerPlayer : moves[0].remaining_time_ms;
+      this.p2Time = this.color==='w' ? moves[0].remaining_time_ms : timeDiff + timePerPlayer;
     } else {
       const lastTwoMoves = moves.slice(-2);
       const lastMoveTime = new Date(lastTwoMoves[1].date_of_move).getTime() - new Date(nowDateUTC).getTime() + lastTwoMoves[0].remaining_time_ms;
+      
       this.p1Time = lastTwoMoves[1].color === this.color ? lastMoveTime : lastTwoMoves[1].remaining_time_ms;
       this.p2Time = lastTwoMoves[1].color === this.color ? lastTwoMoves[1].remaining_time_ms : lastMoveTime;
     }
