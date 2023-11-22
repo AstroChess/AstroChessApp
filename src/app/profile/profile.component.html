@@ -31,12 +31,12 @@
           <nb-list>
             <nb-list-item *ngFor="let game of games">
               <a href=""
-                ><span [ngClass]="{ winner: game.winner === 'p1' }">{{
-                  game.p1
+                ><span [ngClass]="{ winner: game.result === 'w' }">{{
+                  game.white_player.username
                 }}</span>
                 -
-                <span [ngClass]="{ winner: game.winner === 'p2' }">{{
-                  game.p2
+                <span [ngClass]="{ winner: game.result === 'b' }">{{
+                  game.black_player.username
                 }}</span></a
               >
             </nb-list-item>

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { UserLogin } from '../auth/user.model';
 import { AuthService } from '../auth/auth.service';
+import { ActivatedRoute } from '@angular/router';
+import { Game } from './game.model';
 
 @Component({
   selector: 'app-profile',
@@ -10,29 +11,13 @@ import { AuthService } from '../auth/auth.service';
 })
 export class ProfileComponent implements OnInit {
   user!: any;
-  games = [
-    {
-      id: 1,
-      p1: 'ketris',
-      p2: 'astro',
-      winner: 'p1',
-    },
-    {
-      id: 1,
-      p1: 'ketris',
-      p2: 'astro',
-      winner: 'p1',
-    },
-    {
-      id: 1,
-      p1: 'ketris',
-      p2: 'astro',
-      winner: 'p1',
-    },
-  ];
-  constructor(private authService: AuthService) {
+  games: Game[] = [];
+  constructor(private authService: AuthService, private route: ActivatedRoute) {
     this.authService.user.subscribe((user) => (this.user = user));
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.games = this.route.snapshot.data['profileData'].data;
+    console.log(this.route.snapshot.data['profileData'].data);
+  }
 }
