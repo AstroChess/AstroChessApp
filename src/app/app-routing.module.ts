@@ -6,6 +6,7 @@ import { ProfileGuard } from './profile/profile.guard';
 import { ProfileComponent } from './profile/profile.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { ProfileResolver } from './profile/profile.resolver';
 
 const routes: Routes = [
       {
@@ -21,6 +22,9 @@ const routes: Routes = [
         path: 'profile',
         component: ProfileComponent,
         canActivate: [ProfileGuard],
+        resolve: {
+          profileData: ProfileResolver
+        }, 
       },
       {
         path: 'game',
