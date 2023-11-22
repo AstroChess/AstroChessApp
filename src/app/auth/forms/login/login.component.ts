@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { UserLogin } from '../../user.model';
 import { AuthService } from '../../auth.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -12,18 +13,19 @@ import { AuthService } from '../../auth.service';
 export class LoginComponent implements OnInit {
   loginErrorMsg: string | null = null;
   submitted = false;
-  user: UserLogin = {
-    email: '',
-    password: '',
-    rememberMe: false,
-  };
+  
 
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {}
 
-  async login() {
-    const result = await this.authService.login(this.user);
+  async login(form: NgForm) {
+    const user: UserLogin = {
+      email: form.controls['email'].value,
+      password: form.controls['password'].value,
+    };
+
+    const result = await this.authService.login(user);
     if (result.error) {
       this.loginErrorMsg = result.error.message;
       return;
