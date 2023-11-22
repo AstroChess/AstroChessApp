@@ -18,10 +18,11 @@ export class ProfileResolver {
   }
 
   async fetchGameHistory() {
-    const result = await this.authService.supabase.from('games').select('white_player, black_player, started_utc').or(`white_player.eq.${this.authService.user.value?.id},black_player.eq.${this.authService.user.value?.id}`);
+    const result = await this.authService.supabase.from('games').select('white_player(userid, username), black_player(userid, username), started_utc, result').or(`white_player.eq.${this.authService.user.value?.id},black_player.eq.${this.authService.user.value?.id}`);
     if(result.error) {
         console.log('Some error occurred in fetching data: ', result.error);
     }
+    console.log(result);
     return result;
   }
 }
