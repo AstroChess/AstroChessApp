@@ -51,8 +51,10 @@ nb-card-body {
 }
 
 nb-list-item {
-  a {
-    display: inline-block;
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 100%;
     width: 100%;
     text-align: center;
@@ -64,6 +66,10 @@ nb-list-item {
       font-size: 1.1em;
       font-weight: bolder;
       color: lightgreen;
+    }
+    
+    .loser {
+      color: lightcoral;
     }
   }
 }

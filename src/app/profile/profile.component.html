@@ -27,18 +27,18 @@
       </div>
       <div class="right">
         <nb-card size="medium">
-          <nb-card-header> Last Games </nb-card-header>
+          <nb-card-header>Last Games</nb-card-header>
           <nb-list>
             <nb-list-item *ngFor="let game of games">
-              <a href=""
-                ><span [ngClass]="{ winner: game.result === 'w' }">{{
+              <div>
+                <span [ngClass]="{ winner: game.result === 'w', loser: game.result === 'b' }">{{
                   game.white_player.username
                 }}</span>
-                -
-                <span [ngClass]="{ winner: game.result === 'b' }">{{
+                &nbsp;-&nbsp;
+                <span [ngClass]="{ winner: game.result === 'b', loser: game.result === 'w' }">{{
                   game.black_player.username
-                }}</span></a
-              >
+                }}</span>
+              </div>
             </nb-list-item>
           </nb-list>
         </nb-card>
