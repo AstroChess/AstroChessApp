@@ -60,16 +60,19 @@ nb-list-item {
     text-align: center;
     text-decoration: none;
     color: white;
-    font-size: 1.05rem;
+    font-size: 1.2em;
+    font-weight: bolder;
 
     .winner {
-      font-size: 1.1em;
-      font-weight: bolder;
       color: lightgreen;
     }
     
     .loser {
       color: lightcoral;
+    }
+    
+    .draw {
+      color: goldenrod;
     }
   }
 }
