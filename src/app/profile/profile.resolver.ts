@@ -22,7 +22,6 @@ export class ProfileResolver {
     if(result.error) {
         console.log('Some error occurred in fetching data: ', result.error);
     }
-    console.log(result);
     return result;
   }
 }

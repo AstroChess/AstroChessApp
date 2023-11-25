@@ -37,7 +37,6 @@ export class AuthService {
       this.user.next(null);
       return {error};
     }
-
     this.user.next(data.user);
     return {data};
   }
@@ -51,12 +50,10 @@ export class AuthService {
           username: user.username,
         }
       }
-    })
-
+    });
     if(error) {
       return {error};
     }
-
     return {data};
   }
 
