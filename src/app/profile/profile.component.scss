@@ -76,21 +76,3 @@ nb-list-item {
     }
   }
 }
-
-table {
-  border-collapse: collapse;
-  margin: 10px;
-
-  tr {
-    border: 1px solid #7b51db;
-  }
-
-  td {
-    font-family: helvetica;
-    padding: 10px;
-
-    &:nth-child(1) {
-      background-color: #7b51db;
-    }
-  }
-}
