@@ -36,6 +36,11 @@ export const environment = {
 };
 ```
 
+## Demo
+
+The demo version is held on `http://astrochess.rapidcode.eu`. Feel free to test it.
+
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
