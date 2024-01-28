@@ -50,10 +50,4 @@ import 'zone.js'; // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
-(window as any).process = {
-    env: { 
-        DEBUG: undefined,
-        supabaseUrl: process.env.SUPABASE_URL,
-        supabaseApi: process.env.SUPABASE_API,
-    },
-  };
+window['process'] = process;
