@@ -52,3 +52,4 @@ import 'zone.js'; // Included with Angular CLI.
  */
 import * as process from 'process';
 window['process'] = process;
+console.log(process);

@@ -1,4 +1,3 @@
-console.log(process);
 export const environment = {
   production: true,
   supabaseUrl: process.env.SUPABASE_URL as string,
