@@ -43,5 +43,4 @@ Thumbs.db
 
 # Environment
 /src/environments/environment.ts
-.env*
-!.env.vault
+.env
