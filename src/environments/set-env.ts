@@ -2,7 +2,7 @@ const setEnv = () => {
   const fs = require('fs');
   const writeFile = fs.writeFile;
 // Configure Angular `environment.ts` file path
-  const targetPath = './src/environments/environment.ts';
+  const targetPath = './src/environments/environment.prod.ts';
 // Load node modules
   const appVersion = require('../../package.json').version;
   require('dotenv').config({
@@ -16,7 +16,6 @@ const setEnv = () => {
 };
 `;
 console.log('The file `environment.ts` will be written with the following content:');
-fs.readFile('.env', 'utf8', (err:any, data:any)=>console.log(data, "OJOJOJO"))
   writeFile(targetPath, envConfigFile, (err: any) => {
     if (err) {
       console.error(err);
