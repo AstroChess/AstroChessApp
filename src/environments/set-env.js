@@ -7,13 +7,12 @@ const setEnv = () => {
   const colors = require('colors');
   const appVersion = require('../../package.json').version;
   require('dotenv').config({
-    path: './.env'
+    path: 'src/environments/.env'
   });
 // `environment.ts` file structure
   const envConfigFile = `export const environment = {
-  googleApiKey: '${process.env.GOOGLE_API_KEY}',
-  auth0ClientId: '${process.env.AUTH0_CLIENT_ID}',
-  appVersion: '${appVersion}',
+  SUPABASE_URL: '${process.env.SUPABASE_URL}',
+  SUPABASE_API: '${process.env.SUPABASE_API}',
   production: true,
 };
 `;
