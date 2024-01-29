@@ -14,7 +14,7 @@ export class AuthService {
   user = new BehaviorSubject<User | null | undefined>(undefined);
 
   constructor() {
-    this.supabase = createClient(env.supabaseUrl, env.supabaseApi);
+    this.supabase = createClient(env.SUPABASE_URL, env.SUPABASE_API);
     this.autologin();
   }
 

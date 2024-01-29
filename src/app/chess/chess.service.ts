@@ -18,7 +18,7 @@ export class ChessService implements OnDestroy {
     private authService: AuthService,
     private router: Router
   ) {
-    this.supabase = createClient(env.supabaseUrl, env.supabaseApi);
+    this.supabase = createClient(env.SUPABASE_URL, env.SUPABASE_API);
   }
 
   playAudio(type: 'check' | 'move' | 'notify') {

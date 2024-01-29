@@ -27,7 +27,7 @@ export class TimerComponent implements OnInit, OnDestroy {
   winnerSub!: Subscription;
   
   constructor(private gameService: GameService) {
-    this.supabaseWinner = createClient(env.supabaseUrl, env.supabaseApi);
+    this.supabaseWinner = createClient(env.SUPABASE_URL, env.SUPABASE_API);
     this.supabaseWinnerSub = this.supabaseWinner
       .channel('schema-db-changes')
       .on(

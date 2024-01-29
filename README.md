@@ -23,16 +23,16 @@ This database schema is crucial for the proper functioning of the AstroChess app
 
 To run this project, you will need to add the following environment variables to your environment.ts file:
 
-`supabaseUrl`
-`supabaseApi`
+`SUPABASE_URL`
+`SUPABASE_API`
 
 The entire `environment.ts` file should be located in `/src/environments/` and contain exported `environment` constant with the following syntax:
 
 ```typescript
 export const environment = {
   production: false,
-  supabaseUrl: 'YOUR SUPABASE URL',
-  supabaseApi: 'YOUR SUPABASE API KEY',
+  SUPABASE_URL: 'YOUR SUPABASE URL',
+  SUPABASE_API: 'YOUR SUPABASE API KEY',
 };
 ```
 
