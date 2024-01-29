@@ -2,9 +2,8 @@ const setEnv = () => {
   const fs = require('fs');
   const writeFile = fs.writeFile;
 // Configure Angular `environment.ts` file path
-  const targetPath = './src/environments/environment.ts';
+  const targetPath = './src/environments/environment.prod.ts';
 // Load node modules
-  const colors = require('colors');
   const appVersion = require('../../package.json').version;
   require('dotenv').config({
     path: 'src/environments/.env'
@@ -16,13 +15,14 @@ const setEnv = () => {
   production: true,
 };
 `;
-  console.log(colors.magenta('The file `environment.ts` will be written with the following content: \n'));
+console.log('The file `environment.ts` will be written with the following content:');
+fs.readFile('.env', 'utf8', (err:any, data:any)=>console.log(data, "OJOJOJO"))
   writeFile(targetPath, envConfigFile, (err: any) => {
     if (err) {
       console.error(err);
       throw err;
     } else {
-      console.log(colors.magenta(`Angular environment.ts file generated correctly at ${targetPath} \n`));
+      console.log(`Angular environment.ts file generated correctly at ${targetPath} \n`);
     }
   });
 };
