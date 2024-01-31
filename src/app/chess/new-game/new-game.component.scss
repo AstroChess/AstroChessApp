@@ -17,8 +17,8 @@
         justify-content: center;
         align-items: center;
         font-size: 3rem;
-        background-color: rgb(128, 128, 128, 0.8);
-        border: 1px solid rgb(211, 211, 211);
+        background-color: rgba(70, 70, 120, 0.8);
+        border: 1px solid rgba(76, 76, 132, 0.8);
         border-radius: 5px;
         cursor: pointer;
         transition: 0.2s;
@@ -28,7 +28,8 @@
         }
         
         &:hover {
-            background-color: rgba(253, 144, 111, 0.8);
+            background-color: rgba(50, 50, 89, 0.8);
+            border-color: rgba(27,27,56,0.8);
         }
     }
 }
