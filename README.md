@@ -40,6 +40,24 @@ export const environment = {
 
 The demo version is held on `http://astrochess.rapidcode.eu`. Feel free to test it.
 
+## Preview
+Here are some screenshots of AstroChess layout.
+
+### Home Page
+<img src="/src/assets/images/layout/homepage.png" alt="Home Page">
+
+### Login Page
+<img src="/src/assets/images/layout/login.png" alt="Login Page">
+
+### Registration Page
+<img src="/src/assets/images/layout/registration.png" alt="Registration Page">
+
+### New Game Page
+<img src="/src/assets/images/layout/new-game.png" alt="New Game Page">
+
+### Game Page
+<img src="/src/assets/images/layout/game.png" alt="Game Page">
+
 
 ## Development server
 
