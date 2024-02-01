@@ -110,7 +110,14 @@ export class BoardService implements OnDestroy {
       if(this.newMovesInsert) {
         this.newMovesInsert.unsubscribe();
       }
-      await this.stopFinishedGame();
+      if(this.gameService.whoseMove.value!=="finished") {
+        if(this.chessInstance.isDraw()) {
+          await this.stopFinishedGame("draw");
+        }
+        if(this.chessInstance.isCheckmate()) {
+          await this.stopFinishedGame(this.gameService.whoseMove.value);
+        }
+      }
     }
   }
 
@@ -227,9 +234,9 @@ export class BoardService implements OnDestroy {
     this.clearPossibleMoves();
   }
 
-  private async stopFinishedGame() {
+  private async stopFinishedGame(winner: "b" | "w" | "draw") {
     this.clearSelections();
-    await this.gameService.stopGame();
+    await this.gameService.finishGame(winner);
   }
 
   handlePiecePromotion(

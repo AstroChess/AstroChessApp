@@ -63,7 +63,7 @@ export class TimerComponent implements OnInit, OnDestroy {
     const startDate = this.gameService.gameData.started_utc as Date;
 
     this.calculateTime(moves, timePerPlayer, nowDateUTC, startDate);
-    
+
     if(this.winner) {
       this.calculateTime(moves, timePerPlayer, this.gameService.gameData.ended_utc, startDate);
       return;
@@ -158,14 +158,8 @@ export class TimerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.stopTimers();
-    if(this.winnerSub) {
-      this.winnerSub.unsubscribe();
-    }
-    if(this.supabaseWinnerSub) {
-      this.supabaseWinnerSub.unsubscribe();
-    }
-    if(this.whoseMoveSub) {
-      this.whoseMoveSub.unsubscribe();
-    }
+    this.winnerSub?.unsubscribe();
+    this.supabaseWinnerSub?.unsubscribe();
+    this.whoseMoveSub?.unsubscribe();
   }
 }
