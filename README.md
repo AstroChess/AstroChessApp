@@ -38,7 +38,7 @@ export const environment = {
 
 ## Demo
 
-The demo version is held on `http://astrochess.rapidcode.eu`. Feel free to test it.
+The demo version is held on [astrochess.vercel.app](http://astrochess.vercel.app). Feel free to test it.
 
 ## Preview
 Here are some screenshots of AstroChess layout.
