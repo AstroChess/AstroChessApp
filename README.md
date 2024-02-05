@@ -38,7 +38,7 @@ export const environment = {
 
 ## Demo
 
-The demo version is held on `http://astrochess.rapidcode.eu`. Feel free to test it.
+The demo version is held on [astrochess.vercel.app](http://astrochess.vercel.app). Feel free to test it.
 
 ## Preview
 Here are some screenshots of AstroChess layout.
@@ -58,14 +58,9 @@ Here are some screenshots of AstroChess layout.
 ### Game Page
 <img src="/src/assets/images/layout/game.png" alt="Game Page">
 
-
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ## License
 
