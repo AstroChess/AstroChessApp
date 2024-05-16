@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot, UrlTree } from '@angular/router';
 
-import { Observable, filter, map } from 'rxjs';
+import { Observable, filter, map, tap } from 'rxjs';
 
 import { AuthService } from '../auth/auth.service';
 
@@ -9,13 +9,19 @@ import { AuthService } from '../auth/auth.service';
   providedIn: 'root'
 })
 export class ProfileGuard {
-  constructor(private authService: AuthService){}
+  constructor(private authService: AuthService, private router: Router){}
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
       return this.authService.user.pipe(
-        filter(user=>typeof user !== 'undefined'), 
-        map(user=>!!user)
+        filter(user=>user !== undefined),
+        tap((user)=>{
+          if(user===null) {
+            this.router.navigate(['/auth']);
+          }
+          return user;
+        }),
+        map(user=>!!user),
       );
   }
   
