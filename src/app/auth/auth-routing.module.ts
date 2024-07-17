@@ -5,7 +5,6 @@ import { AuthGuard } from './auth.guard';
 import { AuthComponent } from './auth.component';
 import { LoginComponent } from './forms/login/login.component';
 import { RegisterComponent } from './forms/register/register.component';
-import { PasswordResetComponent } from './forms/password-reset/password-reset.component';
 
 const routes: Routes = [
   {
@@ -21,10 +20,6 @@ const routes: Routes = [
         path: 'register',
         component: RegisterComponent,
         canActivate: [AuthGuard],
-      },
-      {
-        path: 'reset-password',
-        component: PasswordResetComponent,
       },
       {
         path: '',

@@ -10,14 +10,12 @@ import { SharedModule } from '../shared/shared.module';
 import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './forms/login/login.component';
 import { RegisterComponent } from './forms/register/register.component';
-import { PasswordResetComponent } from './forms/password-reset/password-reset.component';
 
 @NgModule({
   declarations: [
     AuthComponent,
     LoginComponent,
     RegisterComponent,
-    PasswordResetComponent,
   ],
   imports: [
     NbAuthModule.forRoot(),
