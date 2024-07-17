@@ -7,6 +7,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { ProfileResolver } from './profile/profile.resolver';
+import { AboutComponent } from './about/about.component';
 
 const routes: Routes = [
       {
@@ -36,6 +37,10 @@ const routes: Routes = [
         path: '',
         redirectTo: 'home',
         pathMatch: 'full',
+      },
+      {
+        path: 'about',
+        component: AboutComponent,
       },
       {
         path: '**',
