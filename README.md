@@ -5,6 +5,7 @@
 AstroChess is a web application for playing chess with friends. It's based on Chess.js library (chess logic), Nebular (UI kit) and Supabase (Database, Authentication, Games and Moves Management, Users Management, Realtime Response).
 <br>
 
+
 ## Status
 
 Still in development.
