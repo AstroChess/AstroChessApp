@@ -1,5 +1,5 @@
 <p align="center" style="margin-bottom: 0px">
-  <img src="/src/assets/images/favicon.png" alt="favicon">
+  <img src="/src/assets/images/favicon.png" alt="favicon" height="128px">
 </p>
 <h1 align="center" style="margin-top: 0px !important;">AstroChess</h1>
 AstroChess is a web application for playing chess with friends. It's based on Chess.js library (chess logic), Nebular (UI kit) and Supabase (Database, Authentication, Games and Moves Management, Users Management, Realtime Response).
