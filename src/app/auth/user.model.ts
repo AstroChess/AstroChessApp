@@ -5,13 +5,10 @@ export interface UserLogin {
 }
 
 export interface UserSignup {
-  firstname: string;
-  lastname: string;
   username: string;
   email: string;
   password: string;
   confirm_password: string;
-  terms?: boolean;
 }
 
 export interface User {

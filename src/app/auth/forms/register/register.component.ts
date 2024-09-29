@@ -13,13 +13,10 @@ export class RegisterComponent implements OnInit {
   signupResponse: string | undefined;
   submitted = false;
   user: UserSignup = {
-    firstname: '',
-    lastname: '',
     username: '',
     email: '',
     password: '',
     confirm_password: '',
-    terms: false,
   };
 
   constructor(private authService: AuthService) {}
@@ -43,8 +40,6 @@ export class RegisterComponent implements OnInit {
         {
           userid: result.data.user?.id,
           username: this.user.username.toLowerCase(),
-          first_name: this.user.firstname.toLowerCase(),
-          last_name: this.user.lastname.toLowerCase(),
         },
       ]);
   }

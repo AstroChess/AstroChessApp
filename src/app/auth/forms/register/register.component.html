@@ -8,59 +8,6 @@
 
 <form (ngSubmit)="handleSignupForm()" #form="ngForm" aria-labelledby="title">
   <div class="form-control-group">
-    <div class="form-control-subgroup-left">
-      <label class="label" for="input-name">First name:</label>
-      <input
-        nbInput
-        [(ngModel)]="user.firstname"
-        #firstname="ngModel"
-        id="input-firstname"
-        name="firstname"
-        placeholder="First name"
-        autofocus
-        fullWidth
-        required
-        fieldSize="large"
-        [status]="
-          firstname.dirty ? (firstname.invalid ? 'danger' : 'success') : 'basic'
-        "
-        [attr.aria-invalid]="
-          firstname.invalid && firstname.touched ? true : null
-        "
-      />
-      <ng-container *ngIf="firstname.invalid && firstname.touched">
-        <p class="caption status-danger" *ngIf="firstname.errors?.['required']">
-          First name is required!
-        </p>
-      </ng-container>
-    </div>
-    <div class="form-control-subgroup-right">
-      <label class="label" for="input-name">Last name:</label>
-      <input
-        nbInput
-        [(ngModel)]="user.lastname"
-        #lastname="ngModel"
-        id="input-lastname"
-        name="lastname"
-        placeholder="Last name"
-        autofocus
-        fullWidth
-        required
-        fieldSize="large"
-        [status]="
-          lastname.dirty ? (lastname.invalid ? 'danger' : 'success') : 'basic'
-        "
-        [attr.aria-invalid]="lastname.invalid && lastname.touched ? true : null"
-      />
-      <ng-container *ngIf="lastname.invalid && lastname.touched">
-        <p class="caption status-danger" *ngIf="lastname.errors?.['required']">
-          Last name is required!
-        </p>
-      </ng-container>
-    </div>
-  </div>
-
-  <div class="form-control-group">
     <label class="label" for="input-email">Username:</label>
     <input
       nbInput
@@ -171,19 +118,12 @@
     </ng-container>
   </div>
 
-  <div class="form-control-group accept-group">
-    <nb-checkbox name="terms" [(ngModel)]="user.terms">
-      Agree to
-      <a href="#" target="_blank"><strong>Terms & Conditions</strong></a>
-    </nb-checkbox>
-  </div>
-
   <button
     nbButton
     fullWidth
     status="primary"
     size="large"
-    [disabled]="submitted || !form.valid || !user.terms"
+    [disabled]="submitted || !form.valid"
     [class.btn-pulse]="submitted"
   >
     Register
