@@ -44,4 +44,4 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The appli
 This project is licensed under the MIT License.
 
 ## Author
-- [szymon-skalmierski](https://github.com/szymon-skalmierski)
+- [xketris](https://github.com/xketris)
